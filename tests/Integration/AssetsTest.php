@@ -68,7 +68,8 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function test_woocommerce_conditional_style_is_not_registered_without_woocommerce(): void {
 		self::assertFalse( \class_exists( 'WooCommerce' ) );
-		self::assertFalse( \function_exists( 'a8csp_template_theme_enqueue_woocommerce_cart_style' ) );
+
+		// PHP binds the file's function at compile time despite the guard; its effect is the unwired hook.
 		self::assertFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_woocommerce_cart_style' ) );
 	}
 }
