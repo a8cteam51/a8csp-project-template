@@ -81,7 +81,6 @@ if (
 }
 
 // Include the rest of the plugin's files.
-// phpcs:ignore Universal.Operators.DisallowShortTernary.Found -- both falsy glob() results (false, no-match empty list) normalize to the same empty array.
 $a8csp_template_features_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();
 \sort( $a8csp_template_features_include_files );
 
