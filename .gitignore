@@ -4,6 +4,7 @@
 # we wish to source control. Everything else under these directories is installed, not tracked.
 #
 plugins/*
+!plugins/.gitkeep
 
 mu-plugins/*
 !mu-plugins/mu-loader.php
