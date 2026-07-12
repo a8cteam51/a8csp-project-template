@@ -13,6 +13,14 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: a8csp-project-template
 Tags: full-site-editing, block-theme
 */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 *,
 *::before,
 *::after {
