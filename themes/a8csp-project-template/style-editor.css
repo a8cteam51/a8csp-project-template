@@ -38,6 +38,13 @@ p {
   margin-block: 0 var(--wp--preset--spacing--40, 1.5rem);
 }
 
+p,
+li,
+blockquote,
+figcaption {
+  text-wrap: pretty;
+}
+
 a {
   color: var(--wp--preset--color--accent, #315cfd);
   text-decoration-thickness: 0.08em;
