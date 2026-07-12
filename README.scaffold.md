@@ -32,6 +32,12 @@ The site is available on port `8894`; `tests/README.md` documents the dedicated 
 
 ## Recipes
 
+### Your first feature
+
+Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete `.disabled` (at `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`) to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own.
+
+To remove Book entirely instead of enabling it, follow the teardown recipe below.
+
 ### Replace the theme
 
 The directory name `themes/EXAMPLE_REPO_SLUG` and text domain `EXAMPLE_REPO_SLUG` are permanent. PHPStan paths, wp-env mappings and `afterStart` activation, tests, Composer scripts, and `.gitignore` depend on them. Replace the theme's contents; never rename its directory or text domain.

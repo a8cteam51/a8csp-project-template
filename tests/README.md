@@ -66,6 +66,8 @@ precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.
 
 Both wp-env configurations activate the project theme, set pretty permalinks, and flush rewrite rules in `afterStart`. That lifecycle is why `FeaturesLoaderTest` can resolve the Book archive link and the End-to-End Book singular route can resolve without either test performing a manual flush. Removing the Book worked example also means removing its test traces: the Book-specific assertions in `FeaturesLoaderTest` (the loader coverage is otherwise independent of Book) and the Book archive and singular assertions in the End-to-End spec. A production deployment that changes the CPT rewrite arguments—including adding or removing the CPT—needs one production `wp rewrite flush`, as documented in `mu-plugins/a8csp-project-template-features/includes/book-post-type.php`.
 
+Generated repositories additionally ship `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. The Book-specific assertions above and the End-to-End Book smoke describe self-skip with a named message while that file is present, and resume automatically once it's removed; this template's own tree ships without the file, so its CI proves the enabled path on every run.
+
 ## Unit tier
 
 No Unit suite ships at generation because no shipped site code is pure logic yet; the filesystem-bound asset metadata helpers are already integration-covered through real enqueues. When the first pure function appears, add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` for it.

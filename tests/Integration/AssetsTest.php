@@ -15,7 +15,7 @@
  */
 final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
-	 * Confirms both front-end enqueue callbacks are registered.
+	 * Confirms the theme's front-end enqueue callback is registered.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -24,6 +24,19 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function test_front_end_enqueue_callbacks_are_registered(): void {
 		self::assertNotFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' ) );
+	}
+
+	/**
+	 * Confirms the Book front-end enqueue callback is registered.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_book_front_end_enqueue_callback_is_registered(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		self::assertNotFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_features_enqueue_book_post_type_assets' ) );
 	}
 
@@ -82,6 +95,8 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_book_editor_enqueue_callback_is_registered(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		self::assertNotFalse( has_action( 'enqueue_block_editor_assets', 'a8csp_template_features_enqueue_book_post_type_editor_assets' ) );
 	}
 
@@ -94,10 +109,26 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_book_editor_script_dependencies_come_from_generated_asset_file(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		$script_meta          = a8csp_template_features_get_asset_meta( 'assets/js/build/editor.js' );
 		$generated_asset_meta = require \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH' ) . 'assets/js/build/editor.asset.php';
 
 		self::assertSame( $generated_asset_meta['version'], $script_meta['version'] );
 		self::assertSame( $generated_asset_meta['dependencies'], $script_meta['dependencies'] );
+	}
+
+	/**
+	 * Skips the calling test when the features plugin is disabled.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	private function skip_when_features_plugin_disabled(): void {
+		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
+		}
 	}
 }

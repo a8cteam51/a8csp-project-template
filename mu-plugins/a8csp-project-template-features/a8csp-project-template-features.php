@@ -24,6 +24,12 @@
 
 \defined( 'ABSPATH' ) || exit;
 
+// Generation creates the .disabled file so an unattended site never registers the example content.
+// Delete .disabled to start building the site's features.
+if ( \file_exists( __DIR__ . '/.disabled' ) ) {
+	return;
+}
+
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH', plugin_dir_path( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_URL', plugin_dir_url( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION', '7.0' );

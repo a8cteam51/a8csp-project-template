@@ -127,7 +127,7 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Rename the readme, theme, and features mu-plugin.
+      - name: Rename the readme, theme, and features mu-plugin; disable the features plugin's worked example.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         env:
           REPO_NAME: ${{ github.event.repository.name }}
@@ -136,10 +136,12 @@ jobs:
           git mv themes/a8csp-project-template "themes/$REPO_NAME"
           git mv mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php "mu-plugins/a8csp-project-template-features/$REPO_NAME-features.php"
           git mv mu-plugins/a8csp-project-template-features "mu-plugins/$REPO_NAME-features"
+          touch "mu-plugins/$REPO_NAME-features/.disabled"
+          git add "mu-plugins/$REPO_NAME-features/.disabled"
 
       - name: Commit the changed files.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: git commit -am "chore -- rename files from scaffolding"
+        run: git commit -am "chore -- rename files from scaffolding; disable the features plugin's worked example"
 
       - name: Perform string replacements within the files.
         if: steps.scaffold-check.outputs.already-filled != 'true'

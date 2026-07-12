@@ -23,6 +23,8 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_book_post_type_is_registered(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		self::assertTrue( post_type_exists( 'book' ) );
 	}
 
@@ -35,6 +37,8 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_book_post_type_archive_link_resolves(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		self::assertMatchesRegularExpression( '#/book/?$#', (string) get_post_type_archive_link( 'book' ) );
 	}
 
@@ -59,6 +63,22 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_underscore_prefixed_fixture_is_not_loaded(): void {
+		$this->skip_when_features_plugin_disabled();
+
 		self::assertFalse( \function_exists( 'a8csp_template_features_disabled_example' ) );
+	}
+
+	/**
+	 * Skips the calling test when the features plugin is disabled.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	private function skip_when_features_plugin_disabled(): void {
+		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
+		}
 	}
 }
