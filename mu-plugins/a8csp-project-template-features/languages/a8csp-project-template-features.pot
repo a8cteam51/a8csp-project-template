@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-12T11:43:54+00:00\n"
+"POT-Creation-Date: 2026-07-12T13:13:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: a8csp-project-template-features\n"
@@ -35,7 +35,7 @@ msgid "https://specialprojects.automattic.com/"
 msgstr ""
 
 #. translators: 1: Component name, 2: required WordPress version, 3: required PHP version, 4: current WordPress version, 5: current PHP version.
-#: a8csp-project-template-features.php:58
+#: a8csp-project-template-features.php:53
 #, php-format
 msgid "%1$s requires WordPress %2$s and PHP %3$s at minimum. Current: WordPress %4$s, PHP %5$s."
 msgstr ""
@@ -89,4 +89,14 @@ msgstr ""
 
 #: includes/book-post-type.php:48
 msgid "No books found in Trash."
+msgstr ""
+
+#: assets/js/build/editor.js:1
+#: assets/js/src/editor.js:40
+msgid "Book cover"
+msgstr ""
+
+#: assets/js/build/editor.js:1
+#: assets/js/src/editor.js:44
+msgid "Add a cover image before publishing this Book."
 msgstr ""
