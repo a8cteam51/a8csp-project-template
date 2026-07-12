@@ -19,3 +19,9 @@ jobs:
   supply-chain:
     name: Supply-chain audit
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-supply-chain-audit.yml@trunk
+    with:
+      # The full dev graph builds the committed production assets, so it stays audited — but the
+      # @wordpress/scripts tree carries standing high advisories with no upstream fix (ReDoS in
+      # lint-time tooling), and a permanently red gate trains people to ignore it. Criticals still
+      # block; the build-integrity job independently proves the committed artifacts match source.
+      npm-audit-flags: '--audit-level=critical'

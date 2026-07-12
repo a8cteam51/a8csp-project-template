@@ -72,5 +72,8 @@
 
     "test:integration": "wp-env --config .wp-env.tests.json run cli --env-cwd=wp-content/project vendor/bin/phpunit --testsuite=Integration",
     "test:e2e": "playwright test --config=playwright.config.js"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
   }
 }
