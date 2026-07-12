@@ -62,3 +62,20 @@ function a8csp_template_theme_enqueue_assets(): void {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' );
+
+/**
+ * Adds the theme slug to the body classes.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @param   array<string> $classes Body class names.
+ *
+ * @return  array<string> Filtered body class names.
+ */
+function a8csp_template_theme_add_body_class( array $classes ): array {
+	$classes[] = a8csp_template_theme_get_slug();
+
+	return $classes;
+}
+add_filter( 'body_class', 'a8csp_template_theme_add_body_class' );
