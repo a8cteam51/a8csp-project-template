@@ -40,42 +40,36 @@ if (
 	! is_wp_version_compatible( A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION )
 	|| ! is_php_version_compatible( A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION )
 ) {
-	/**
-	 * Displays the component requirements when the current site is below a version floor.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  void
-	 */
-	$a8csp_template_features_requirements_notice = static function (): void {
-		if ( ! current_user_can( 'activate_plugins' ) ) {
-			return;
+	// Misconfiguration speaks: the notice names the component, its floors, and the actual versions.
+	add_action(
+		'admin_notices',
+		static function (): void {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+
+			$message = wp_sprintf(
+				/* translators: 1: Component name, 2: required WordPress version, 3: required PHP version, 4: current WordPress version, 5: current PHP version. */
+				__(
+					'%1$s requires WordPress %2$s and PHP %3$s at minimum. Current: WordPress %4$s, PHP %5$s.',
+					'a8csp-project-template-features'
+				),
+				'A8CSP Project Template Features',
+				A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION,
+				A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION,
+				get_bloginfo( 'version' ),
+				PHP_VERSION
+			);
+
+			wp_admin_notice(
+				$message,
+				array(
+					'type'        => 'error',
+					'dismissible' => false,
+				)
+			);
 		}
-
-		$message = wp_sprintf(
-			/* translators: 1: Component name, 2: required WordPress version, 3: required PHP version, 4: current WordPress version, 5: current PHP version. */
-			__(
-				'%1$s requires WordPress %2$s and PHP %3$s at minimum. Current: WordPress %4$s, PHP %5$s.',
-				'a8csp-project-template-features'
-			),
-			'A8CSP Project Template Features',
-			A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION,
-			A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION,
-			get_bloginfo( 'version' ),
-			PHP_VERSION
-		);
-
-		wp_admin_notice(
-			$message,
-			array(
-				'type'        => 'error',
-				'dismissible' => false,
-			)
-		);
-	};
-
-	add_action( 'admin_notices', $a8csp_template_features_requirements_notice );
+	);
 
 	return;
 }
