@@ -9,6 +9,24 @@
 
 \defined( 'ABSPATH' ) || exit;
 
+// region META
+
+/**
+ * Gets the features plugin slug.
+ *
+ * The literal is a generation token: the scaffold's rewrite script replaces every occurrence of
+ * `a8csp-project-template-features` at generation time, so a hardcoded return is exactly as
+ * accurate as a runtime lookup.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @return  string Features plugin slug.
+ */
+function a8csp_template_features_get_slug(): string {
+	return 'a8csp-project-template-features';
+}
+
 // Sharing this helper would couple the replaceable theme to the features plugin, so each component
 // carries a copy that disappears with it.
 
@@ -71,14 +89,4 @@ function a8csp_template_features_get_asset_meta(
 	return $asset_meta;
 }
 
-/**
- * Gets the features plugin slug.
- *
- * @since   1.0.0
- * @version 1.0.0
- *
- * @return  string Features plugin slug.
- */
-function a8csp_template_features_get_slug(): string {
-	return 'a8csp-project-template-features';
-}
+// endregion
