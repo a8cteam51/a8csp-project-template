@@ -1,0 +1,40 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [trunk, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: Integration (${{ matrix.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'WP 7.0'
+            wp-version: '7.0'
+            wp-env-core: ''
+          - name: 'WP nightly'
+            wp-version: ''
+            wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@trunk
+    with:
+      wp-version: ${{ matrix.wp-version || '' }}
+      wp-env-core: ${{ matrix.wp-env-core || '' }}
+      wp-env-config-file: '.wp-env.tests.json'
+      composer-script: 'test:integration'
+
+  e2e:
+    name: End-to-End
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@trunk
+    with:
+      artifact-slug: 'e2e'
+      build-script: ''
