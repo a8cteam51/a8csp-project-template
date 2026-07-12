@@ -1,0 +1,1 @@
+(()=>{const e=()=>{const e=document.querySelector(".site-header");if(!e)return;const t=()=>{e.classList.toggle("is-scrolled",window.scrollY>0)};t(),window.addEventListener("scroll",t,{passive:!0})};"loading"===document.readyState?document.addEventListener("DOMContentLoaded",e,{once:!0}):e()})();

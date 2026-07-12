@@ -1,0 +1,109 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        {
+          "color": "#f7f7f5",
+          "name": "Canvas",
+          "slug": "canvas"
+        },
+        {
+          "color": "#ffffff",
+          "name": "Surface",
+          "slug": "surface"
+        },
+        {
+          "color": "#1f2328",
+          "name": "Ink",
+          "slug": "ink"
+        },
+        {
+          "color": "#315cfd",
+          "name": "Accent",
+          "slug": "accent"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "42rem",
+      "wideSize": "72rem"
+    },
+    "spacing": {
+      "defaultSpacingSizes": false,
+      "spacingSizes": [
+        {
+          "name": "Small",
+          "size": "0.5rem",
+          "slug": "20"
+        },
+        {
+          "name": "Medium",
+          "size": "1rem",
+          "slug": "30"
+        },
+        {
+          "name": "Large",
+          "size": "1.5rem",
+          "slug": "40"
+        },
+        {
+          "name": "X Large",
+          "size": "2.5rem",
+          "slug": "50"
+        }
+      ]
+    },
+    "typography": {
+      "defaultFontSizes": false,
+      "fontFamilies": [
+        {
+          "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "name": "System Sans",
+          "slug": "system"
+        }
+      ],
+      "fontSizes": [
+        {
+          "name": "Small",
+          "size": "0.875rem",
+          "slug": "small"
+        },
+        {
+          "name": "Medium",
+          "size": "1rem",
+          "slug": "medium"
+        },
+        {
+          "name": "Large",
+          "size": "1.25rem",
+          "slug": "large"
+        },
+        {
+          "name": "X Large",
+          "size": "clamp(1.5rem, 3vw, 2rem)",
+          "slug": "x-large"
+        },
+        {
+          "name": "XX Large",
+          "size": "clamp(2rem, 5vw, 3.5rem)",
+          "slug": "xx-large"
+        }
+      ]
+    }
+  },
+  "templateParts": [
+    {
+      "area": "header",
+      "name": "header",
+      "title": "Header"
+    },
+    {
+      "area": "footer",
+      "name": "footer",
+      "title": "Footer"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+/*
+Theme Name: A8CSP Project Template
+Theme URI: https://github.com/a8cteam51/a8csp-project-template
+Author: A8C Special Projects
+Author URI: https://specialprojects.automattic.com/
+Description: A minimal block theme proving the sass build pipeline, not a design system — replace its contents freely; keep the directory name and text domain.
+Version: 1.0.0
+Requires at least: 7.0
+Requires PHP: 8.5
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: a8csp-project-template
+Tags: full-site-editing, block-theme
+*/
+
+@use "base";
+@use "layout";
