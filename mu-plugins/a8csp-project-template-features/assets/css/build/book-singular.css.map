@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../src/book-singular.scss"],"names":[],"mappings":"AAAA;EACC;EACA;;;AAGD;EACC;;;AAGD;AAAA;EAEC;EACA","file":"book-singular.css"}
+{"version":3,"sources":["../src/book-singular.scss","book-singular.css"],"names":[],"mappings":"AAAA;EACC,qDAAA;EACA,2EAAA;ACCD;;ADEA;EACC,wDAAA;ACCD;;ADEA;;EAEC,uDAAA;EACA,gBAAA;ACCD","file":"book-singular.css"}
