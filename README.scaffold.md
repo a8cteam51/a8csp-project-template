@@ -36,6 +36,8 @@ The site is available on port `8894`; `tests/README.md` documents the dedicated 
 
 The directory name `themes/EXAMPLE_REPO_SLUG` and text domain `EXAMPLE_REPO_SLUG` are permanent. PHPStan paths, wp-env mappings and `afterStart` activation, tests, Composer scripts, and `.gitignore` depend on them. Replace the theme's contents; never rename its directory or text domain.
 
+Replacement content must also keep the contract the test suite encodes: a `body_class` filter that marks the active theme, a `wp_enqueue_scripts` callback that registers an `EXAMPLE_REPO_SLUG-style` handle (with an editor stylesheet added via `add_editor_style()`) and an `EXAMPLE_REPO_SLUG-script` handle, and an asset-metadata helper the theme's `includes/theme-setup.php` calls to derive each handle's version. A theme missing any of these reddens `tests/Integration/SiteBootTest.php`, hard-errors `tests/Integration/AssetsTest.php` on a missing `index.asset.php`, and breaks both End-to-End locator assertions in `tests/EndToEnd/site-smoke.spec.js`.
+
 ### Tracked custom plugin
 
 To track a custom plugin in `plugins/<name>`:
@@ -52,5 +54,5 @@ Require it from WP Packages as a development dependency with `composer require -
 ### Teardown one-liners
 
 - **RTL:** Delete the `build:theme:style-rtl` npm script, the `wp_style_add_data( ..., 'rtl', ... )` call in `themes/EXAMPLE_REPO_SLUG/includes/theme-setup.php`, and `themes/EXAMPLE_REPO_SLUG/style-rtl.css`.
-- **i18n:** Delete both `languages/` directories, the `internationalize` and `i18n:*` Composer scripts, and the `Text Domain` and `Domain Path` header lines.
+- **i18n:** Delete both `languages/` directories, the `internationalize` and `i18n:*` Composer scripts, the `Text Domain` and `Domain Path` header lines, the `load_muplugin_textdomain()` call in the features entry file, the `wp-cli/i18n-command` Composer dev dependency, and the `WordPress.WP.I18n` `text_domain` property block in each of the three PHPCS rulesets (`themes/EXAMPLE_REPO_SLUG/.phpcs.xml`, `mu-plugins/EXAMPLE_REPO_SLUG-features/.phpcs.xml`, and the root `.phpcs.tests.xml`). The site's own `__()`/`_e()` calls survive this teardown — deleting the i18n plumbing removes the catalog machinery, not the translatable strings themselves.
 - **Book feature:** Follow the teardown recipe at the top of `mu-plugins/EXAMPLE_REPO_SLUG-features/includes/book-post-type.php`; its removal instructions live beside the self-contained worked example they remove.

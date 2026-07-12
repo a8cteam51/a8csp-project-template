@@ -1,6 +1,6 @@
 # Tests
 
-This repository uses one whole-site test honeycomb rooted at `tests/`. The theme and features mu-plugin are tracked components, but they do not get separate suites: the promises under test belong to the site as a whole—whether it boots, loads its features, enqueues its assets, and renders in a browser.
+This repository uses integration tests against a real WordPress plus one end-to-end smoke, rooted at `tests/`. The theme and features mu-plugin are tracked components, but they do not get separate suites: the promises under test belong to the site as a whole—whether it boots, loads its features, enqueues its assets, and renders in a browser.
 
 ## Suites
 

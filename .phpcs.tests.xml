@@ -3,7 +3,7 @@
 	<!-- Extend the A8CSP tests-profile ruleset. -->
 	<rule ref="./vendor/a8csp/configs/php/quality-assurance/phpcs.tests.dist.xml"/>
 
-	<!-- Check that the proper text domain is used everywhere (test fixtures call __()/_e() too). -->
+	<!-- Check that the proper text domain is used everywhere, in case a future test fixture calls __()/_e(). -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">

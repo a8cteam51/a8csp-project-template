@@ -4,7 +4,10 @@
  *
  * To remove this worked example, delete this file; delete `assets/css/src/book-archive.scss`
  * and `assets/css/src/book-singular.scss` plus their built counterparts,
- * `assets/css/build/book-archive.css` and `assets/css/build/book-singular.css`; and delete the
+ * `assets/css/build/book-archive.css`, `assets/css/build/book-archive.css.map`,
+ * `assets/css/build/book-singular.css`, and `assets/css/build/book-singular.css.map`; delete the
+ * Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
+ * (`test_book_post_type_is_registered` and `test_book_post_type_archive_link_resolves`) and the
  * Playwright book-specific assertions in `tests/EndToEnd/site-smoke.spec.js`. Because this changes
  * the site's rewrite rules, run `wp rewrite flush` once against production after deploying any
  * change to the CPT's rewrite args. Adding or removing this feature both qualify.
@@ -79,7 +82,7 @@ add_action( 'init', 'a8csp_template_features_register_book_post_type' );
 function a8csp_template_features_enqueue_book_post_type_assets(): void {
 	$slug = a8csp_template_features_get_slug();
 
-	// Generated files are optional because asset compilation is a separate deployment step.
+	// The null guard lets a component whose build output was removed degrade to unstyled instead of fataling.
 	if ( is_post_type_archive( 'book' ) ) {
 		$archive_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-archive.css' );
 

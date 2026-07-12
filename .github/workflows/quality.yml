@@ -83,7 +83,6 @@ jobs:
       - name: Build assets
         run: npm run build
 
-      # The first GitHub Actions run supplies the remaining empirical proof that committed artifacts rebuild byte-for-byte on the runner.
       - name: Verify the committed deploy artifact is byte-stable
         run: |
           set -euo pipefail

@@ -33,7 +33,7 @@ add_action( 'after_setup_theme', 'a8csp_template_theme_setup' );
 function a8csp_template_theme_enqueue_assets(): void {
 	$theme_slug = a8csp_template_theme_get_slug();
 
-	// Generated files are optional because asset compilation is a separate deployment step.
+	// The null guard lets a component whose build output was removed degrade to unstyled instead of fataling.
 	$style_meta = a8csp_template_theme_get_asset_meta( get_theme_file_path( 'style.css' ) );
 
 	if ( null !== $style_meta ) {
