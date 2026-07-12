@@ -10,7 +10,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:             A8CSP Project Template Features
- * Description:             Checks WordPress and PHP floors, loads helpers, and loads files from includes.
+ * Description:             Houses the custom functionality that makes this site more than a WordPress theme -- the features that outlive any redesign.
  * Version:                 1.0.0
  * Requires at least:       7.0
  * Requires PHP:            8.5

@@ -6,8 +6,8 @@
  * `Plugin Name` header are candidates; nothing else is scanned or loaded.
  * Discovery reads only the `Plugin Name` header with get_file_data(), avoiding the admin-only
  * metadata parser on ordinary requests.
- * The candidate list is scanned once per request and shared by the load loop and admin-list
- * callback through closure capture.
+ * The candidate list is sorted before being scanned once per request and shared by the load loop
+ * and admin-list callback through closure capture.
  * Full metadata parsing with get_plugin_data() happens only inside the admin plugins-list callback,
  * which loads the admin parser lazily when needed.
  * Admin-list entries use plugin_basename() keys so identically named files in different plugin
@@ -38,6 +38,8 @@
 	if ( false === $candidate_files ) {
 		$candidate_files = array();
 	}
+
+	\sort( $candidate_files );
 
 	$plugin_files = array();
 
