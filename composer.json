@@ -59,7 +59,10 @@
       "phpcs --standard=./mu-plugins/a8csp-project-template-features/.phpcs.xml --basepath=. ./mu-plugins -v"
     ],
     "lint:php:phpcs:tests": "phpcs --standard=./.phpcs.tests.xml --basepath=. ./tests -v",
-    "lint:php:phpstan": "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G",
+    "lint:php:phpstan": [
+      "test -n \"$(find ./themes/a8csp-project-template ./mu-plugins -name '*.php' -print -quit)\" || (echo '::error::phpstan configured paths (themes/a8csp-project-template, mu-plugins) contain zero PHP files' >&2; exit 1)",
+      "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G"
+    ],
 
     "internationalize": [
       "@i18n:makepot",
