@@ -18,17 +18,13 @@
 /**
  * Gets the theme slug.
  *
- * The literal is a generation token: the scaffold's rewrite script replaces every occurrence of
- * `a8csp-project-template` at generation time, so a hardcoded return is exactly as accurate as a
- * runtime lookup and skips a `wp_get_theme()` call on every use.
- *
  * @since   1.0.0
  * @version 1.0.0
  *
  * @return  string Theme slug.
  */
 function a8csp_template_theme_get_slug(): string {
-	return 'a8csp-project-template';
+	return get_stylesheet();
 }
 
 // Sharing this helper would couple the replaceable theme to the features plugin, so each component
