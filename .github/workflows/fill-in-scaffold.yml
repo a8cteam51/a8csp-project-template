@@ -171,7 +171,7 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: composer update --lock --no-install
 
-      - name: Commit the changed files.
+      - name: Commit the filled-in placeholders.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git commit -am "chore -- fill in scaffolding placeholders"
 

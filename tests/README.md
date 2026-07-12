@@ -33,7 +33,7 @@ npm run wp-env:tests:start
 npm run test:integration
 ```
 
-The npm test script runs `vendor/bin/phpunit --testsuite=Integration` inside that environment's CLI container. `composer test:integration` is an equivalent entry point: its Composer script delegates to `npm run test:integration` rather than maintaining a second test command.
+The npm test script runs `vendor/bin/phpunit --testsuite=Integration` inside that environment's CLI container. The `wp-content/project` wp-env mapping exists solely so that run finds `vendor/` inside the container; WordPress itself never reads that path. `testsEnvironment: false` in both env files disables wp-env's redundant second container per environment — this repo dedicates a whole config file to each environment instead. `composer test:integration` is an equivalent entry point: its Composer script delegates to `npm run test:integration` rather than maintaining a second test command.
 
 When finished, stop the environment if you want to retain its containers, or destroy it for a clean reset:
 

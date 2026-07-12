@@ -86,9 +86,11 @@ if ( false === $a8csp_template_features_include_files ) {
 	$a8csp_template_features_include_files = array();
 }
 
+// Byte sorting lets include filenames define a predictable bootstrap order on every locale.
 \sort( $a8csp_template_features_include_files );
 
 foreach ( $a8csp_template_features_include_files as $a8csp_template_features_include_file ) {
+	// An underscore reserves a support file for explicit inclusion without complicating the loader.
 	if ( \str_starts_with( \basename( $a8csp_template_features_include_file ), '_' ) ) {
 		continue;
 	}
