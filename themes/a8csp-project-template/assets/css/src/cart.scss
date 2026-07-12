@@ -1,5 +1,6 @@
-// Nudges the WooCommerce cart form to the theme's spacing and type scale instead of the plugin's
-// own defaults, which don't know about this theme's design tokens.
+// A worked example of per-purpose CSS that reacts to a plugin: the two declarations stand in for a
+// real project's cart styles. Imitate the shape, or delete this file with the WooCommerce example
+// per the teardown note in includes/plugin-woocommerce.php.
 .woocommerce-cart {
 
 	.woocommerce-cart-form {

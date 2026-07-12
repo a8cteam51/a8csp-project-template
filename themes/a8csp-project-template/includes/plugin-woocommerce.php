@@ -41,9 +41,7 @@ function a8csp_template_theme_enqueue_woocommerce_cart_style(): void {
 
 	$theme_slug = a8csp_template_theme_get_slug();
 
-	// The null guard lets a component whose build output was removed degrade to unstyled instead of fataling.
 	$style_meta = a8csp_template_theme_get_asset_meta( 'assets/css/build/cart.css', array( 'woocommerce-general' ) );
-
 	if ( null === $style_meta ) {
 		return;
 	}

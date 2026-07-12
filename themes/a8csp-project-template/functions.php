@@ -37,6 +37,9 @@ function a8csp_template_theme_get_slug(): string {
 /**
  * Gets an asset's generated metadata and optional extra dependencies.
  *
+ * A null return marks a missing asset file, letting a component whose build output was removed
+ * degrade to unstyled output instead of fataling.
+ *
  * @since   1.0.0
  * @version 1.0.0
  *
@@ -54,7 +57,6 @@ function a8csp_template_theme_get_asset_meta(
 	$asset_path           = \str_starts_with( $asset_path, $stylesheet_directory )
 		? $asset_path
 		: get_theme_file_path( $asset_path );
-
 	if ( ! \file_exists( $asset_path ) ) {
 		return null;
 	}
@@ -71,7 +73,6 @@ function a8csp_template_theme_get_asset_meta(
 
 	if ( \file_exists( $asset_meta_file ) ) {
 		$asset_meta_generated = require $asset_meta_file;
-
 		if ( \is_array( $asset_meta_generated ) ) {
 			if ( \is_string( $asset_meta_generated['version'] ?? null ) ) {
 				$asset_meta['version'] = $asset_meta_generated['version'];

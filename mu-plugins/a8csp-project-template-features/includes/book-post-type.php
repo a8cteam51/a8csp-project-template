@@ -82,10 +82,8 @@ add_action( 'init', 'a8csp_template_features_register_book_post_type' );
 function a8csp_template_features_enqueue_book_post_type_assets(): void {
 	$slug = a8csp_template_features_get_slug();
 
-	// The null guard lets a component whose build output was removed degrade to unstyled instead of fataling.
 	if ( is_post_type_archive( 'book' ) ) {
 		$archive_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-archive.css' );
-
 		if ( null !== $archive_style_meta ) {
 			wp_enqueue_style(
 				"{$slug}-book-archive",
@@ -98,7 +96,6 @@ function a8csp_template_features_enqueue_book_post_type_assets(): void {
 
 	if ( is_singular( 'book' ) ) {
 		$singular_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-singular.css' );
-
 		if ( null !== $singular_style_meta ) {
 			wp_enqueue_style(
 				"{$slug}-book-singular",

@@ -33,9 +33,7 @@ add_action( 'after_setup_theme', 'a8csp_template_theme_setup' );
 function a8csp_template_theme_enqueue_assets(): void {
 	$theme_slug = a8csp_template_theme_get_slug();
 
-	// The null guard lets a component whose build output was removed degrade to unstyled instead of fataling.
 	$style_meta = a8csp_template_theme_get_asset_meta( get_theme_file_path( 'style.css' ) );
-
 	if ( null !== $style_meta ) {
 		$style_handle = "{$theme_slug}-style";
 
@@ -50,7 +48,6 @@ function a8csp_template_theme_enqueue_assets(): void {
 
 	$script_path = 'assets/js/build/index.js';
 	$script_meta = a8csp_template_theme_get_asset_meta( get_theme_file_path( $script_path ) );
-
 	if ( null !== $script_meta ) {
 		wp_enqueue_script(
 			"{$theme_slug}-script",
