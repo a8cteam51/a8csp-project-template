@@ -26,7 +26,7 @@
  * @return  array<string> Filtered body class names.
  */
 function a8csp_template_features_disabled_example( array $classes ): array {
-	$classes[] = 'has-a8csp-template-features';
+	$classes[] = 'has-' . a8csp_template_features_get_slug();
 
 	return $classes;
 }
