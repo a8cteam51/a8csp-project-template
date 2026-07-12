@@ -5,6 +5,7 @@
 // switch at `max-width: 782px` inclusive, so an exclusive bound would disagree with core at exactly
 // the breakpoint width.
 @mixin breakpoint-down($breakpoint) {
+
 	@if map.has-key($breakpoints, $breakpoint) {
 		$breakpoint-value: map.get($breakpoints, $breakpoint);
 
@@ -12,6 +13,7 @@
 			@content;
 		}
 	} @else {
+
 		@warn "Undefined Breakpoint: (#{$breakpoint}). Available breakpoints: #{map.keys($breakpoints)}";
 	}
 }

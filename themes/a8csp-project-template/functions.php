@@ -98,6 +98,7 @@ function a8csp_template_theme_get_asset_meta(
 // region OTHER
 
 // Include the rest of the theme's files.
+// phpcs:ignore Universal.Operators.DisallowShortTernary.Found -- both falsy glob() results (false, no-match empty list) normalize to the same empty array.
 $a8csp_template_theme_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();
 \sort( $a8csp_template_theme_include_files );
 

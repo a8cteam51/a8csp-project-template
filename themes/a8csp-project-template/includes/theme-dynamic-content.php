@@ -48,5 +48,8 @@ add_action( 'init', 'a8csp_template_theme_register_block_bindings' );
  * @return  string
  */
 function a8csp_template_theme_get_current_year_binding(): string {
-	return wp_date( 'Y' );
+	$year = wp_date( 'Y' );
+
+	// wp_date() declares a false failure path, so degrade to the UTC year rather than fataling.
+	return \is_string( $year ) ? $year : \gmdate( 'Y' );
 }

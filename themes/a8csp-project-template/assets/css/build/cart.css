@@ -1,4 +1,4 @@
-.woocommerce-cart .shop_table {
+.woocommerce-cart .woocommerce-cart-form {
   font-size: var(--wp--preset--font-size--small, 0.875rem);
 }
 .woocommerce-cart .cart-collaterals {

@@ -1,8 +1,8 @@
-// Nudges the WooCommerce cart table to the theme's spacing and type scale instead of the plugin's
+// Nudges the WooCommerce cart form to the theme's spacing and type scale instead of the plugin's
 // own defaults, which don't know about this theme's design tokens.
 .woocommerce-cart {
 
-	.shop_table {
+	.woocommerce-cart-form {
 		font-size: var(--wp--preset--font-size--small, 0.875rem);
 	}
 
