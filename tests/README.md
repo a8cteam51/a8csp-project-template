@@ -57,6 +57,11 @@ Playwright manages the development wp-env instance for that run; its `webServer.
 | Dev / E2E | `.wp-env.json` | `8894` |
 | Tests | `.wp-env.tests.json` | `8895` |
 
+Generated repositories get their own two-port block, derived from the repository name at
+generation, so projects started side by side don't contend for the same host ports. If two
+environments still collide on one machine, wp-env's untracked override files take local
+precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).
+
 ## Book CPT test lifecycle
 
 Both wp-env configurations activate the project theme, set pretty permalinks, and flush rewrite rules in `afterStart`. That lifecycle is why `FeaturesLoaderTest` can resolve the Book archive link and the End-to-End Book singular route can resolve without either test performing a manual flush. Removing the Book worked example also means removing its test traces: the Book-specific assertions in `FeaturesLoaderTest` (the loader coverage is otherwise independent of Book) and the Book archive and singular assertions in the End-to-End spec. A production deployment that changes the CPT rewrite arguments—including adding or removing the CPT—needs one production `wp rewrite flush`, as documented in `mu-plugins/a8csp-project-template-features/includes/book-post-type.php`.

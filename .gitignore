@@ -36,6 +36,11 @@ npm-debug.log*
 # phpunit result cache and Playwright artifacts/storage-state; both regenerate per run.
 tests/.cache/
 
+### wp-env ###
+# A generated repository's derived port block may collide with another checked-out repository's;
+# these local-precedence override files resolve it without touching the committed configs.
+.wp-env*.override.json
+
 ### OS noise ###
 .DS_Store
 .AppleDouble

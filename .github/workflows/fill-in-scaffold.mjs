@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { statSync } from 'fs';
 import { readdir, readFile } from 'fs/promises';
 import { writeFile } from 'fs/promises';
@@ -8,6 +9,15 @@ const escapeRegExp = ( string ) => string.replace( /[.*+?^${}()|[\]\\]/g, '\\$&'
 
 const repository = JSON.parse( process.argv[2] );
 const skip_dirs = [ '.github', '.git' ];
+
+// Every generated repository gets its own wp-env port block, derived from the repository name:
+// deterministic across re-generations of the same repo, and distinct projects land on distinct
+// blocks, so side-by-side `wp-env start`s don't contend for the same host ports. Two ports per
+// block (dev + tests; this template has no below-floor tier) let the modulus double the sibling
+// plugin template's block count in the same 10000-29999 range, halving the collision rate.
+const TEMPLATE_PORT_BASE = 8894;
+const nameHash           = parseInt( createHash( 'sha256' ).update( repository.name ).digest( 'hex' ).slice( 0, 8 ), 16 );
+const portBase           = 10000 + 2 * ( nameHash % 10000 );
 
 const traverseDirectory = async ( dirPath, callback ) => {
 	if ( skip_dirs.includes( dirPath ) ) {
@@ -74,6 +84,17 @@ const buildTemplate = async ( filePath ) => {
 			: value;
 		return renderedValue;
 	} );
+
+	// Port literals are bare numbers, so they replace only inside their known anchors: the
+	// wp-env `"port":` keys, playwright's `localhost:` base URL, and any backtick-wrapped mention
+	// (the READMEs' ports table and prose both wrap the number in backticks) -- a tree-wide bare
+	// `8894` would also match inside package-lock.json integrity hashes. The pass runs outside the
+	// map above: its values are JSON-escaped when landing in .json files, which would corrupt a
+	// bare numeric match.
+	renderedTemplate = renderedTemplate.replace(
+		/(?<="port": |localhost:|`)889[45](?=[,'\s|`])/g,
+		( match ) => String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
+	);
 
 	renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
 
