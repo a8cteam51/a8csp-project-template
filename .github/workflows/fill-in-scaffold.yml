@@ -127,7 +127,7 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Rename the readme, theme, and features mu-plugin; disable the features plugin's worked example.
+      - name: Rename the readme, theme, and features mu-plugin.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         env:
           REPO_NAME: ${{ github.event.repository.name }}
@@ -136,18 +136,26 @@ jobs:
           git mv themes/a8csp-project-template "themes/$REPO_NAME"
           git mv mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php "mu-plugins/a8csp-project-template-features/$REPO_NAME-features.php"
           git mv mu-plugins/a8csp-project-template-features "mu-plugins/$REPO_NAME-features"
-          touch "mu-plugins/$REPO_NAME-features/.disabled"
-          git add "mu-plugins/$REPO_NAME-features/.disabled"
 
       - name: Commit the changed files.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: git commit -am "chore -- rename files from scaffolding; disable the features plugin's worked example"
+        run: git commit -am "chore -- rename files from scaffolding"
 
       - name: Perform string replacements within the files.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         env:
           REPO_JSON: ${{ toJSON( github.event.repository ) }}
         run: node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
+
+      # The substitution above rewrote .gitignore's component negations to the new directory names;
+      # only now can a new file inside the renamed features plugin be added without force.
+      - name: Disable the features plugin's worked example.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          touch "mu-plugins/$REPO_NAME-features/.disabled"
+          git add "mu-plugins/$REPO_NAME-features/.disabled"
 
       # POT files describe the template's strings; generated repositories rebuild them with
       # their own slug through `composer internationalize`.
