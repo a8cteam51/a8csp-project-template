@@ -1,3 +1,5 @@
+@use "../abstracts/mixins" as *;
+
 .wp-site-blocks {
 	display: flex;
 	min-height: 100vh;
@@ -59,7 +61,7 @@
 	top: 32px;
 }
 
-@media (max-width: 782px) {
+@include breakpoint-down(medium) {
 
 	.admin-bar .site-header {
 		top: 46px;

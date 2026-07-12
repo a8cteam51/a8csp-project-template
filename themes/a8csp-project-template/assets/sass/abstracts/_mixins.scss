@@ -1,0 +1,17 @@
+@use "variables" as *;
+@use "sass:map";
+
+// Media query "at or below $breakpoint". Inclusive on purpose: WordPress core's own admin styles
+// switch at `max-width: 782px` inclusive, so an exclusive bound would disagree with core at exactly
+// the breakpoint width.
+@mixin breakpoint-down($breakpoint) {
+	@if map.has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: map.get($breakpoints, $breakpoint);
+
+		@media (max-width: $breakpoint-value) {
+			@content;
+		}
+	} @else {
+		@warn "Undefined Breakpoint: (#{$breakpoint}). Available breakpoints: #{map.keys($breakpoints)}";
+	}
+}

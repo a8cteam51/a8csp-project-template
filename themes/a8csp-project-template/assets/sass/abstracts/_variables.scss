@@ -1,0 +1,4 @@
+// Matches WordPress admin's own tablet breakpoint, so the theme and wp-admin agree on "small screen".
+$breakpoints: (
+	medium: 782px,
+);
