@@ -1,0 +1,8 @@
+.woocommerce-cart .shop_table {
+  font-size: var(--wp--preset--font-size--small, 0.875rem);
+}
+.woocommerce-cart .cart-collaterals {
+  margin-block-start: var(--wp--preset--spacing--50, 2.5rem);
+}
+
+/*# sourceMappingURL=cart.css.map */

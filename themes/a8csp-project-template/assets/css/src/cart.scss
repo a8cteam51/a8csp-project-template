@@ -1,0 +1,12 @@
+// Nudges the WooCommerce cart table to the theme's spacing and type scale instead of the plugin's
+// own defaults, which don't know about this theme's design tokens.
+.woocommerce-cart {
+
+	.shop_table {
+		font-size: var(--wp--preset--font-size--small, 0.875rem);
+	}
+
+	.cart-collaterals {
+		margin-block-start: var(--wp--preset--spacing--50, 2.5rem);
+	}
+}

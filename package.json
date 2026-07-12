@@ -50,15 +50,17 @@
     "build:theme:style-rtl": "rtlcss themes/a8csp-project-template/style.css themes/a8csp-project-template/style-rtl.css",
     "build:theme:style-editor": "sass themes/a8csp-project-template/assets/sass/style-editor.scss themes/a8csp-project-template/style-editor.css && postcss themes/a8csp-project-template/style-editor.css --replace",
     "build:theme:scripts": "wp-scripts build themes/a8csp-project-template/assets/js/src/index.js --output-path=themes/a8csp-project-template/assets/js/build",
+    "build:theme:css": "sass themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build && postcss themes/a8csp-project-template/assets/css/build/*.css --replace",
     "build:features:styles": "sass mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build && postcss mu-plugins/a8csp-project-template-features/assets/css/build/*.css --replace",
 
     "start": "npm-run-all --parallel start:theme:** start:features:**",
     "start:theme:style": "sass --watch themes/a8csp-project-template/assets/sass/style.scss:themes/a8csp-project-template/style.css",
     "start:theme:scripts": "wp-scripts start themes/a8csp-project-template/assets/js/src/index.js --output-path=themes/a8csp-project-template/assets/js/build",
+    "start:theme:css": "sass --watch themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build",
     "start:features:styles": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
 
     "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src --no-error-on-unmatched-pattern",
-    "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
+    "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} themes/a8csp-project-template/assets/css/src/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
 
     "wp-env": "wp-env",
