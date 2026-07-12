@@ -1,0 +1,37 @@
+# Site deploy exclusions — filters what a deploy actually pushes to the host; the git tree
+# itself stays deploy-agnostic (repo shape doesn't encode deploy policy, this file does).
+# Fleet standard on both live deploy paths (Pressable/DeployHQ, WPCOM GitHub Deployments).
+
+.git*
+.editorconfig
+.gitignore
+.deployignore
+node_modules
+vendor
+tests
+.github
+
+.wp-env*.json
+playwright.config.js
+phpunit.dist.xml
+.phpcs.xml
+.phpcs.tests.xml
+.phpstan.neon
+eslint.config.mjs
+stylelint.config.js
+postcss.config.js
+
+package.json
+package-lock.json
+composer.json
+composer.lock
+
+LICENSE
+README.scaffold.md
+
+# Core-folder protection: deploy tooling should never wipe or shadow these WordPress
+# content directories even if a filter pattern elsewhere matches too broadly.
+!themes
+!mu-plugins
+!plugins
+!uploads

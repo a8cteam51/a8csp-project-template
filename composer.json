@@ -1,0 +1,98 @@
+{
+  "name": "a8csp/project-template",
+  "type": "project",
+
+  "description": "A template repository for A8C Special Projects full-site builds.",
+  "homepage": "https://github.com/a8cteam51/a8csp-project-template",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "A8C Special Projects",
+      "homepage": "https://specialprojects.automattic.com/"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/a8cteam51/a8csp-project-template/graphs/contributors"
+    }
+  ],
+
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/a8cteam51/a8csp-configs"
+    },
+    {
+      "type": "composer",
+      "url": "https://repo.wp-packages.org"
+    }
+  ],
+  "require": {
+    "php": ">=8.5",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "a8csp/configs": "dev-trunk",
+    "composer/installers": "^2",
+    "wp-cli/i18n-command": "^2",
+    "phpunit/phpunit": "^13",
+    "roave/security-advisories": "dev-latest"
+  },
+
+  "scripts": {
+    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
+    "packages-update": [
+      "@composer clear-cache",
+      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
+    ],
+
+    "format:php": [
+      "phpcbf --standard=./themes/a8csp-project-template/.phpcs.xml --basepath=. ./themes/a8csp-project-template -v",
+      "phpcbf --standard=./mu-plugins/a8csp-project-template-features/.phpcs.xml --basepath=. ./mu-plugins -v"
+    ],
+    "lint:php": [
+      "@lint:php:phpcs",
+      "@lint:php:phpcs:tests",
+      "@lint:php:phpstan"
+    ],
+    "lint:php:phpcs": [
+      "phpcs --standard=./themes/a8csp-project-template/.phpcs.xml --basepath=. ./themes/a8csp-project-template -v",
+      "phpcs --standard=./mu-plugins/a8csp-project-template-features/.phpcs.xml --basepath=. ./mu-plugins -v"
+    ],
+    "lint:php:phpcs:tests": "phpcs --standard=./.phpcs.tests.xml --basepath=. ./tests -v",
+    "lint:php:phpstan": "phpstan analyse -c ./.phpstan.neon -v --memory-limit=1G",
+
+    "internationalize": [
+      "@i18n:makepot",
+      "@i18n:updatepo"
+    ],
+    "i18n:makepot": [
+      "wp i18n make-pot ./themes/a8csp-project-template ./themes/a8csp-project-template/languages/a8csp-project-template.pot --slug=a8csp-project-template",
+      "wp i18n make-pot ./mu-plugins/a8csp-project-template-features ./mu-plugins/a8csp-project-template-features/languages/a8csp-project-template-features.pot --slug=a8csp-project-template-features"
+    ],
+    "i18n:updatepo": [
+      "wp i18n update-po ./themes/a8csp-project-template/languages/a8csp-project-template.pot",
+      "wp i18n update-po ./mu-plugins/a8csp-project-template-features/languages/a8csp-project-template-features.pot"
+    ],
+
+    "test:integration": "npm --prefix=. run test:integration"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/*": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true,
+      "infection/extension-installer": true
+    }
+  },
+
+  "extra": {
+    "installer-paths": {
+      "plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
+    }
+  }
+}
