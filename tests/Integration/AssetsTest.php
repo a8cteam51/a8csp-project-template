@@ -57,4 +57,18 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 		self::assertSame( (string) \filemtime( $style_path ), $style_meta['version'] );
 	}
+
+	/**
+	 * Confirms the WooCommerce-conditional style enqueue never registers without WooCommerce active.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_woocommerce_conditional_style_is_not_registered_without_woocommerce(): void {
+		self::assertFalse( \class_exists( 'WooCommerce' ) );
+		self::assertFalse( \function_exists( 'a8csp_template_theme_enqueue_woocommerce_cart_style' ) );
+		self::assertFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_woocommerce_cart_style' ) );
+	}
 }

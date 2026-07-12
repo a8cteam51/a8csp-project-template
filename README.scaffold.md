@@ -38,6 +38,8 @@ The directory name `themes/EXAMPLE_REPO_SLUG` and text domain `EXAMPLE_REPO_SLUG
 
 Replacement content must also keep the contract the test suite encodes: a `body_class` filter that marks the active theme, a `wp_enqueue_scripts` callback that registers an `EXAMPLE_REPO_SLUG-style` handle (with an editor stylesheet added via `add_editor_style()`) and an `EXAMPLE_REPO_SLUG-script` handle, and an asset-metadata helper the theme's `includes/theme-setup.php` calls to derive each handle's version. A theme missing any of these reddens `tests/Integration/SiteBootTest.php`, hard-errors `tests/Integration/AssetsTest.php` on a missing `index.asset.php`, and breaks both End-to-End locator assertions in `tests/EndToEnd/site-smoke.spec.js`.
 
+The theme also ships two worked examples that are safe to delete independently; follow the teardown lines co-located in `themes/EXAMPLE_REPO_SLUG/includes/plugin-woocommerce.php` and `themes/EXAMPLE_REPO_SLUG/includes/theme-dynamic-content.php`.
+
 ### Tracked custom plugin
 
 To track a custom plugin in `plugins/<name>`:

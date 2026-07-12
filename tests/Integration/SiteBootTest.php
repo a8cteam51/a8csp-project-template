@@ -68,4 +68,18 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 		self::assertTrue( wp_script_is( 'a8csp-project-template-script', 'enqueued' ) );
 		self::assertSame( 'replace', wp_styles()->get_data( 'a8csp-project-template-style', 'rtl' ) );
 	}
+
+	/**
+	 * Confirms the theme's current-year block binding source is registered.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_theme_dynamic_content_binding_is_registered(): void {
+		self::assertTrue(
+			\WP_Block_Bindings_Registry::get_instance()->is_registered( 'a8csp_template/current-year' )
+		);
+	}
 }
