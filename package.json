@@ -59,6 +59,7 @@
 
     "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src --no-error-on-unmatched-pattern",
     "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
+    "lint:readme-md": "wp-scripts lint-md-docs README.md",
 
     "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
