@@ -80,13 +80,8 @@ if (
 	return;
 }
 
-$a8csp_template_features_include_files = \glob( __DIR__ . '/includes/*.php' );
-
-if ( false === $a8csp_template_features_include_files ) {
-	$a8csp_template_features_include_files = array();
-}
-
-// Byte sorting lets include filenames define a predictable bootstrap order on every locale.
+// Include the rest of the plugin's files.
+$a8csp_template_features_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();
 \sort( $a8csp_template_features_include_files );
 
 foreach ( $a8csp_template_features_include_files as $a8csp_template_features_include_file ) {

@@ -75,7 +75,6 @@ add_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' );
  */
 function a8csp_template_theme_add_body_class( array $classes ): array {
 	$classes[] = a8csp_template_theme_get_slug();
-
 	return $classes;
 }
 add_filter( 'body_class', 'a8csp_template_theme_add_body_class' );

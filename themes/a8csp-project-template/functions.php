@@ -2,6 +2,8 @@
 /**
  * Provides theme helpers and deterministic include loading.
  *
+ * @link     https://developer.wordpress.org/themes/basics/theme-functions/
+ *
  * @since    1.0.0
  * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
@@ -10,6 +12,24 @@
  */
 
 \defined( 'ABSPATH' ) || exit;
+
+// region META
+
+/**
+ * Gets the theme slug.
+ *
+ * The literal is a generation token: the scaffold's rewrite script replaces every occurrence of
+ * `a8csp-project-template` at generation time, so a hardcoded return is exactly as accurate as a
+ * runtime lookup and skips a `wp_get_theme()` call on every use.
+ *
+ * @since   1.0.0
+ * @version 1.0.0
+ *
+ * @return  string Theme slug.
+ */
+function a8csp_template_theme_get_slug(): string {
+	return 'a8csp-project-template';
+}
 
 // Sharing this helper would couple the replaceable theme to the features plugin, so each component
 // carries a copy that disappears with it.
@@ -73,25 +93,12 @@ function a8csp_template_theme_get_asset_meta(
 	return $asset_meta;
 }
 
-/**
- * Gets the theme slug.
- *
- * @since   1.0.0
- * @version 1.0.0
- *
- * @return  string Theme slug.
- */
-function a8csp_template_theme_get_slug(): string {
-	return 'a8csp-project-template';
-}
+// endregion
 
-$a8csp_template_theme_include_files = \glob( __DIR__ . '/includes/*.php' );
+// region OTHER
 
-if ( false === $a8csp_template_theme_include_files ) {
-	$a8csp_template_theme_include_files = array();
-}
-
-// Byte sorting lets include filenames define a predictable bootstrap order on every locale.
+// Include the rest of the theme's files.
+$a8csp_template_theme_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();
 \sort( $a8csp_template_theme_include_files );
 
 foreach ( $a8csp_template_theme_include_files as $a8csp_template_theme_include_file ) {
@@ -102,3 +109,5 @@ foreach ( $a8csp_template_theme_include_files as $a8csp_template_theme_include_f
 
 	require_once $a8csp_template_theme_include_file;
 }
+
+// endregion
