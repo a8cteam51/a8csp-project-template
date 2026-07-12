@@ -30,6 +30,10 @@ npm run wp-env:start
 
 The site is available on port `8894`; `tests/README.md` documents the dedicated test environment.
 
+## Multisite
+
+This template targets a single-site install by default. A multisite project adapts three things by hand: flush rewrite rules per site (not once) after any change to the Book CPT's -- or an added CPT's -- rewrite arguments; network-enable the theme instead of the single-site `wp theme activate` in `afterStart`; and, if the build adds options or an uninstall routine, scope and sweep them per site.
+
 ## Recipes
 
 ### Your first feature

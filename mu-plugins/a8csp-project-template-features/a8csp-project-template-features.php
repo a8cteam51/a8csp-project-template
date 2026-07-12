@@ -48,7 +48,7 @@ if (
 ) {
 	// Misconfiguration speaks: the notice names the component, its floors, and the actual versions.
 	add_action(
-		'admin_notices',
+		'all_admin_notices',
 		static function (): void {
 			if ( ! current_user_can( 'activate_plugins' ) ) {
 				return;
