@@ -17,7 +17,7 @@
 			<p class="has-small-font-size"><?php esc_html_e( 'Built with WordPress.', 'a8csp-project-template' ); ?></p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"a8csp_template/current-year"}}},"fontSize":"small"} -->
+			<!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"a8csp-project-template/current-year"}}},"fontSize":"small"} -->
 			<p class="has-small-font-size"></p>
 			<!-- /wp:paragraph -->
 		</div>

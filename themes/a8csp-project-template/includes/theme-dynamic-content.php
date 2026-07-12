@@ -23,35 +23,20 @@
 /**
  * Registers the current-year block binding source.
  *
+ * The source namespace is the theme slug, not the PHP prefix: core rejects any binding source
+ * name outside lowercase alphanumerics and dashes.
+ *
  * @since   1.0.0
  * @version 1.0.0
  *
  * @return  void
  */
 function a8csp_template_theme_register_block_bindings(): void {
-	/**
-	 * Returns the current year for the current-year block binding source.
-	 *
-	 * A closure, not a named global: nothing else calls it, and a binding unregisters by source
-	 * name, so -- unlike an action callback -- the closure costs nothing in removability.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @return  string
-	 */
-	$get_current_year = static function (): string {
-		$year = wp_date( 'Y' );
-
-		// wp_date() declares a false failure path, so degrade to the UTC year rather than fataling.
-		return \is_string( $year ) ? $year : \gmdate( 'Y' );
-	};
-
 	register_block_bindings_source(
-		'a8csp_template/current-year',
+		'a8csp-project-template/current-year',
 		array(
 			'label'              => __( 'Current year', 'a8csp-project-template' ),
-			'get_value_callback' => $get_current_year,
+			'get_value_callback' => static fn () => wp_date( 'Y' ),
 		)
 	);
 }
