@@ -1,0 +1,187 @@
+name: Fill in the Scaffold Placeholders
+
+on:
+  repository_dispatch:
+    types: [ fill_scaffold ]
+  workflow_dispatch:
+
+# Serialize runs repo-wide; a cancelled half-pushed fill would leave the generated repo inconsistent.
+concurrency:
+  group: fill-scaffold-${{ github.repository_id }}
+  cancel-in-progress: false
+
+jobs:
+  fill-scaffold:
+    name: Fill in the placeholders
+    if: github.repository != 'a8cteam51/a8csp-project-template'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # A run queued against a non-default ref must never fill in and push scaffolding commits there.
+      - name: Require the workflow ref to be the default branch.
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$REF_NAME" != "$DEFAULT_BRANCH" ]; then
+            echo "::error::workflow ref '$REF_NAME' is not the repository default branch '$DEFAULT_BRANCH'; re-run this workflow from the default branch"
+            exit 1
+          fi
+
+      # Scaffold values become PHP identifiers, docblock text, package names, and component paths.
+      # Validate every input before checkout so an invalid repository remains pristine.
+      - name: Validate the scaffold identity inputs.
+        env:
+          REPO_JSON: ${{ toJSON( github.event.repository ) }}
+        run: |
+          read_json_value() {
+            local destination="$1"
+            local filter="$2"
+            local value
+
+            IFS= read -r -d '' value < <(
+              printf '%s' "$REPO_JSON" | jq -r "$filter"
+              printf '\0'
+            )
+            value=${value%$'\n'}
+            printf -v "$destination" '%s' "$value"
+          }
+
+          report_error() {
+            local field="$1"
+            local value="$2"
+            local requirement="$3"
+            local displayed_value
+
+            printf -v displayed_value '%q' "$value"
+            printf '::error::%s has offending value %s; %s\n' "$field" "$displayed_value" "$requirement"
+            invalid=1
+          }
+
+          read_json_value human_title '.custom_properties["human-title"] // empty'
+          read_json_value php_globals_short_prefix '.custom_properties["php-globals-short-prefix"] // empty'
+          read_json_value repository_description '.description // empty'
+          read_json_value repository_name '.name'
+
+          invalid=0
+
+          if [ -z "$human_title" ]; then
+            report_error "repository custom property 'human-title'" "$human_title" 'it must be present and non-empty'
+          else
+            if [[ "$human_title" == *$'\n'* ]]; then
+              report_error "repository custom property 'human-title'" "$human_title" 'it must be a single line'
+            fi
+            if [[ "$human_title" == *'*/'* ]]; then
+              report_error "repository custom property 'human-title'" "$human_title" "it must not contain '*/'"
+            fi
+          fi
+
+          if [ -z "$php_globals_short_prefix" ]; then
+            report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be present and non-empty'
+          elif [[ ! "$php_globals_short_prefix" =~ ^[a-z_][a-z0-9_]*$ ]]; then
+            report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must match ^[a-z_][a-z0-9_]*$'
+          fi
+
+          if [ -n "$repository_description" ]; then
+            if [[ "$repository_description" == *$'\n'* ]]; then
+              report_error 'repository description' "$repository_description" 'it must be a single line when set'
+            fi
+            if [[ "$repository_description" == *'*/'* ]]; then
+              report_error 'repository description' "$repository_description" "it must not contain '*/'"
+            fi
+          fi
+
+          if [[ ! "$repository_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            report_error 'repository name' "$repository_name" 'it must match ^[a-z0-9]+(-[a-z0-9]+)*$'
+          fi
+
+          if [ "$invalid" -ne 0 ]; then
+            exit 1
+          fi
+
+      # Credentials are persisted on purpose: the final step pushes the
+      # scaffolding commits back to the repo via the checkout-provided token.
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        # zizmor: ignore[artipacked] the token persisted by checkout is needed by a later publish step
+
+      - name: Check whether the scaffold was already filled.
+        id: scaffold-check
+        run: |
+          if [ ! -f .github/workflows/fill-in-scaffold.mjs ] || [ ! -f README.scaffold.md ]; then
+            echo "::notice::a prior fill-in-scaffold run already completed; this duplicate run is a no-op"
+            echo "already-filled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "already-filled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup proper Node.js version
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: 'package.json'
+
+      - name: Set github actions[bot] as the committer.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Rename the readme, theme, and features mu-plugin.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          git mv --force README.scaffold.md README.md
+          git mv themes/a8csp-project-template "themes/$REPO_NAME"
+          git mv mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php "mu-plugins/a8csp-project-template-features/$REPO_NAME-features.php"
+          git mv mu-plugins/a8csp-project-template-features "mu-plugins/$REPO_NAME-features"
+
+      - name: Commit the changed files.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: git commit -am "chore -- rename files from scaffolding"
+
+      - name: Perform string replacements within the files.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        env:
+          REPO_JSON: ${{ toJSON( github.event.repository ) }}
+        run: node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
+
+      # POT files describe the template's strings; generated repositories rebuild them with
+      # their own slug through `composer internationalize`.
+      - name: Clear the template POT files.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
+
+      - name: Regenerate package-lock.json after the name substitution.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: rm -f package-lock.json && npm install
+
+      - name: Setup PHP for re-locking composer.json.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          coverage: none
+          tools: composer:v2
+
+      - name: Re-lock composer.json after the name substitution.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: composer update --lock --no-install
+
+      - name: Commit the changed files.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: git commit -am "chore -- fill in scaffolding placeholders"
+
+      - name: Remove the spent fill-in-scaffold workflow.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: |
+          rm .github/workflows/fill-in-scaffold.yml .github/workflows/fill-in-scaffold.mjs
+          git add .github/workflows
+          git commit -m "chore -- remove the spent fill-in-scaffold workflow"
+
+      - name: Publish all the changed commits.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: git push
