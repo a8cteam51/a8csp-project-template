@@ -32,9 +32,11 @@
   },
   "require-dev": {
     "a8csp/configs": "dev-trunk",
-    "composer/installers": "^2",
-    "wp-cli/i18n-command": "^2",
+
     "phpunit/phpunit": "^13",
+    "wp-cli/i18n-command": "^2",
+
+    "composer/installers": "^2",
     "roave/security-advisories": "dev-latest"
   },
 
