@@ -45,7 +45,7 @@
     "packages-install": "npm install",
     "packages-update": "npm update",
 
-    "build": "npm-run-all --sequential build:theme:** build:features:**",
+    "build": "NODE_ENV=production npm-run-all --sequential build:theme:** build:features:**",
     "build:theme:style": "sass themes/a8csp-project-template/assets/sass/style.scss themes/a8csp-project-template/style.css && postcss themes/a8csp-project-template/style.css --replace",
     "build:theme:style-rtl": "rtlcss themes/a8csp-project-template/style.css themes/a8csp-project-template/style-rtl.css",
     "build:theme:style-editor": "sass themes/a8csp-project-template/assets/sass/style-editor.scss themes/a8csp-project-template/style-editor.css && postcss themes/a8csp-project-template/style-editor.css --replace",
