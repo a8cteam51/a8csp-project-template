@@ -4,6 +4,10 @@ A template for A8C Special Projects full-site builds.
 
 This repository is a template site, not a finished site. Generate a site repository from it, and its `wp-content` follows one rule: the theme owns how the site looks, the features mu-plugin owns what it does, and the tests prove both survive a deploy. Everything else is installed, not tracked. This file documents that generation and the tooling used to maintain the template itself; the generated site's own README is a separate file, covered below.
 
+## Trunk-only
+
+This repository never versions itself: no tags and no releases -- its history lives in git, and a repository ruleset blocks tag creation outright. There is no release or changelog machinery here: generated site repositories deploy their tree as-is rather than shipping built release artifacts.
+
 ## What is in this repository
 
 - `themes/a8csp-project-template/` is the worked block theme. Its slug getter leads `functions.php`'s `META` region, followed by a shared asset-metadata helper and a `sort()`-ordered, underscore-opt-out loader for `includes/`; `includes/theme-setup.php` registers theme support and enqueues `style.css` (built from `assets/sass/`) plus the built JS entry in `assets/js/`. `includes/plugin-woocommerce.php` is the plugin-conditional worked example, with a WooCommerce cart stylesheet built from `assets/css/src/`; `includes/theme-dynamic-content.php` is the block-binding worked example consumed by `patterns/footer-default.php`. Like the features mu-plugin, the theme has two independent CSS pipelines: `assets/sass/` for its one main stylesheet and `assets/css/` for per-purpose plugin-conditional stylesheets.
