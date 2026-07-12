@@ -83,8 +83,3 @@ npm run test:e2e
 
 `fill-in-scaffold.mjs` and `.yml` are template-only; neither ships in a generated repository. A change to the substitution table or the guard is proven by rendering the script against representative inputs before relying on a live scratch-repo dispatch: an aligned name and title, a diverging name and title, an empty description, an empty homepage, and a description containing hostile characters such as quotes or backslashes. Confirm the rendered output still passes `composer validate` and the PHPCS rulesets, and that a full-tree sweep afterward turns up no surviving template literal -- including the README's `EXAMPLE_REPO_*` placeholders and both PHP prefixes.
 
-## Boundaries
-
-- **Deploy is fleet-managed, not repo-owned.** Pressable deployments run through DeployHQ; WPCOM deployments run through GitHub Deployments. Both target `/wp-content/` and deploy the git tree as-is, filtered only by `.deployignore`. This repository documents both paths; it configures neither.
-- **`poseidon.yaml` and `triton.yaml` are not template content.** They're OpsOasis repo-sync overlays applied to generated repositories after creation. Shipping copies here would fight the overlay manager.
-- **The operational plugin stack is managed for you.** a8csp-atlantis absorbs tracking, colophon, autoupdates, and messaging fleet-wide. Generated repositories never track those plugins or their configuration -- don't re-add them.
