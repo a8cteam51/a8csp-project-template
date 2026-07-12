@@ -1,0 +1,15 @@
+.post-type-archive-book .wp-block-post-template {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--wp--preset--spacing--40, 1.5rem);
+}
+
+.post-type-archive-book .type-book {
+  width: 100%;
+  margin-inline: 0;
+  padding: var(--wp--preset--spacing--40, 1.5rem);
+  border-block-start: 0.25rem solid var(--wp--preset--color--accent, #315cfd);
+  background-color: var(--wp--preset--color--surface, #fff);
+}
+
+/*# sourceMappingURL=book-archive.css.map */
