@@ -38,20 +38,34 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 	public function test_theme_setup_side_effects_registered(): void {
 		self::assertTrue( \function_exists( 'a8csp_template_theme_get_asset_meta' ) );
 		self::assertNotFalse( has_action( 'after_setup_theme', 'a8csp_template_theme_setup' ) );
-		self::assertNotFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' ) );
 	}
 
 	/**
-	 * Confirms the front-end hook enqueues the project theme stylesheet.
+	 * Confirms the theme registers its block editor stylesheet.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_theme_stylesheet_enqueued_on_wp_enqueue_scripts(): void {
+	public function test_editor_style_registered(): void {
+		self::assertTrue( current_theme_supports( 'editor-style' ) );
+		self::assertContains( 'style-editor.css', $GLOBALS['editor_styles'] ?? array() );
+	}
+
+	/**
+	 * Confirms the front-end hook enqueues the project theme stylesheet and script, with RTL support.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_theme_assets_enqueued_on_wp_enqueue_scripts(): void {
 		do_action( 'wp_enqueue_scripts' );
 
 		self::assertTrue( wp_style_is( 'a8csp-project-template-style', 'enqueued' ) );
+		self::assertTrue( wp_script_is( 'a8csp-project-template-script', 'enqueued' ) );
+		self::assertSame( 'replace', wp_styles()->get_data( 'a8csp-project-template-style', 'rtl' ) );
 	}
 }

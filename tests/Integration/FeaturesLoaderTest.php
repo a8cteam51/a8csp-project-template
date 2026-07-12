@@ -27,7 +27,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Confirms the Book post type archive link resolves.
+	 * Confirms the Book post type archive link resolves to its pretty-permalink path.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
@@ -35,7 +35,19 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_book_post_type_archive_link_resolves(): void {
-		self::assertNotFalse( get_post_type_archive_link( 'book' ) );
+		self::assertMatchesRegularExpression( '#/book/?$#', (string) get_post_type_archive_link( 'book' ) );
+	}
+
+	/**
+	 * Confirms the underscore-prefixed fixture file still exists.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_underscore_prefixed_fixture_file_exists(): void {
+		self::assertFileExists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/includes/_disabled-example.php' );
 	}
 
 	/**
