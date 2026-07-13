@@ -37,10 +37,14 @@ if ( \file_exists( __DIR__ . '/.disabled' ) ) {
 
 require_once __DIR__ . '/functions.php';
 
-// Core registers the active theme's languages/ path for just-in-time loading but no mu-plugin path.
-// These committed translations would otherwise never load; this call only registers their path,
-// while actual translation loading stays just-in-time.
-load_muplugin_textdomain( 'a8csp-project-template-features', 'a8csp-project-template-features/languages' );
+// Core registers no language path for mu-plugins; this registers languages/ on init so
+// determine_locale() sees the current user.
+add_action(
+	'init',
+	static function (): void {
+		load_muplugin_textdomain( 'a8csp-project-template-features', 'a8csp-project-template-features/languages' );
+	}
+);
 
 if (
 	! is_wp_version_compatible( A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION )
