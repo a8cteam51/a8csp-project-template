@@ -111,6 +111,9 @@ jobs:
           test -d "mu-plugins/$REPO_NAME-features"
           test -f "mu-plugins/$REPO_NAME-features/$REPO_NAME-features.php"
 
+          # The engines strip their own paths from the lint scope; a leftover reference is docrot.
+          ! grep -qF '.github/workflows/fill-in-scaffold' package.json
+
       # The locks are excluded because the real run re-locks them, and .github because the real
       # run deletes the spent machinery instead of substituting inside it.
       - name: Assert no template literal survives.
