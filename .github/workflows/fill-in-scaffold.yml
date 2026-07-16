@@ -4,6 +4,11 @@ on:
   repository_dispatch:
     types: [ fill_scaffold ]
   workflow_dispatch:
+    inputs:
+      strip-teaching-content:
+        description: 'Rewrite the teaching narration into contract-level documentation'
+        type: boolean
+        default: false
 
 # Serialize runs repo-wide; a cancelled half-pushed fill would leave the generated repo inconsistent.
 concurrency:
@@ -115,7 +120,7 @@ jobs:
       - name: Check whether the scaffold was already filled.
         id: scaffold-check
         run: |
-          if [ ! -f .github/workflows/fill-in-scaffold.mjs ] || [ ! -f README.scaffold.md ]; then
+          if [ ! -f .github/workflows/fill-in-scaffold.mjs ] || [ ! -f .github/workflows/fill-in-scaffold-content.mjs ] || [ ! -f README.scaffold.md ]; then
             echo "::notice::a prior fill-in-scaffold run already completed; this duplicate run is a no-op"
             echo "already-filled=true" >> "$GITHUB_OUTPUT"
           else
@@ -131,6 +136,24 @@ jobs:
       - name: Set github actions[bot] as the committer.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
+      # The optional second scaffold phase: rewrites the teaching narration into contract-level
+      # documentation via the exact-match manifest in fill-in-scaffold-content.mjs. It runs
+      # BEFORE the rename and substitution passes, so every manifest span matches the pristine
+      # template tree. Trigger: the workflow_dispatch checkbox, or a
+      # `strip-teaching-content: true` key in the repository_dispatch client_payload.
+      - name: Strip the teaching content when the dispatch asks for it.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        env:
+          STRIP_INPUT: ${{ inputs.strip-teaching-content }}
+          STRIP_PAYLOAD: ${{ github.event.client_payload.strip-teaching-content }}
+        run: |
+          if [ "$STRIP_INPUT" = 'true' ] || [ "$STRIP_PAYLOAD" = 'true' ]; then
+            node ./.github/workflows/fill-in-scaffold-content.mjs
+            git commit -am "chore -- strip the teaching content"
+          else
+            echo "::notice::the dispatch did not ask for strip-teaching-content; keeping the template teaching prose"
+          fi
 
       - name: Rename the readme, theme, and features mu-plugin.
         if: steps.scaffold-check.outputs.already-filled != 'true'
@@ -207,10 +230,13 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git commit -am "chore -- fill in scaffolding placeholders"
 
+      # Deleting workflow files is the one .github/workflows change the push token permits
+      # (it can never create or update them), which is why the template guard is a whole
+      # workflow of its own: it gets removed here along with the spent generation machinery.
       - name: Remove the spent fill-in-scaffold workflow.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: |
-          rm .github/workflows/fill-in-scaffold.yml .github/workflows/fill-in-scaffold.mjs
+          rm .github/workflows/fill-in-scaffold.yml .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs .github/workflows/template-guard.yml
           git add .github/workflows
           git commit -m "chore -- remove the spent fill-in-scaffold workflow"
 
