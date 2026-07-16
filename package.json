@@ -54,7 +54,7 @@
     "start:features:css": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
     "start:features:scripts": "wp-scripts start mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
 
-    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src .github/workflows/fill-in-scaffold.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
+    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
     "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} themes/a8csp-project-template/assets/css/src/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
 

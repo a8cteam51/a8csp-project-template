@@ -1,22 +1,22 @@
 const initializeHeaderState = () => {
-	const header = document.querySelector('.site-header');
+	const header = document.querySelector( '.site-header' );
 
-	if (!header) {
+	if ( ! header ) {
 		return;
 	}
 
 	const updateHeaderState = () => {
-		header.classList.toggle('is-scrolled', window.scrollY > 0);
+		header.classList.toggle( 'is-scrolled', window.scrollY > 0 );
 	};
 
 	updateHeaderState();
-	window.addEventListener('scroll', updateHeaderState, { passive: true });
+	window.addEventListener( 'scroll', updateHeaderState, { passive: true } );
 };
 
-if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initializeHeaderState, {
+if ( document.readyState === 'loading' ) {
+	document.addEventListener( 'DOMContentLoaded', initializeHeaderState, {
 		once: true,
-	});
+	} );
 } else {
 	initializeHeaderState();
 }

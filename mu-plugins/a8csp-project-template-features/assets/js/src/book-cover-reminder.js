@@ -19,33 +19,35 @@ import { Notice } from '@wordpress/components';
 
 const BookCoverReminder = () => {
 	const { featuredImageId, postType } = useSelect(
-		(select) => ({
+		( select ) => ( {
 			featuredImageId:
-				select(editorStore).getEditedPostAttribute('featured_media'),
-			postType: select(editorStore).getCurrentPostType(),
-		}),
+				select( editorStore ).getEditedPostAttribute(
+					'featured_media'
+				),
+			postType: select( editorStore ).getCurrentPostType(),
+		} ),
 		[]
 	);
 
-	if ('a8csp_template_book' !== postType || featuredImageId) {
+	if ( 'a8csp_template_book' !== postType || featuredImageId ) {
 		return null;
 	}
 
 	return (
 		<PluginPrePublishPanel
-			title={__('Book cover', 'a8csp-project-template-features')}
+			title={ __( 'Book cover', 'a8csp-project-template-features' ) }
 			initialOpen
 		>
-			<Notice status="warning" isDismissible={false}>
-				{__(
+			<Notice status="warning" isDismissible={ false }>
+				{ __(
 					'Add a cover image before publishing this Book.',
 					'a8csp-project-template-features'
-				)}
+				) }
 			</Notice>
 		</PluginPrePublishPanel>
 	);
 };
 
-registerPlugin('a8csp-project-template-features-book-cover-reminder', {
+registerPlugin( 'a8csp-project-template-features-book-cover-reminder', {
 	render: BookCoverReminder,
-});
+} );
