@@ -43,15 +43,24 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Confirms the underscore-prefixed fixture file still exists.
+	 * Confirms the Book archive rewrite rule is present in the site's rewrite table.
+	 *
+	 * The rule only lands after a rewrite flush that ran with the CPT registered; enabling the
+	 * features plugin without that flush is the exact production 404 the CPT file's teardown
+	 * recipe warns about.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_underscore_prefixed_fixture_file_exists(): void {
-		self::assertFileExists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/includes/_loader-opt-out-example.php' );
+	public function test_book_archive_rewrite_rule_is_in_the_rewrite_table(): void {
+		$this->skip_when_features_plugin_disabled();
+
+		$rewrite_rules = get_option( 'rewrite_rules' );
+
+		self::assertIsArray( $rewrite_rules );
+		self::assertArrayHasKey( 'book/?$', $rewrite_rules );
 	}
 
 	/**
@@ -65,6 +74,8 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	public function test_underscore_prefixed_fixture_is_not_loaded(): void {
 		$this->skip_when_features_plugin_disabled();
 
+		// The fixture's presence is this test's own validity precondition.
+		self::assertFileExists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/includes/_loader-opt-out-example.php' );
 		self::assertFalse( \function_exists( 'a8csp_template_features_add_example_body_class' ) );
 	}
 

@@ -7,10 +7,10 @@
  * `assets/css/build/book-archive.css`, `assets/css/build/book-archive.css.map`,
  * `assets/css/build/book-singular.css`, and `assets/css/build/book-singular.css.map`; delete the
  * Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
- * (`test_book_post_type_is_registered` and `test_book_post_type_archive_link_uses_book_path`), the Book
- * front-end enqueue assertion in `tests/Integration/AssetsTest.php`
- * (`test_book_front_end_enqueue_callback_is_registered`), and the Playwright book-specific
- * assertions in `tests/EndToEnd/site-smoke.spec.js`. Because this changes the site's rewrite
+ * (`test_book_post_type_is_registered`, `test_book_post_type_archive_link_uses_book_path`, and
+ * `test_book_archive_rewrite_rule_is_in_the_rewrite_table`), the Book archive enqueue test in
+ * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`),
+ * and the Playwright book-specific assertions in `tests/EndToEnd/site-smoke.spec.js`. Because this changes the site's rewrite
  * rules, run `wp rewrite flush` once against production after deploying any change to the CPT's
  * rewrite args. Adding or removing this feature both qualify. Book is a public post type, so
  * decide the fate of any persisted Book posts -- export or delete them deliberately -- before

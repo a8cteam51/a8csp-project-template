@@ -11,6 +11,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 - `SiteBootTest` protects the promise that the site starts with the project theme active and its front-end stylesheet available.
 - `FeaturesLoaderTest` protects the promise that enabled site features, including the public Book archive, load while disabled examples stay absent.
 - `AssetsTest` protects the promise that front-end assets are wired into the site and theme asset updates receive deploy-specific cache versions.
+- `MuLoaderTest` protects the promise that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
 
 ### End-to-End
 
