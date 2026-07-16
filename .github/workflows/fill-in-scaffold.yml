@@ -68,21 +68,25 @@ jobs:
 
           invalid=0
 
+          # The title lands in PHP string literals (the features floor-gate notice), so its
+          # grammar mirrors the sibling plugin template's: an apostrophe or any punctuation
+          # would ship a parse error in a repository whose pushes trigger no CI.
+          title_grammar='^[A-Za-z0-9][A-Za-z0-9 ]*$'
           if [ -z "$human_title" ]; then
             report_error "repository custom property 'human-title'" "$human_title" 'it must be present and non-empty'
-          else
-            if [[ "$human_title" == *$'\n'* ]]; then
-              report_error "repository custom property 'human-title'" "$human_title" 'it must be a single line'
-            fi
-            if [[ "$human_title" == *'*/'* ]]; then
-              report_error "repository custom property 'human-title'" "$human_title" "it must not contain '*/'"
-            fi
+          elif [[ ! "$human_title" =~ $title_grammar ]]; then
+            report_error "repository custom property 'human-title'" "$human_title" 'it must contain only letters, digits, and spaces (it lands in PHP string literals)'
           fi
 
+          # The prefix replaces `a8csp_template` in every minted global identifier; degenerate
+          # values (`a`, `site_`) would ship collision-prone or double-underscore names fleet-wide.
+          # The 15-character cap keeps `<prefix>_book`-style post type keys inside WordPress's
+          # 20-character limit.
+          prefix_grammar='^[a-z][a-z0-9_]{2,13}[a-z0-9]$'
           if [ -z "$php_globals_short_prefix" ]; then
             report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be present and non-empty'
-          elif [[ ! "$php_globals_short_prefix" =~ ^[a-z_][a-z0-9_]*$ ]]; then
-            report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must match ^[a-z_][a-z0-9_]*$'
+          elif [[ ! "$php_globals_short_prefix" =~ $prefix_grammar ]] || [[ "$php_globals_short_prefix" == *__* ]]; then
+            report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be 4-15 characters of lowercase snake_case, starting with a letter, ending with a letter or digit, with no __ runs'
           fi
 
           if [ -n "$repository_description" ]; then
@@ -102,10 +106,11 @@ jobs:
             exit 1
           fi
 
-      # Credentials are persisted on purpose: the final step pushes the
-      # scaffolding commits back to the repo via the checkout-provided token.
+      # No credential persists on disk: the npm and composer steps below execute third-party
+      # code (dependency resolution, builds), and the publish step passes the token explicitly.
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        # zizmor: ignore[artipacked] the token persisted by checkout is needed by a later publish step
+        with:
+          persist-credentials: false
 
       - name: Check whether the scaffold was already filled.
         id: scaffold-check
@@ -165,9 +170,11 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
         run: rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
 
+      # --ignore-scripts keeps dependency lifecycle code from executing inside a job that will
+      # push to the repository; the generated repository's own developers install normally.
       - name: Regenerate package-lock.json after the name substitution.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: rm -f package-lock.json && npm install
+        run: rm -f package-lock.json && npm install --ignore-scripts
 
       # Substitution rewrote asset sources (slugs, text domains), so the committed build output is
       # rebuilt to match what this tree itself produces — the build-integrity gate diffs exactly that.
@@ -187,6 +194,15 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: composer update --lock --no-install
 
+      # Substituted identifiers land inside PHP source, and pushes from this workflow trigger no
+      # CI — a parse error here would ship a dead-on-arrival repository, so every PHP file is
+      # syntax-checked before anything is committed.
+      - name: Syntax-check every generated PHP file.
+        if: steps.scaffold-check.outputs.already-filled != 'true'
+        run: |
+          find . -name '*.php' -not -path './vendor/*' -not -path './node_modules/*' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+
       - name: Commit the filled-in placeholders.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: git commit -am "chore -- fill in scaffolding placeholders"
@@ -200,4 +216,7 @@ jobs:
 
       - name: Publish all the changed commits.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: git push
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git" HEAD
