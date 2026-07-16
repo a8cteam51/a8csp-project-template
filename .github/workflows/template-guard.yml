@@ -112,7 +112,10 @@ jobs:
           test -f "mu-plugins/$REPO_NAME-features/$REPO_NAME-features.php"
 
           # The engines strip their own paths from the lint scope; a leftover reference is docrot.
-          ! grep -qF '.github/workflows/fill-in-scaffold' package.json
+          if grep -qF '.github/workflows/fill-in-scaffold' package.json; then
+            echo '::error::the rendered package.json still references the self-deleting .mjs engines in lint:scripts'
+            exit 1
+          fi
 
       # The locks are excluded because the real run re-locks them, and .github because the real
       # run deletes the spent machinery instead of substituting inside it.
