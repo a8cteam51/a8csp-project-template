@@ -86,8 +86,14 @@ jobs:
           REPO_NAME=$(printf '%s' "$REPO_JSON" | jq -r .name)
           echo "REPO_NAME=$REPO_NAME" >> "$GITHUB_ENV"
 
+          git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # The strip's own commit is load-bearing, exactly as in fill-in-scaffold.yml: it stages
+          # the manifest's file deletion, without which the directory `git mv` below fatals on the
+          # tracked-but-missing file.
           if [ "$STRIP" = 'true' ]; then
             node ./.github/workflows/fill-in-scaffold-content.mjs
+            git commit -am "chore -- strip the teaching content"
           fi
 
           git mv --force README.scaffold.md README.md
@@ -99,6 +105,11 @@ jobs:
 
           touch "mu-plugins/$REPO_NAME-features/.disabled"
           rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
+
+          # A rename that silently failed would let the literal sweep below pass vacuously.
+          test -d "themes/$REPO_NAME"
+          test -d "mu-plugins/$REPO_NAME-features"
+          test -f "mu-plugins/$REPO_NAME-features/$REPO_NAME-features.php"
 
       # The locks are excluded because the real run re-locks them, and .github because the real
       # run deletes the spent machinery instead of substituting inside it.
