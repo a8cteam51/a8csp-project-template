@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@a8csp/configs": "github:a8cteam51/a8csp-configs#trunk",
-    "@csstools/postcss-sass": "^5.0.1",
     "sass": "^1.77.0",
     "@playwright/test": "^1.61.1",
     "@wordpress/browserslist-config": "^6.8.1",
