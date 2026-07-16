@@ -28,7 +28,7 @@ npm install
 npm run wp-env:start
 ```
 
-The site is available on port `8894`; `tests/README.md` documents the dedicated test environment.
+The site is available on port `8894`; `tests/README.md` documents the dedicated test environment. wp-env publishes the site on all network interfaces with fixed development credentials -- treat the dev site as visible to your local network, not just localhost.
 
 ## Multisite
 
@@ -38,7 +38,7 @@ This template targets a single-site install by default. A multisite project adap
 
 ### Your first feature
 
-Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete `.disabled` (at `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`) to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own.
+Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete `.disabled` (at `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`) to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own.
 
 To remove Book entirely instead of enabling it, follow the teardown recipe below.
 
