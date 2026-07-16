@@ -29,14 +29,14 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Confirms the Book post type archive link resolves to its pretty-permalink path.
+	 * Confirms the Book post type archive link uses the `/book/` pretty-permalink path.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_book_post_type_archive_link_resolves(): void {
+	public function test_book_post_type_archive_link_uses_book_path(): void {
 		$this->skip_when_features_plugin_disabled();
 
 		self::assertMatchesRegularExpression( '#/book/?$#', (string) get_post_type_archive_link( 'book' ) );
@@ -51,7 +51,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_underscore_prefixed_fixture_file_exists(): void {
-		self::assertFileExists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/includes/_disabled-example.php' );
+		self::assertFileExists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/includes/_loader-opt-out-example.php' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	public function test_underscore_prefixed_fixture_is_not_loaded(): void {
 		$this->skip_when_features_plugin_disabled();
 
-		self::assertFalse( \function_exists( 'a8csp_template_features_disabled_example' ) );
+		self::assertFalse( \function_exists( 'a8csp_template_features_add_example_body_class' ) );
 	}
 
 	/**

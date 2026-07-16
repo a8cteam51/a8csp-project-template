@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 test.describe('Theme smoke', () => {
-	test('the site serves its front-end routes and styles', async ({
+	test('the home page serves the theme stylesheet', async ({
 		page,
 	}) => {
 		const homeResponse = await page.goto('/');

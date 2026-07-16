@@ -22,7 +22,7 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return  void
 	 */
-	public function test_front_end_enqueue_callbacks_are_registered(): void {
+	public function test_front_end_enqueue_callback_is_registered(): void {
 		self::assertNotFalse( has_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' ) );
 	}
 
@@ -87,32 +87,32 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Confirms the Book editor enqueue callback is registered.
+	 * Confirms the Book cover-reminder enqueue callback is registered.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_book_editor_enqueue_callback_is_registered(): void {
+	public function test_book_cover_reminder_enqueue_callback_is_registered(): void {
 		$this->skip_when_features_plugin_disabled();
 
-		self::assertNotFalse( has_action( 'enqueue_block_editor_assets', 'a8csp_template_features_enqueue_book_post_type_editor_assets' ) );
+		self::assertNotFalse( has_action( 'enqueue_block_editor_assets', 'a8csp_template_features_enqueue_book_cover_reminder_script' ) );
 	}
 
 	/**
-	 * Confirms the Book editor script's dependencies and version come from its generated asset file.
+	 * Confirms the Book cover-reminder script's metadata comes from its generated asset file.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
-	public function test_book_editor_script_dependencies_come_from_generated_asset_file(): void {
+	public function test_book_cover_reminder_metadata_comes_from_generated_asset_file(): void {
 		$this->skip_when_features_plugin_disabled();
 
-		$script_meta          = a8csp_template_features_get_asset_meta( 'assets/js/build/editor.js' );
-		$generated_asset_meta = require \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH' ) . 'assets/js/build/editor.asset.php';
+		$script_meta          = a8csp_template_features_get_asset_meta( 'assets/js/build/book-cover-reminder.js' );
+		$generated_asset_meta = require \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH' ) . 'assets/js/build/book-cover-reminder.asset.php';
 
 		self::assertSame( $generated_asset_meta['version'], $script_meta['version'] );
 		self::assertSame( $generated_asset_meta['dependencies'], $script_meta['dependencies'] );

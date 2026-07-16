@@ -35,7 +35,7 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return  void
 	 */
-	public function test_theme_setup_side_effects_registered(): void {
+	public function test_theme_bootstrap_functions_and_setup_hook_are_registered(): void {
 		self::assertTrue( \function_exists( 'a8csp_template_theme_get_asset_meta' ) );
 		self::assertNotFalse( has_action( 'after_setup_theme', 'a8csp_template_theme_setup' ) );
 	}
