@@ -11,6 +11,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 - `SiteBootTest` protects the promise that the site starts with the project theme active and its front-end stylesheet available.
 - `FeaturesLoaderTest` protects the promise that enabled site features, including the public Book archive, load while disabled examples stay absent.
 - `AssetsTest` protects the promise that front-end assets are wired into the site and theme asset updates receive deploy-specific cache versions.
+- `MuLoaderTest` protects the promise that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
 
 ### End-to-End
 
@@ -18,7 +19,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 
 ## No below-floor / Requirements tier at site tier
 
-A plugin or theme package may ship to arbitrary third-party sites and therefore needs proof below its supported version floor. This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only below-floor protection and is not a separate test tier.
+A plugin or theme package may ship to arbitrary third-party sites and therefore needs proof below its supported version floor. This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier.
 
 ## Why plain `TestCase`, not `WP_UnitTestCase`
 
@@ -48,7 +49,7 @@ Run End-to-End coverage with:
 npm run test:e2e
 ```
 
-Playwright manages the development wp-env instance for that run; its `webServer.command` starts it with `npm run wp-env:start` and stops it when the run ends.
+Playwright manages the development wp-env instance for that run; its `webServer.command` starts it with `npm run wp-env:start` and stops the instance it started when the run ends. An instance that was already running is reused and left running afterward.
 
 ## Ports
 
@@ -58,9 +59,9 @@ Playwright manages the development wp-env instance for that run; its `webServer.
 | Tests | `.wp-env.tests.json` | `8895` |
 
 Generated repositories get their own two-port block, derived from the repository name at
-generation, so projects started side by side don't contend for the same host ports. If two
-environments still collide on one machine, wp-env's untracked override files take local
-precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).
+generation, so projects started side by side rarely contend for the same host ports -- the
+hash is collision-reducing, not unique. If two environments collide on one machine, wp-env's
+untracked override files take local precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).
 
 ## Book CPT test lifecycle
 

@@ -4,7 +4,8 @@
  *
  * WordPress runs the PHP files sitting directly in `mu-plugins/` and ignores its subdirectories.
  * This file loads every `mu-plugins/<dir>/<file>.php` that declares a `Plugin Name` header, and
- * lists what it loaded on the admin plugins screen.
+ * lists what it loaded on the admin plugins screen -- except plugins gated off by a sibling
+ * `.disabled` file, which load and self-gate but are not running anything worth listing.
  *
  * @since    1.0.0
  * @version  1.0.0
@@ -53,6 +54,12 @@
 			}
 
 			foreach ( $plugin_files as $plugin_file ) {
+				// A `.disabled` plugin still loads and self-gates; listing it as an active
+				// must-use plugin would misreport what the site is running.
+				if ( \file_exists( \dirname( $plugin_file ) . '/.disabled' ) ) {
+					continue;
+				}
+
 				$plugins['mustuse'][ plugin_basename( $plugin_file ) ] = get_plugin_data( $plugin_file, false, false );
 			}
 

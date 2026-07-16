@@ -12,9 +12,7 @@
     "afterStart": "wp-env run cli wp theme activate a8csp-project-template && wp-env run cli wp rewrite structure '/%postname%/' && wp-env run cli wp rewrite flush"
   },
   "config": {
-    "WP_DEBUG": true,
     "WP_DEBUG_DISPLAY": false,
-    "WP_DEBUG_LOG": true,
-    "SCRIPT_DEBUG": true
+    "WP_DEBUG_LOG": true
   }
 }

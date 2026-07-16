@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@a8csp/configs": "github:a8cteam51/a8csp-configs#trunk",
-    "@csstools/postcss-sass": "^5.0.1",
     "sass": "^1.77.0",
     "@playwright/test": "^1.61.1",
     "@wordpress/browserslist-config": "^6.8.1",
@@ -30,19 +29,6 @@
     "postcss-cli": "^11.0.1",
     "rtlcss": "^4.0.0"
   },
-  "rtlcssConfig": {
-    "options": {
-      "autoRename": false,
-      "autoRenameStrict": false,
-      "blacklist": {},
-      "clean": true,
-      "greedy": false,
-      "processUrls": false,
-      "stringMap": []
-    },
-    "plugins": [],
-    "map": false
-  },
   "browserslist": [
     "extends @wordpress/browserslist-config"
   ],
@@ -56,21 +42,21 @@
     "build:theme:style-editor": "sass themes/a8csp-project-template/assets/sass/style-editor.scss themes/a8csp-project-template/style-editor.css && postcss themes/a8csp-project-template/style-editor.css --replace",
     "build:theme:scripts": "wp-scripts build themes/a8csp-project-template/assets/js/src/index.js --output-path=themes/a8csp-project-template/assets/js/build",
     "build:theme:css": "sass themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build && postcss themes/a8csp-project-template/assets/css/build/*.css --replace",
-    "build:features:styles": "sass mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build && postcss mu-plugins/a8csp-project-template-features/assets/css/build/*.css --replace",
-    "build:features:scripts": "wp-scripts build mu-plugins/a8csp-project-template-features/assets/js/src/editor.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
+    "build:features:css": "sass mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build && postcss mu-plugins/a8csp-project-template-features/assets/css/build/*.css --replace",
+    "build:features:scripts": "wp-scripts build mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
 
     "start": "npm-run-all --parallel start:theme:** start:features:**",
     "start:theme:style": "sass --watch themes/a8csp-project-template/assets/sass/style.scss:themes/a8csp-project-template/style.css",
+    "start:theme:style-editor": "sass --watch themes/a8csp-project-template/assets/sass/style-editor.scss:themes/a8csp-project-template/style-editor.css",
     "start:theme:scripts": "wp-scripts start themes/a8csp-project-template/assets/js/src/index.js --output-path=themes/a8csp-project-template/assets/js/build",
     "start:theme:css": "sass --watch themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build",
-    "start:features:styles": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
-    "start:features:scripts": "wp-scripts start mu-plugins/a8csp-project-template-features/assets/js/src/editor.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
+    "start:features:css": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
+    "start:features:scripts": "wp-scripts start mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
 
-    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src --no-error-on-unmatched-pattern",
+    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
     "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} themes/a8csp-project-template/assets/css/src/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
 
-    "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
     "wp-env:update": "wp-env start --update",
     "wp-env:stop": "wp-env stop",

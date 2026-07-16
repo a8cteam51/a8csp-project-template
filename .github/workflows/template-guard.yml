@@ -1,0 +1,163 @@
+name: Template Guard
+
+# Every removable template-only job lives in this one workflow because the fill-in push runs
+# on the Actions token, which GitHub bars from creating or updating files under
+# .github/workflows but allows to delete them — so fill-in-scaffold.yml removes this file
+# whole. Every job here is keyed to this repository's immutable ID, so a not-yet-filled
+# generated repository skips them all.
+
+on:
+  pull_request:
+  push:
+    branches: [trunk, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  # The teaching-content strip manifest identifies each passage by an exact span that must occur
+  # exactly once. Editing the template's docblocks or comments can silently break a span (zero or
+  # duplicate matches), which would surface only at generation time as a failed fill-in push. This
+  # gate runs the manifest's --check on every template change so that drift fails here instead.
+  content-manifest-drift:
+    name: Enforce the teaching-content strip manifest
+    if: github.repository_id == '1297742940'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      # The manifest check is a dependency-free string match, so it runs on the runner's built-in
+      # Node with no setup-node.
+      - name: Verify every strip-manifest span still matches exactly once
+        run: node .github/workflows/fill-in-scaffold-content.mjs --check
+
+  # Renders the scaffold against representative repository fixtures and asserts the generated
+  # tree is sound: no template literal survives, every PHP file parses, the derived wp-env port
+  # block matches the engine's hash, and the strip phase leaves a consistent tree. The replicated
+  # rename/fill sequence mirrors fill-in-scaffold.yml step for step — change both together; this
+  # job exists so that divergence fails here instead of in a generated repository.
+  generation-contract:
+    name: 'Generation contract: ${{ matrix.fixture }}'
+    if: github.repository_id == '1297742940'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - fixture: aligned
+            strip: false
+            repo_json: '{"name":"my-client-site","description":"A client site.","homepage":"https://myclient.example","custom_properties":{"human-title":"My Client Site","php-globals-short-prefix":"myclient"}}'
+          - fixture: diverging-empty
+            strip: false
+            repo_json: '{"name":"acme-web","description":"","homepage":"","custom_properties":{"human-title":"Acme Corporation Web Presence","php-globals-short-prefix":"acme_web"}}'
+          - fixture: hostile-description
+            strip: false
+            repo_json: '{"name":"quote-site","description":"He said \"deploy\" \\ fast","homepage":"https://quotes.example","custom_properties":{"human-title":"Quote Site","php-globals-short-prefix":"quotes"}}'
+          - fixture: stripped
+            strip: true
+            repo_json: '{"name":"my-client-site","description":"A client site.","homepage":"https://myclient.example","custom_properties":{"human-title":"My Client Site","php-globals-short-prefix":"myclient"}}'
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP for the syntax sweep.
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Replicate the fill-in sequence.
+        env:
+          REPO_JSON: ${{ matrix.repo_json }}
+          STRIP: ${{ matrix.strip }}
+        run: |
+          set -euo pipefail
+
+          REPO_NAME=$(printf '%s' "$REPO_JSON" | jq -r .name)
+          echo "REPO_NAME=$REPO_NAME" >> "$GITHUB_ENV"
+
+          git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # The strip's own commit is load-bearing, exactly as in fill-in-scaffold.yml: it stages
+          # the manifest's file deletion, without which the directory `git mv` below fatals on the
+          # tracked-but-missing file.
+          if [ "$STRIP" = 'true' ]; then
+            node ./.github/workflows/fill-in-scaffold-content.mjs
+            git commit -am "chore -- strip the teaching content"
+          fi
+
+          git mv --force README.scaffold.md README.md
+          git mv themes/a8csp-project-template "themes/$REPO_NAME"
+          git mv mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php "mu-plugins/a8csp-project-template-features/$REPO_NAME-features.php"
+          git mv mu-plugins/a8csp-project-template-features "mu-plugins/$REPO_NAME-features"
+
+          node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
+
+          touch "mu-plugins/$REPO_NAME-features/.disabled"
+          rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
+
+          # A rename that silently failed would let the literal sweep below pass vacuously.
+          test -d "themes/$REPO_NAME"
+          test -d "mu-plugins/$REPO_NAME-features"
+          test -f "mu-plugins/$REPO_NAME-features/$REPO_NAME-features.php"
+
+          # The engines strip their own paths from the lint scope; a leftover reference is docrot.
+          if grep -qF '.github/workflows/fill-in-scaffold' package.json; then
+            echo '::error::the rendered package.json still references the self-deleting .mjs engines in lint:scripts'
+            exit 1
+          fi
+
+      # The locks are excluded because the real run re-locks them, and .github because the real
+      # run deletes the spent machinery instead of substituting inside it.
+      - name: Assert no template literal survives.
+        run: |
+          set -euo pipefail
+
+          fail=0
+          for literal in 'a8csp-project-template' 'a8csp_template' 'A8CSP_TEMPLATE' 'A8CSP Project Template' 'EXAMPLE_REPO_' 'A8C\SpecialProjects\ProjectTemplate'; do
+            if survivors=$(grep -rIlF --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.git --exclude-dir=.github --exclude=composer.lock --exclude=package-lock.json -- "$literal" .); then
+              printf '%s\n' "$survivors"
+              echo "::error::template literal '$literal' survived substitution"
+              fail=1
+            fi
+          done
+          exit "$fail"
+
+      - name: Syntax-check every generated PHP file.
+        run: |
+          find . -name '*.php' -not -path './vendor/*' -not -path './node_modules/*' -print0 \
+            | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Assert the derived wp-env port block.
+        run: |
+          set -euo pipefail
+
+          hex=$(printf '%s' "$REPO_NAME" | shasum -a 256 | cut -c1-8)
+          expected=$(( 10000 + 2 * ( 16#$hex % 10000 ) ))
+          grep -Fq "\"port\": $expected," .wp-env.json
+          grep -Fq "\"port\": $(( expected + 1 ))," .wp-env.tests.json
+
+      - name: Assert the empty-homepage placeholder renders.
+        if: matrix.fixture == 'diverging-empty'
+        run: grep -Fq 'production URL not yet provisioned' README.md
+
+      - name: Assert the strip phase removed the sample content.
+        if: matrix.strip == true
+        run: |
+          set -euo pipefail
+
+          test ! -f "mu-plugins/$REPO_NAME-features/includes/_loader-opt-out-example.php"
+          if grep -rF '_loader-opt-out-example' tests/; then
+            echo '::error::the stripped tree still references the deleted loader-opt-out fixture'
+            exit 1
+          fi

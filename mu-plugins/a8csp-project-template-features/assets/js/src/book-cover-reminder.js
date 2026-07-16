@@ -3,10 +3,11 @@
  * without a featured image.
  *
  * To remove this worked example, delete this file and its built counterparts,
- * `assets/js/build/editor.js` and `assets/js/build/editor.asset.php`; delete the
- * `build:features:scripts` and `start:features:scripts` npm scripts; delete
- * `includes/book-editor.php`; and delete `test_book_editor_enqueue_callback_is_registered` and
- * `test_book_editor_script_dependencies_come_from_generated_asset_file` from
+ * `assets/js/build/book-cover-reminder.js` and `assets/js/build/book-cover-reminder.asset.php`;
+ * delete the `build:features:scripts` and `start:features:scripts` npm scripts; delete
+ * `includes/book-cover-reminder.php`; and delete
+ * `test_book_cover_reminder_enqueues_on_the_book_editor_screen` and
+ * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` from
  * `tests/Integration/AssetsTest.php`.
  */
 
@@ -18,33 +19,35 @@ import { Notice } from '@wordpress/components';
 
 const BookCoverReminder = () => {
 	const { featuredImageId, postType } = useSelect(
-		(select) => ({
+		( select ) => ( {
 			featuredImageId:
-				select(editorStore).getEditedPostAttribute('featured_media'),
-			postType: select(editorStore).getCurrentPostType(),
-		}),
+				select( editorStore ).getEditedPostAttribute(
+					'featured_media'
+				),
+			postType: select( editorStore ).getCurrentPostType(),
+		} ),
 		[]
 	);
 
-	if ('book' !== postType || featuredImageId) {
+	if ( 'a8csp_template_book' !== postType || featuredImageId ) {
 		return null;
 	}
 
 	return (
 		<PluginPrePublishPanel
-			title={__('Book cover', 'a8csp-project-template-features')}
+			title={ __( 'Book cover', 'a8csp-project-template-features' ) }
 			initialOpen
 		>
-			<Notice status="warning" isDismissible={false}>
-				{__(
+			<Notice status="warning" isDismissible={ false }>
+				{ __(
 					'Add a cover image before publishing this Book.',
 					'a8csp-project-template-features'
-				)}
+				) }
 			</Notice>
 		</PluginPrePublishPanel>
 	);
 };
 
-registerPlugin('a8csp-project-template-features-book-cover-reminder', {
+registerPlugin( 'a8csp-project-template-features-book-cover-reminder', {
 	render: BookCoverReminder,
-});
+} );

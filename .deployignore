@@ -1,6 +1,8 @@
 # Site deploy exclusions — filters what a deploy actually pushes to the host; the git tree
 # itself stays deploy-agnostic (repo shape doesn't encode deploy policy, this file does).
 # Fleet standard on both live deploy paths (Pressable/DeployHQ, WPCOM GitHub Deployments).
+# Asset sources and sourcemaps deploy deliberately: we work open, and shipped sources keep
+# the live site debuggable.
 
 .git*
 .editorconfig

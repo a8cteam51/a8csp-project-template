@@ -11,11 +11,12 @@ Requires PHP: 8.5
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: a8csp-project-template
-Tags: full-site-editing, block-theme
+Tags: full-site-editing
 */
 html {
   scroll-behavior: smooth;
 }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -26,6 +27,7 @@ html {
 *::after {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   background-color: var(--wp--preset--color--canvas, #f7f7f5);
@@ -34,6 +36,7 @@ body {
   font-size: var(--wp--preset--font-size--medium, 1rem);
   line-height: 1.6;
 }
+
 h1,
 h2,
 h3 {
@@ -42,85 +45,106 @@ h3 {
   line-height: 1.15;
   text-wrap: balance;
 }
+
 h1 {
   font-size: var(--wp--preset--font-size--xx-large, clamp(2rem, 5vw, 3.5rem));
 }
+
 h2 {
   font-size: var(--wp--preset--font-size--x-large, clamp(1.5rem, 3vw, 2rem));
 }
+
 h3 {
   font-size: var(--wp--preset--font-size--large, 1.25rem);
 }
+
 p {
   margin-block: 0 var(--wp--preset--spacing--40, 1.5rem);
 }
+
 p,
 li,
 blockquote,
 figcaption {
   text-wrap: pretty;
 }
+
 a {
   color: var(--wp--preset--color--accent, #315cfd);
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.15em;
 }
+
 a:hover,
 a:focus-visible {
   color: var(--wp--preset--color--ink, #1f2328);
 }
+
 .wp-block-post-date {
   font-size: var(--wp--preset--font-size--small, 0.875rem);
 }
+
 .wp-site-blocks {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
   overflow-wrap: break-word;
 }
+
 .wp-site-blocks > * {
   margin-block-start: 0;
 }
+
 .wp-site-blocks > * + * {
   margin-block-start: var(--wp--preset--spacing--50, 2.5rem);
 }
+
 .wp-site-blocks > main {
   width: 100%;
   flex-grow: 1;
 }
+
 .wp-site-blocks .alignwide {
   width: min(100% - 2 * var(--wp--preset--spacing--30, 1rem), var(--wp--style--global--wide-size, 72rem));
   max-width: var(--wp--style--global--wide-size, 72rem);
   margin-inline: auto;
 }
+
 .wp-site-blocks .alignfull {
   width: 100%;
   max-width: none;
 }
+
 .wp-block-post-template {
   display: grid;
   gap: var(--wp--preset--spacing--50, 2.5rem);
   padding: 0;
 }
+
 .wp-block-post {
   width: min(100% - 2 * var(--wp--preset--spacing--30, 1rem), var(--wp--style--global--content-size, 42rem));
   margin-inline: auto;
 }
+
 .wp-block-post > * + * {
   margin-block-start: var(--wp--preset--spacing--20, 0.5rem);
 }
+
 .site-header {
   position: sticky;
   z-index: 10;
   top: 0;
   background-color: var(--wp--preset--color--surface, #fff);
 }
+
 .site-header.is-scrolled {
   box-shadow: 0 0.125rem 0.75rem rgba(31, 35, 40, 0.12);
 }
+
 .admin-bar .site-header {
   top: 32px;
 }
+
 @media (max-width: 782px) {
   .admin-bar .site-header {
     top: 46px;

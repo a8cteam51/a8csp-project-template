@@ -1,26 +1,33 @@
 import { createHash } from 'crypto';
 import { statSync } from 'fs';
-import { readdir, readFile } from 'fs/promises';
-import { writeFile } from 'fs/promises';
+import { readdir, readFile, writeFile } from 'fs/promises';
 import { join as joinPath } from 'path';
 import process from 'process';
 
-const escapeRegExp = ( string ) => string.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
+const escapeRegExp = ( string ) =>
+	string.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
 
-const repository = JSON.parse( process.argv[2] );
-const skip_dirs = [ '.github', '.git' ];
+const repository = JSON.parse( process.argv[ 2 ] );
+const skippedDirectories = [ '.github', '.git' ];
 
 // Every generated repository gets its own wp-env port block, derived from the repository name:
-// deterministic across re-generations of the same repo, and distinct projects land on distinct
-// blocks, so side-by-side `wp-env start`s don't contend for the same host ports. Two ports per
-// block (dev + tests; this template has no below-floor tier) let the modulus double the sibling
+// deterministic across re-generations of the same repo, and collision-reducing (not unique --
+// distinct names can hash to the same block; wp-env override files cover that case), so
+// side-by-side `wp-env start`s rarely contend for the same host ports. Two ports per block
+// (dev + tests; this template has no below-floor tier) let the modulus double the sibling
 // plugin template's block count in the same 10000-29999 range, halving the collision rate.
 const TEMPLATE_PORT_BASE = 8894;
-const nameHash           = parseInt( createHash( 'sha256' ).update( repository.name ).digest( 'hex' ).slice( 0, 8 ), 16 );
-const portBase           = 10000 + 2 * ( nameHash % 10000 );
+const nameHash = parseInt(
+	createHash( 'sha256' )
+		.update( repository.name )
+		.digest( 'hex' )
+		.slice( 0, 8 ),
+	16
+);
+const portBase = 10000 + 2 * ( nameHash % 10000 );
 
 const traverseDirectory = async ( dirPath, callback ) => {
-	if ( skip_dirs.includes( dirPath ) ) {
+	if ( skippedDirectories.includes( dirPath ) ) {
 		console.log( 'Skipping %s', dirPath );
 		return;
 	}
@@ -46,27 +53,41 @@ const buildTemplate = async ( filePath ) => {
 
 	console.log( 'Building %s', filePath );
 
-	const templateFile   = await readFile( filePath, 'utf-8' );
-	let renderedTemplate = templateFile, replacements;
+	const templateFile = await readFile( filePath, 'utf-8' );
+	let renderedTemplate = templateFile,
+		replacements;
 
-	const title = repository.custom_properties['human-title'];
+	const title = repository.custom_properties[ 'human-title' ];
 	// A real URL is autolinked so the rendered README stays bare-URL-lint-clean; the placeholder is prose.
-	const homepageUrl = repository.homepage ? `<${ repository.homepage }>` : 'production URL not yet provisioned — set the repository homepage';
+	const homepageUrl = repository.homepage
+		? `<${ repository.homepage }>`
+		: 'production URL not yet provisioned — set the repository homepage';
 	if ( 'README.md' === filePath ) {
 		replacements = {
-			'EXAMPLE_REPO_NAME': title,
-			'EXAMPLE_REPO_SLUG': repository.name,
-			'EXAMPLE_REPO_PROD_URL': homepageUrl,
+			EXAMPLE_REPO_NAME: title,
+			EXAMPLE_REPO_SLUG: repository.name,
+			EXAMPLE_REPO_PROD_URL: homepageUrl,
 		};
 	} else {
 		replacements = {
-			'A template repository for A8C Special Projects full-site builds.': repository.description ?? '',
+			// The generators lint themselves in the template repo but self-delete at generation,
+			// so they also strip their own paths from the generated repository's lint scope.
+			' .github/workflows/fill-in-scaffold.mjs': '',
+			' .github/workflows/fill-in-scaffold-content.mjs': '',
+			'A template repository for A8C Special Projects full-site builds.':
+				repository.description ?? '',
 			'A8CSP Project Template': title,
-			'A8C\\SpecialProjects\\ProjectTemplate': 'A8C\\SpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
+			'A8C\\SpecialProjects\\ProjectTemplate':
+				'A8C\\SpecialProjects\\' +
+				title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
 			'a8csp/project-template': 'a8csp/' + repository.name,
 			'a8csp-project-template': repository.name,
-			'a8csp_template': repository.custom_properties['php-globals-short-prefix'],
-			'A8CSP_TEMPLATE': repository.custom_properties['php-globals-short-prefix'].toUpperCase(),
+			a8csp_template:
+				repository.custom_properties[ 'php-globals-short-prefix' ],
+			A8CSP_TEMPLATE:
+				repository.custom_properties[
+					'php-globals-short-prefix'
+				].toUpperCase(),
 		};
 	}
 
@@ -78,13 +99,17 @@ const buildTemplate = async ( filePath ) => {
 		'g'
 	);
 
-	renderedTemplate = renderedTemplate.replace( replacementPattern, ( match ) => {
-		const value = replacements[ match ];
-		const renderedValue = filePath.endsWith( '.json' ) || filePath.endsWith( '.map' )
-			? JSON.stringify( value ).slice( 1, -1 )
-			: value;
-		return renderedValue;
-	} );
+	renderedTemplate = renderedTemplate.replace(
+		replacementPattern,
+		( match ) => {
+			const value = replacements[ match ];
+			const renderedValue =
+				filePath.endsWith( '.json' ) || filePath.endsWith( '.map' )
+					? JSON.stringify( value ).slice( 1, -1 )
+					: value;
+			return renderedValue;
+		}
+	);
 
 	// Port literals are bare numbers, so they replace only inside their known anchors: the
 	// wp-env `"port":` keys, playwright's `localhost:` base URL, and any backtick-wrapped mention
@@ -94,7 +119,8 @@ const buildTemplate = async ( filePath ) => {
 	// bare numeric match.
 	renderedTemplate = renderedTemplate.replace(
 		/(?<="port": |localhost:|`)889[45](?=[,'\s|`])/g,
-		( match ) => String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
+		( match ) =>
+			String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
 	);
 
 	renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
