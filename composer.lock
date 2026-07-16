@@ -12,13 +12,13 @@
             "version": "dev-trunk",
             "source": {
                 "type": "git",
-                "url": "git@github.com:a8cteam51/a8csp-configs.git",
-                "reference": "81a31fd1ad5030f2a1152460ddc8e791d2f289fb"
+                "url": "https://github.com/a8cteam51/a8csp-configs.git",
+                "reference": "5a68f9e39276d5fc9ebe34c70c05a1f812e65f4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a8cteam51/a8csp-configs/zipball/81a31fd1ad5030f2a1152460ddc8e791d2f289fb",
-                "reference": "81a31fd1ad5030f2a1152460ddc8e791d2f289fb",
+                "url": "https://api.github.com/repos/a8cteam51/a8csp-configs/zipball/5a68f9e39276d5fc9ebe34c70c05a1f812e65f4b",
+                "reference": "5a68f9e39276d5fc9ebe34c70c05a1f812e65f4b",
                 "shasum": ""
             },
             "require": {
@@ -51,11 +51,11 @@
             },
             "scripts": {
                 "packages-install": [
-                    "@composer install --ignore-platform-reqs --no-interaction"
+                    "@composer install --ignore-platform-req=php+ --no-interaction"
                 ],
                 "packages-update": [
                     "@composer clear-cache",
-                    "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
+                    "@composer update --prefer-stable --ignore-platform-req=php+ --no-interaction"
                 ],
                 "test": [
                     "@test:unit"
@@ -77,7 +77,11 @@
                 }
             ],
             "description": "The canonical collection of shared configuration files and reusable CI workflows for A8C Special Projects repositories.",
-            "time": "2026-07-12T11:41:04+00:00"
+            "support": {
+                "source": "https://github.com/a8cteam51/a8csp-configs/tree/trunk",
+                "issues": "https://github.com/a8cteam51/a8csp-configs/issues"
+            },
+            "time": "2026-07-16T14:50:22+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -7995,7 +7999,7 @@
         "a8csp/configs": 20,
         "roave/security-advisories": 20
     },
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.5",

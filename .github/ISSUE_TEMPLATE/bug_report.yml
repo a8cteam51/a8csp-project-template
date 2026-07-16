@@ -33,3 +33,17 @@ body:
       label: What actually happened
       placeholder: |
         e.g. Clicking the button does nothing visibly.
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Where the bug occurred, plus anything unusual about the setup (multisite, notable plugins involved).
+      placeholder: |
+        - WordPress version:
+        - PHP version:
+        - Host (Pressable / WordPress.com / local wp-env):
+        - Deployed branch or commit:
+        - Multisite: yes/no
+    validations:
+      required: true

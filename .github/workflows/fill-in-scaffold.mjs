@@ -8,19 +8,20 @@ import process from 'process';
 const escapeRegExp = ( string ) => string.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
 
 const repository = JSON.parse( process.argv[2] );
-const skip_dirs = [ '.github', '.git' ];
+const skippedDirectories = [ '.github', '.git' ];
 
 // Every generated repository gets its own wp-env port block, derived from the repository name:
-// deterministic across re-generations of the same repo, and distinct projects land on distinct
-// blocks, so side-by-side `wp-env start`s don't contend for the same host ports. Two ports per
-// block (dev + tests; this template has no below-floor tier) let the modulus double the sibling
+// deterministic across re-generations of the same repo, and collision-reducing (not unique --
+// distinct names can hash to the same block; wp-env override files cover that case), so
+// side-by-side `wp-env start`s rarely contend for the same host ports. Two ports per block
+// (dev + tests; this template has no below-floor tier) let the modulus double the sibling
 // plugin template's block count in the same 10000-29999 range, halving the collision rate.
 const TEMPLATE_PORT_BASE = 8894;
 const nameHash           = parseInt( createHash( 'sha256' ).update( repository.name ).digest( 'hex' ).slice( 0, 8 ), 16 );
 const portBase           = 10000 + 2 * ( nameHash % 10000 );
 
 const traverseDirectory = async ( dirPath, callback ) => {
-	if ( skip_dirs.includes( dirPath ) ) {
+	if ( skippedDirectories.includes( dirPath ) ) {
 		console.log( 'Skipping %s', dirPath );
 		return;
 	}
@@ -60,6 +61,9 @@ const buildTemplate = async ( filePath ) => {
 		};
 	} else {
 		replacements = {
+			// The generator lints itself in the template repo but self-deletes at generation,
+			// so it also strips its own path from the generated repository's lint scope.
+			' .github/workflows/fill-in-scaffold.mjs': '',
 			'A template repository for A8C Special Projects full-site builds.': repository.description ?? '',
 			'A8CSP Project Template': title,
 			'A8C\\SpecialProjects\\ProjectTemplate': 'A8C\\SpecialProjects\\' + title.replaceAll( ' ', '' ).replace( 'A8CSP', '' ),
