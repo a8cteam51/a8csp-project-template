@@ -57,7 +57,6 @@
     "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} themes/a8csp-project-template/assets/css/src/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
 
-    "wp-env": "wp-env",
     "wp-env:start": "wp-env start",
     "wp-env:update": "wp-env start --update",
     "wp-env:stop": "wp-env stop",
