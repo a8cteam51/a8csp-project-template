@@ -38,7 +38,7 @@ test.describe('Book smoke', () => {
 	let bookLink;
 
 	test.beforeAll(async ({ requestUtils }) => {
-		const book = await requestUtils.createRecord('book', {
+		const book = await requestUtils.createRecord('a8csp_template_book', {
 			title: 'End-to-end smoke test book',
 			status: 'publish',
 		});
@@ -50,7 +50,7 @@ test.describe('Book smoke', () => {
 	test.afterAll(async ({ requestUtils }) => {
 		await requestUtils.rest({
 			method: 'DELETE',
-			path: '/wp/v2/book/' + bookId,
+			path: '/wp/v2/a8csp_template_book/' + bookId,
 			params: { force: true },
 		});
 	});

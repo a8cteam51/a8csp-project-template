@@ -33,7 +33,7 @@
  */
 function a8csp_template_features_enqueue_book_cover_reminder_script(): void {
 	$screen = get_current_screen();
-	if ( $screen instanceof \WP_Screen && 'book' === $screen->post_type ) {
+	if ( $screen instanceof \WP_Screen && 'a8csp_template_book' === $screen->post_type ) {
 		$script_meta = a8csp_template_features_get_asset_meta( 'assets/js/build/book-cover-reminder.js' );
 		if ( null !== $script_meta ) {
 			$slug = a8csp_template_features_get_slug();

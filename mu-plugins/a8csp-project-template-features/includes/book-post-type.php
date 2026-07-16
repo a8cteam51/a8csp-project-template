@@ -52,8 +52,10 @@ function a8csp_template_features_register_book_post_type(): void {
 		'not_found_in_trash' => __( 'No books found in Trash.', 'a8csp-project-template-features' ),
 	);
 
+	// The key is prefixed because post types share one global registry; the rewrite slug
+	// below keeps the public URL at `/book/`.
 	register_post_type(
-		'book',
+		'a8csp_template_book',
 		array(
 			'labels'             => $labels,
 			'public'             => true,
@@ -86,7 +88,7 @@ add_action( 'init', 'a8csp_template_features_register_book_post_type' );
 function a8csp_template_features_enqueue_book_post_type_assets(): void {
 	$slug = a8csp_template_features_get_slug();
 
-	if ( is_post_type_archive( 'book' ) ) {
+	if ( is_post_type_archive( 'a8csp_template_book' ) ) {
 		$archive_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-archive.css' );
 		if ( null !== $archive_style_meta ) {
 			wp_enqueue_style(
@@ -98,7 +100,7 @@ function a8csp_template_features_enqueue_book_post_type_assets(): void {
 		}
 	}
 
-	if ( is_singular( 'book' ) ) {
+	if ( is_singular( 'a8csp_template_book' ) ) {
 		$singular_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-singular.css' );
 		if ( null !== $singular_style_meta ) {
 			wp_enqueue_style(

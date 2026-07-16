@@ -27,7 +27,7 @@ const BookCoverReminder = () => {
 		[]
 	);
 
-	if ('book' !== postType || featuredImageId) {
+	if ('a8csp_template_book' !== postType || featuredImageId) {
 		return null;
 	}
 

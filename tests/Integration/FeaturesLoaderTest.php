@@ -25,7 +25,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	public function test_book_post_type_is_registered(): void {
 		$this->skip_when_features_plugin_disabled();
 
-		self::assertTrue( post_type_exists( 'book' ) );
+		self::assertTrue( post_type_exists( 'a8csp_template_book' ) );
 	}
 
 	/**
@@ -39,7 +39,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	public function test_book_post_type_archive_link_uses_book_path(): void {
 		$this->skip_when_features_plugin_disabled();
 
-		self::assertMatchesRegularExpression( '#/book/?$#', (string) get_post_type_archive_link( 'book' ) );
+		self::assertMatchesRegularExpression( '#/book/?$#', (string) get_post_type_archive_link( 'a8csp_template_book' ) );
 	}
 
 	/**
