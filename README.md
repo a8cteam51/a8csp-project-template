@@ -56,6 +56,8 @@ Run watch builds:
 npm start
 ```
 
+Watch recompiles Sass only; the PostCSS pass runs in `npm run build`, so watch output differs from a production build in vendor prefixes alone.
+
 Run the local WordPress environment:
 
 ```sh

@@ -48,6 +48,7 @@
 
     "start": "npm-run-all --parallel start:theme:** start:features:**",
     "start:theme:style": "sass --watch themes/a8csp-project-template/assets/sass/style.scss:themes/a8csp-project-template/style.css",
+    "start:theme:style-editor": "sass --watch themes/a8csp-project-template/assets/sass/style-editor.scss:themes/a8csp-project-template/style-editor.css",
     "start:theme:scripts": "wp-scripts start themes/a8csp-project-template/assets/js/src/index.js --output-path=themes/a8csp-project-template/assets/js/build",
     "start:theme:css": "sass --watch themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build",
     "start:features:css": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
