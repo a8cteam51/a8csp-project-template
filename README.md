@@ -58,7 +58,7 @@ Run watch builds:
 npm start
 ```
 
-Watch recompiles Sass only; the PostCSS pass runs in `npm run build`, so watch output differs from a production build in vendor prefixes alone.
+`npm start` watches the theme and features Sass and scripts, but the styles are compiled by Sass only -- the PostCSS vendor-prefix pass and the RTL stylesheet come from `npm run build`, so the watched CSS differs from a production build.
 
 Run the local WordPress environment:
 
