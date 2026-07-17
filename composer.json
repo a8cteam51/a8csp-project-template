@@ -33,6 +33,10 @@
   "require-dev": {
     "a8csp/configs": "dev-trunk",
 
+    "phpcompatibility/phpcompatibility-wp": "^3@alpha",
+    "phpcompatibility/php-compatibility": "^10@alpha",
+    "phpcompatibility/phpcompatibility-paragonie": "^2@alpha",
+
     "phpunit/phpunit": "^13",
     "wp-cli/i18n-command": "^2",
 
@@ -68,7 +72,9 @@
 
     "internationalize": [
       "@i18n:makepot",
-      "@i18n:updatepo"
+      "@i18n:updatepo",
+      "@i18n:makemo",
+      "@i18n:makephp"
     ],
     "i18n:makepot": [
       "wp i18n make-pot ./themes/a8csp-project-template ./themes/a8csp-project-template/languages/a8csp-project-template.pot --slug=a8csp-project-template",
@@ -77,6 +83,14 @@
     "i18n:updatepo": [
       "wp i18n update-po ./themes/a8csp-project-template/languages/a8csp-project-template.pot",
       "wp i18n update-po ./mu-plugins/a8csp-project-template-features/languages/a8csp-project-template-features.pot"
+    ],
+    "i18n:makemo": [
+      "wp i18n make-mo ./themes/a8csp-project-template/languages/",
+      "wp i18n make-mo ./mu-plugins/a8csp-project-template-features/languages/"
+    ],
+    "i18n:makephp": [
+      "wp i18n make-php ./themes/a8csp-project-template/languages/",
+      "wp i18n make-php ./mu-plugins/a8csp-project-template-features/languages/"
     ],
 
     "test:integration": "npm --prefix=. run test:integration"
