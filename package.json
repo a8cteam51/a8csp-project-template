@@ -41,7 +41,7 @@
   "scripts": {
     "packages-install": "npm install",
     "packages-update": "npm update",
-    "packages-update:wp": "wp-scripts packages-update --dist-tag=wp-7.0",
+    "packages-update:wp": "wp-scripts packages-update --dist-tag=latest",
 
     "build": "NODE_ENV=production npm-run-all --sequential build:theme:** build:features:**",
     "build:theme:style": "sass themes/a8csp-project-template/assets/sass/style.scss themes/a8csp-project-template/style.css && postcss themes/a8csp-project-template/style.css --replace",
