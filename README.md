@@ -73,10 +73,10 @@ Quality checks:
 ```sh
 composer validate
 composer run-script lint:php
-npm run lint:scripts
-npm run lint:styles
-npm run lint:readme-md
+npm run lint
 ```
+
+`npm run lint` runs the JavaScript, style, `package.json`, and README lint leaves in sequence.
 
 `lint:php` runs three PHPCS rulesets -- theme, features mu-plugin, `tests/` -- plus a single root `phpstan analyse` pass. A site has one WordPress floor for its whole tree, so PHPStan runs once against both tracked components rather than once per component, unlike a plugin or theme package.
 
