@@ -26,6 +26,7 @@ jobs:
     name: Enforce the teaching-content strip manifest
     if: github.repository_id == '1297742940'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
@@ -47,6 +48,7 @@ jobs:
     name: 'Generation contract: ${{ matrix.fixture }}'
     if: github.repository_id == '1297742940'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
     strategy:

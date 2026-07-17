@@ -58,7 +58,7 @@ Run watch builds:
 npm start
 ```
 
-Watch recompiles Sass only; the PostCSS pass runs in `npm run build`, so watch output differs from a production build in vendor prefixes alone.
+`npm start` watches the theme and features Sass and scripts, but the styles are compiled by Sass only -- the PostCSS vendor-prefix pass and the RTL stylesheet come from `npm run build`, so the watched CSS differs from a production build.
 
 Run the local WordPress environment:
 
@@ -73,10 +73,10 @@ Quality checks:
 ```sh
 composer validate
 composer run-script lint:php
-npm run lint:scripts
-npm run lint:styles
-npm run lint:readme-md
+npm run lint
 ```
+
+`npm run lint` runs the JavaScript, style, `package.json`, and README lint leaves in sequence.
 
 `lint:php` runs three PHPCS rulesets -- theme, features mu-plugin, `tests/` -- plus a single root `phpstan analyse` pass. A site has one WordPress floor for its whole tree, so PHPStan runs once against both tracked components rather than once per component, unlike a plugin or theme package.
 

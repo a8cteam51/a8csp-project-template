@@ -72,3 +72,5 @@ Generated repositories additionally ship `mu-plugins/<slug>-features/.disabled`,
 ## Unit tier
 
 No Unit suite ships at generation because no shipped site code is pure logic yet; the filesystem-bound asset metadata helpers are already integration-covered through real enqueues. When the first pure function appears, add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` for it.
+
+There is likewise no mutation tier: mutation testing scores the strength of unit assertions against a pure-logic surface, so it begins only when that first `Unit` suite exists.

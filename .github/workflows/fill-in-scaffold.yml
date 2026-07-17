@@ -21,6 +21,7 @@ jobs:
     if: github.repository != 'a8cteam51/a8csp-project-template'
 
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     permissions:
       contents: write
 
@@ -95,7 +96,7 @@ jobs:
           fi
 
           if [ -n "$repository_description" ]; then
-            if [[ "$repository_description" == *$'\n'* ]]; then
+            if [[ "$repository_description" == *$'\n'* || "$repository_description" == *$'\r'* ]]; then
               report_error 'repository description' "$repository_description" 'it must be a single line when set'
             fi
             if [[ "$repository_description" == *'*/'* ]]; then
