@@ -93,7 +93,13 @@
       "wp i18n make-php ./mu-plugins/a8csp-project-template-features/languages/"
     ],
 
-    "test:integration": "npm --prefix=. run test:integration"
+    "test:integration": [
+      "[ -n \"$CI\" ] || ./node_modules/.bin/wp-env --config .wp-env.tests.json start",
+      "npm --prefix=. run test:integration"
+    ]
+  },
+  "scripts-descriptions": {
+    "test:integration": "Integration suite on .wp-env.tests.json. The $CI guard is load-bearing: CI starts wp-env in its own step, where WP_ENV_CORE overrides the WordPress version and does not reach this one, so a second start would fall back to the config's own core and the nightly leg would test the pinned version and pass."
   },
   "config": {
     "allow-plugins": {
