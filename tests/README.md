@@ -27,14 +27,13 @@ The integration bootstrap loads WordPress itself, which is enough for this suite
 
 ## Running the suites
 
-Start the dedicated tests environment, then run the Integration suite:
+Run the Integration suite; the verb starts the tests environment itself:
 
 ```sh
-npm run wp-env:tests:start
-npm run test:integration
+composer test:integration
 ```
 
-The npm test script runs `vendor/bin/phpunit --testsuite=Integration` inside that environment's CLI container. The `wp-content/project` wp-env mapping exists solely so that run finds `vendor/` inside the container; WordPress itself never reads that path. `testsEnvironment: false` in both env files disables wp-env's redundant second container per environment — this repo dedicates a whole config file to each environment instead. `composer test:integration` is the fuller entry point: it starts the tests environment first — `start` recreates the containers when the resolved config moved, so it is what applies a `mappings` edit — and then delegates to `npm run test:integration` rather than maintaining a second test command. The `[ -n "$GITHUB_ACTIONS" ]` guard in front of that start is load-bearing: CI starts wp-env in its own step, where `WP_ENV_CORE` overrides the WordPress version and does not reach the composer step, so a second start would fall back to the config's own `core` and the nightly leg would test the pinned version and pass.
+The npm test script runs `vendor/bin/phpunit --testsuite=Integration` inside that environment's CLI container. The `wp-content/project` wp-env mapping exists solely so that run finds `vendor/` inside the container; WordPress itself never reads that path. `testsEnvironment: false` in both env files disables wp-env's redundant second container per environment — this repo dedicates a whole config file to each environment instead. `composer test:integration` is the fuller entry point: it starts the tests environment first — `start` recreates the containers when the resolved config moved, so it is what applies a `mappings` edit — and then delegates to `npm run test:integration` rather than maintaining a second test command. The `[ -n "$GITHUB_ACTIONS" ]` guard in front of that start is load-bearing: CI starts wp-env in its own step, where `WP_ENV_CORE` overrides the WordPress version and does not reach the composer step, so a second start would fall back to whatever `core` the config names — and `.wp-env.tests.json` names none, which makes it wp-env's default of latest stable — and the nightly leg would pass on a WordPress it never meant to test. `npm run test:integration` remains the unguarded path: it attaches to whatever container is up, which is what the composer verb exists to stop being a coin toss.
 
 When finished, stop the environment if you want to retain its containers, or destroy it for a clean reset:
 
