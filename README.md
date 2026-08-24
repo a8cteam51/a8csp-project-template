@@ -83,7 +83,7 @@ npm run lint
 Tests:
 
 ```sh
-npm run wp-env:tests:start && npm run test:integration
+composer test:integration
 npm run test:e2e
 ```
 
