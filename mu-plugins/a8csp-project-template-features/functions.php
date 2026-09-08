@@ -35,11 +35,11 @@ function a8csp_template_features_get_slug(): string {
  * @since   1.0.0
  * @version 1.0.0
  *
- * @param   string             $asset_path         Asset path relative to the plugin directory,
- *                                                 or an absolute path within it.
- * @param   array<string>|null $extra_dependencies Optional extra dependency handles.
+ * @param   string                       $asset_path         Asset path relative to the plugin
+ *                                                           directory, or an absolute path within it.
+ * @param   array<non-empty-string>|null $extra_dependencies Optional extra dependency handles.
  *
- * @return  array{version:string,dependencies:array<string>}|null Asset metadata, or null if missing.
+ * @return  array{version:string,dependencies:array<non-empty-string>}|null Asset metadata, or null if missing.
  */
 function a8csp_template_features_get_asset_meta(
 	string $asset_path,
@@ -71,7 +71,7 @@ function a8csp_template_features_get_asset_meta(
 
 			if ( \is_array( $asset_meta_generated['dependencies'] ?? null ) ) {
 				$asset_meta['dependencies'] = \array_values(
-					\array_filter( $asset_meta_generated['dependencies'], 'is_string' )
+					\array_filter( $asset_meta_generated['dependencies'], static fn ( mixed $dependency ): bool => \is_string( $dependency ) && '' !== $dependency )
 				);
 			}
 		}
