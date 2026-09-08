@@ -19,8 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'WP 7.0'
-            wp-version: '7.0'
+          - name: 'WP floor (7.1)'
+            wp-version: '7.1'
+            wp-env-core: ''
+          # Unpinned on purpose: wp-env defaults to latest stable, so this leg never needs a bump.
+          - name: 'WP latest'
+            wp-version: ''
             wp-env-core: ''
           - name: 'WP nightly'
             wp-version: ''

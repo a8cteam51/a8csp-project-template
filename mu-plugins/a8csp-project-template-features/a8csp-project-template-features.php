@@ -12,7 +12,7 @@
  * Plugin Name:             A8CSP Project Template Features
  * Description:             Houses the custom functionality that makes this site more than a WordPress theme -- the features that outlive any redesign.
  * Version:                 1.0.0
- * Requires at least:       7.0
+ * Requires at least:       7.1
  * Requires PHP:            8.5
  * Author:                  A8C Special Projects
  * Author URI:              https://specialprojects.automattic.com/
@@ -32,7 +32,7 @@ if ( \file_exists( __DIR__ . '/.disabled' ) ) {
 
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH', plugin_dir_path( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_URL', plugin_dir_url( __FILE__ ) );
-\define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION', '7.0' );
+\define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION', '7.1' );
 \define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION', '8.5' );
 
 require_once __DIR__ . '/functions.php';
