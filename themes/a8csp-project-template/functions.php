@@ -76,7 +76,7 @@ function a8csp_template_theme_get_asset_meta(
 
 			if ( \is_array( $asset_meta_generated['dependencies'] ?? null ) ) {
 				$asset_meta['dependencies'] = \array_values(
-					\array_filter( $asset_meta_generated['dependencies'], 'is_string' )
+					\array_filter( $asset_meta_generated['dependencies'], static fn ( mixed $dependency ): bool => \is_string( $dependency ) && '' !== $dependency )
 				);
 			}
 		}
