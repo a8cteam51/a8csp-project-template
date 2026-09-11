@@ -21,15 +21,15 @@
   "devDependencies": {
     "@a8csp/configs": "github:a8cteam51/a8csp-configs#trunk",
     "@playwright/test": "^1.61.1",
-    "@wordpress/browserslist-config": "^6.54.0",
-    "@wordpress/components": "^40.0.0",
-    "@wordpress/data": "^10.53.0",
-    "@wordpress/e2e-test-utils-playwright": "^1.54.0",
-    "@wordpress/editor": "^14.54.0",
-    "@wordpress/env": "^11.14.0",
-    "@wordpress/i18n": "^6.26.0",
-    "@wordpress/plugins": "^7.53.0",
-    "@wordpress/scripts": "^34.2.0",
+    "@wordpress/browserslist-config": "^6.55.0",
+    "@wordpress/components": "^40.1.0",
+    "@wordpress/data": "^10.55.0",
+    "@wordpress/e2e-test-utils-playwright": "^2.0.0",
+    "@wordpress/editor": "^15.0.0",
+    "@wordpress/env": "^11.15.0",
+    "@wordpress/i18n": "^6.28.0",
+    "@wordpress/plugins": "^7.55.0",
+    "@wordpress/scripts": "^35.0.0",
     "npm-run-all": "^4.1.5",
     "postcss-cli": "^11.0.1",
     "rtlcss": "^4.0.0",
@@ -42,7 +42,6 @@
     "packages-install": "npm install",
     "packages-update": "npm update",
     "packages-update:wp": "wp-scripts packages-update --dist-tag=latest",
-
     "build": "NODE_ENV=production npm-run-all --sequential build:theme:** build:features:**",
     "build:theme:style": "sass themes/a8csp-project-template/assets/sass/style.scss themes/a8csp-project-template/style.css && postcss themes/a8csp-project-template/style.css --replace",
     "build:theme:style-rtl": "rtlcss themes/a8csp-project-template/style.css themes/a8csp-project-template/style-rtl.css",
@@ -51,7 +50,6 @@
     "build:theme:css": "sass themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build && postcss themes/a8csp-project-template/assets/css/build/*.css --replace",
     "build:features:css": "sass mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build && postcss mu-plugins/a8csp-project-template-features/assets/css/build/*.css --replace",
     "build:features:scripts": "wp-scripts build mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
-
     "start": "npm-run-all --parallel start:theme:** start:features:**",
     "start:theme:style": "sass --watch themes/a8csp-project-template/assets/sass/style.scss:themes/a8csp-project-template/style.css",
     "start:theme:style-editor": "sass --watch themes/a8csp-project-template/assets/sass/style-editor.scss:themes/a8csp-project-template/style-editor.css",
@@ -59,17 +57,14 @@
     "start:theme:css": "sass --watch themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build",
     "start:features:css": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
     "start:features:scripts": "wp-scripts start mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
-
     "format": "npm-run-all --sequential format:**",
     "format:scripts": "wp-scripts format themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src --no-error-on-unmatched-pattern",
     "format:styles": "npm run lint:styles -- --fix",
-
     "lint": "npm-run-all --sequential lint:**",
     "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
     "lint:styles": "wp-scripts lint-style themes/a8csp-project-template/assets/sass/**/*.{css,scss} themes/a8csp-project-template/assets/css/src/**/*.{css,scss} mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss} --allow-empty-input --report-descriptionless-disables --report-invalid-scope-disables --report-needless-disables",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",
-
     "wp-env:start": "wp-env start",
     "wp-env:update": "wp-env start --update",
     "wp-env:stop": "wp-env stop",
@@ -77,12 +72,10 @@
     "wp-env:tests:start": "wp-env --config .wp-env.tests.json start",
     "wp-env:tests:stop": "wp-env --config .wp-env.tests.json stop",
     "wp-env:tests:destroy": "wp-env --config .wp-env.tests.json destroy",
-
     "audit": "composer audit --abandoned=report && npm audit --audit-level=high --omit=dev",
     "audit:fix": "npm audit fix",
     "check:engines": "wp-scripts check-engines",
     "check:licenses": "wp-scripts check-licenses",
-
     "test:integration": "wp-env --config .wp-env.tests.json run cli --env-cwd=wp-content/project vendor/bin/phpunit --testsuite=Integration",
     "test:e2e": "playwright test --config=playwright.config.js"
   }
