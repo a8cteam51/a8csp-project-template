@@ -29,7 +29,12 @@ composer.json
 composer.lock
 
 LICENSE
-README.scaffold.md
+README.md
+
+# Agent context files team51-cli copies into every new project repository.
+AGENTS.md
+CLAUDE.md
+.agents
 
 # Core-folder protection: deploy tooling should never wipe or shadow these WordPress
 # content directories even if a filter pattern elsewhere matches too broadly.
