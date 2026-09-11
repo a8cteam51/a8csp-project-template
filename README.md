@@ -16,7 +16,7 @@ This repository never versions itself: no tags and no releases -- its history li
 - `plugins/` carries only `.gitkeep`. Every content path under it is gitignored; the generated README's "Tracked custom plugin" and "Off-the-shelf plugin" recipes cover what goes there.
 - `tests/` is one whole-site test suite, not one suite per component: integration tests against a real WordPress (`tests/Integration/`, plain PHPUnit `TestCase`, run inside the tests wp-env instance) plus one end-to-end smoke (`tests/EndToEnd/`, Playwright, against the dev wp-env instance). See `tests/README.md`.
 - `.github/workflows/` runs PHP/JS/CSS quality, PHP syntax (including a below-floor matrix on the mu-loader, the header-discovered features entry, and the `functions.php` that entry requires before its floor gate), a build-integrity check that the committed build output reproduces byte-for-byte, PHPUnit + Playwright, supply-chain audit, CodeQL, `template-guard.yml` -- the template-only guards that generation removes, covering the strip-manifest drift check and the generation contract -- and `fill-in-scaffold.yml` -- the self-deleting generation workflow below.
-- The root also carries the whole dev toolchain: `composer.json` / `package.json`, the wp-env pair, `playwright.config.js`, `phpunit.dist.xml`, the lint configs, `.deployignore`, and `LICENSE` (GPL-2.0-or-later). Both live deploy paths target this tree as-is; `.deployignore` is the only filter.
+- The root also carries the whole dev toolchain: `composer.json` / `package.json`, the wp-env pair, `playwright.config.js`, `phpunit.dist.xml`, the lint configs, `.deployignore`, and `LICENSE` (GPL-2.0-or-later). Deploys target this tree as-is; `.deployignore` is the only filter.
 
 ## Generating a new site repository
 

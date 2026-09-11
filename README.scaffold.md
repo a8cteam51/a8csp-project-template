@@ -16,7 +16,7 @@ This repository is the `wp-content` for EXAMPLE_REPO_NAME: the theme owns how th
 
 Production URL: EXAMPLE_REPO_PROD_URL
 
-Pressable deployments run through DeployHQ and target `/wp-content/`. WPCOM deployments run through GitHub Deployments and target `/wp-content/`. On both paths, the tree deploys as-is; `.deployignore` is the only filter.
+Deploys target `/wp-content/` and ship the tree as-is; `.deployignore` is the only filter.
 
 ## Quick start
 
