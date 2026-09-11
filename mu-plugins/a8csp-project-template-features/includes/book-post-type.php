@@ -66,7 +66,7 @@ function a8csp_template_features_register_book_post_type(): void {
 				'slug'       => 'book',
 				'with_front' => false,
 			),
-			'supports'           => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
+			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
 			'capability_type'    => 'post',
 			'publicly_queryable' => true,
 			'show_in_menu'       => true,
