@@ -96,3 +96,42 @@ jobs:
             echo "::error::the committed tree IS the deploy artifact; a byte-stable rebuild must reproduce it exactly." >&2
             exit 1
           fi
+
+  blocks-policy:
+    name: Blocks policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Blocks belong in the A8C Special Projects blocks monorepo, where every site can reuse them. A block
+      # that has to live in this site repository is listed in .github/blocks-allowlist rather than marked
+      # inside its block.json, which the block.json schema would reject.
+      - name: Reject blocks not listed as staying in this repository
+        env:
+          ALLOWLIST: .github/blocks-allowlist
+        run: |
+          set -euo pipefail
+
+          # One block.json path per line; `#` starts a comment. A missing file allows nothing.
+          allowed=''
+          if [ -f "$ALLOWLIST" ]; then
+            allowed=$(sed -e 's/#.*//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$ALLOWLIST")
+          fi
+
+          # Listed into a file rather than a process substitution, so a git failure fails the step.
+          git ls-files -z -- 'block.json' '*/block.json' > "$RUNNER_TEMP/block-json-files"
+
+          unlisted=0
+          while IFS= read -r -d '' file; do
+            if ! grep -qxF -- "$file" <<< "$allowed"; then
+              echo "::error file=$file::$file keeps a block in this site repository. Blocks belong in the A8C Special Projects blocks monorepo (https://github.com/a8cteam51/special-projects-blocks-monorepo); to keep this one here, list its path in $ALLOWLIST."
+              unlisted=$(( unlisted + 1 ))
+            fi
+          done < "$RUNNER_TEMP/block-json-files"
+
+          if [ "$unlisted" -gt 0 ]; then
+            exit 1
+          fi

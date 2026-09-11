@@ -63,6 +63,10 @@ To track a custom plugin in `plugins/<name>`:
 
 Require it from WP Packages as a development dependency with `composer require --dev wp-plugin/<slug>` — installer-paths route it to `plugins/<slug>/`, gitignored like every other Composer or npm dependency. It never reaches the deployed tree (deploy is git-tree-as-is; production never runs `composer install`), so it's for local development and CI tooling only. The live site's off-the-shelf plugins are installed and updated on the host itself (Pressable or WPCOM plugin management), not through this repo.
 
+### Blocks
+
+Blocks belong in the A8C Special Projects [blocks monorepo](https://github.com/a8cteam51/special-projects-blocks-monorepo), where every site can reuse them. The Quality workflow fails on any tracked `block.json` whose path is not listed in `.github/blocks-allowlist` (one path per line, `#` for comments); list only a block that belongs to this one site.
+
 ### Teardown one-liners
 
 - **RTL:** Delete the `build:theme:style-rtl` npm script, the `wp_style_add_data( ..., 'rtl', ... )` call in `themes/EXAMPLE_REPO_SLUG/includes/theme-setup.php`, and `themes/EXAMPLE_REPO_SLUG/style-rtl.css`.
