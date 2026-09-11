@@ -74,6 +74,7 @@
       "@i18n:makepot",
       "@i18n:updatepo",
       "@i18n:makemo",
+      "@i18n:makejson",
       "@i18n:makephp"
     ],
     "i18n:makepot": [
@@ -87,6 +88,10 @@
     "i18n:makemo": [
       "wp i18n make-mo ./themes/a8csp-project-template/languages/",
       "wp i18n make-mo ./mu-plugins/a8csp-project-template-features/languages/"
+    ],
+    "i18n:makejson": [
+      "wp i18n make-json ./themes/a8csp-project-template/languages/",
+      "wp i18n make-json ./mu-plugins/a8csp-project-template-features/languages/"
     ],
     "i18n:makephp": [
       "wp i18n make-php ./themes/a8csp-project-template/languages/",
