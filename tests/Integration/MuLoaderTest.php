@@ -61,6 +61,34 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * Confirms a must-use plugin carrying a `.disabled` marker is left off the plugins screen. The
+	 * loader reads the marker when the list is filtered, so the test can place it for its own run;
+	 * it removes the marker only if it created it, leaving a generated site's marker in place.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	public function test_disabled_plugin_is_not_reported(): void {
+		$marker  = WPMU_PLUGIN_DIR . '/a8csp-project-template-features/.disabled';
+		$created = ! \file_exists( $marker );
+		if ( $created ) {
+			\touch( $marker ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_touch -- a marker file on the local mount; WP_Filesystem's credential handling has no role in a test run.
+		}
+
+		try {
+			$plugins = apply_filters( 'plugins_list', array( 'mustuse' => array() ) );
+
+			self::assertArrayNotHasKey( 'a8csp-project-template-features/a8csp-project-template-features.php', $plugins['mustuse'] );
+		} finally {
+			if ( $created ) {
+				wp_delete_file( $marker );
+			}
+		}
+	}
+
+	/**
 	 * Skips the calling test when the features plugin is disabled.
 	 *
 	 * @since   1.0.0
