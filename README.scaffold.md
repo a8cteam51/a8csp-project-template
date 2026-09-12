@@ -16,7 +16,7 @@ This repository is the `wp-content` for EXAMPLE_REPO_NAME: the theme owns how th
 
 Production URL: EXAMPLE_REPO_PROD_URL
 
-Pressable deployments run through DeployHQ and target `/wp-content/`. WPCOM deployments run through GitHub Deployments and target `/wp-content/`. On both paths, the tree deploys as-is; `.deployignore` is the only filter.
+Deploys target `/wp-content/` and ship the tree as-is; `.deployignore` is the only filter.
 
 ## Quick start
 
@@ -29,6 +29,8 @@ npm run wp-env:start
 ```
 
 The site is available on port `8894`; `tests/README.md` documents the dedicated test environment. wp-env publishes the site on all network interfaces with fixed development credentials -- treat the dev site as visible to your local network, not just localhost.
+
+`composer packages-update` and `npm run packages-update` update every dependency within the range its manifest declares. `npm run packages-update:wp` moves the `@wordpress/*` packages, across major versions, to their latest releases, since the site runs the latest WordPress.
 
 ## Multisite
 
@@ -46,7 +48,7 @@ To remove Book entirely instead of enabling it, follow the teardown recipe below
 
 The directory name `themes/EXAMPLE_REPO_SLUG` and text domain `EXAMPLE_REPO_SLUG` are permanent. PHPStan paths, wp-env mappings and `afterStart` activation, tests, Composer scripts, and `.gitignore` depend on them. Replace the theme's contents; never rename its directory or text domain.
 
-Replacement content must also keep the contract the test suite encodes: a `body_class` filter that marks the active theme, a `wp_enqueue_scripts` callback that registers an `EXAMPLE_REPO_SLUG-style` handle (with an editor stylesheet added via `add_editor_style()`) and an `EXAMPLE_REPO_SLUG-script` handle, and an asset-metadata helper the theme's `includes/theme-setup.php` calls to derive each handle's version. A theme missing any of these reddens `tests/Integration/SiteBootTest.php`, hard-errors `tests/Integration/AssetsTest.php` on a missing `index.asset.php`, and breaks both End-to-End locator assertions in `tests/EndToEnd/site-smoke.spec.js`.
+Replacement content must also keep the contract the test suite encodes: a `body_class` filter that marks the active theme, a `wp_enqueue_scripts` callback that registers an `EXAMPLE_REPO_SLUG-style` handle (with an editor stylesheet added via `add_editor_style()`) and an `EXAMPLE_REPO_SLUG-script` handle, and an asset-metadata helper the theme's `includes/theme-setup.php` calls to derive each handle's version. A theme missing any of these reddens `tests/Integration/SiteBootTest.php`, hard-errors `tests/Integration/AssetsTest.php` on a missing `index.asset.php`, and breaks both End-to-End locator assertions in `tests/EndToEnd/site-smoke.spec.js`. While the features plugin is enabled, its Book styles also expect the theme to render the Book archive through a Query Loop and a Book singular view through the Post Content block; a theme that renders either another way leaves those styles unapplied and fails the Book End-to-End assertions.
 
 The theme also ships two worked examples that are safe to delete independently; follow the teardown lines co-located in `themes/EXAMPLE_REPO_SLUG/includes/plugin-woocommerce.php` and `themes/EXAMPLE_REPO_SLUG/includes/theme-dynamic-content.php`.
 
@@ -62,6 +64,10 @@ To track a custom plugin in `plugins/<name>`:
 ### Off-the-shelf plugin
 
 Require it from WP Packages as a development dependency with `composer require --dev wp-plugin/<slug>` — installer-paths route it to `plugins/<slug>/`, gitignored like every other Composer or npm dependency. It never reaches the deployed tree (deploy is git-tree-as-is; production never runs `composer install`), so it's for local development and CI tooling only. The live site's off-the-shelf plugins are installed and updated on the host itself (Pressable or WPCOM plugin management), not through this repo.
+
+### Blocks
+
+Blocks belong in the A8C Special Projects [blocks monorepo](https://github.com/a8cteam51/special-projects-blocks-monorepo), where every site can reuse them. The Quality workflow fails on any tracked `block.json` whose path is not listed in `.github/blocks-allowlist` (one path per line, `#` for comments); list only a block that belongs to this one site.
 
 ### Teardown one-liners
 

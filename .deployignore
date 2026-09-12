@@ -1,6 +1,5 @@
 # Site deploy exclusions — filters what a deploy actually pushes to the host; the git tree
 # itself stays deploy-agnostic (repo shape doesn't encode deploy policy, this file does).
-# Fleet standard on both live deploy paths (Pressable/DeployHQ, WPCOM GitHub Deployments).
 # Asset sources and sourcemaps deploy deliberately: we work open, and shipped sources keep
 # the live site debuggable.
 
@@ -29,7 +28,12 @@ composer.json
 composer.lock
 
 LICENSE
-README.scaffold.md
+README.md
+
+# Agent context files team51-cli copies into every new project repository.
+AGENTS.md
+CLAUDE.md
+.agents
 
 # Core-folder protection: deploy tooling should never wipe or shadow these WordPress
 # content directories even if a filter pattern elsewhere matches too broadly.

@@ -38,6 +38,7 @@ test.describe( 'Book smoke', () => {
 	test.beforeAll( async ( { requestUtils } ) => {
 		const book = await requestUtils.createRecord( 'a8csp_template_book', {
 			title: 'End-to-end smoke test book',
+			content: 'End-to-end smoke test book content.',
 			status: 'publish',
 		} );
 
@@ -53,7 +54,7 @@ test.describe( 'Book smoke', () => {
 		} );
 	} );
 
-	test( 'the Book archive and singular routes serve their per-purpose styles', async ( {
+	test( 'the Book archive and singular routes serve and apply their per-purpose styles', async ( {
 		page,
 	} ) => {
 		const archiveResponse = await page.goto( '/book/' );
@@ -62,6 +63,22 @@ test.describe( 'Book smoke', () => {
 		await expect(
 			page.locator( '#a8csp-project-template-features-book-archive-css' )
 		).toHaveCount( 1 );
+		await expect(
+			page.locator( '.type-a8csp_template_book' ).first()
+		).toHaveCSS( 'border-top-style', 'solid' );
+		// The theme caps posts at its content width; a Book card fills its grid track only while the
+		// archive rules outrank the theme's.
+		const [ cardWidth, trackWidth ] = await page
+			.locator( '.wp-block-post-template' )
+			.evaluate( ( grid ) => [
+				grid
+					.querySelector( '.type-a8csp_template_book' )
+					.getBoundingClientRect().width,
+				parseFloat(
+					window.getComputedStyle( grid ).gridTemplateColumns
+				),
+			] );
+		expect( cardWidth ).toBeCloseTo( trackWidth, 0 );
 
 		const singularResponse = await page.goto( bookLink );
 
@@ -69,5 +86,9 @@ test.describe( 'Book smoke', () => {
 		await expect(
 			page.locator( '#a8csp-project-template-features-book-singular-css' )
 		).toHaveCount( 1 );
+		await expect( page.locator( '.wp-block-post-content' ) ).toHaveCSS(
+			'border-top-style',
+			'solid'
+		);
 	} );
 } );
