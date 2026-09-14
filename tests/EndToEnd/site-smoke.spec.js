@@ -27,6 +27,7 @@ const featuresPluginEnabled = ! fs.existsSync(
 );
 
 test.describe( 'Book smoke', () => {
+	// eslint-disable-next-line playwright/no-skipped-test -- skips only while the features plugin is disabled, which is a generated site's default state.
 	test.skip(
 		! featuresPluginEnabled,
 		'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.'
