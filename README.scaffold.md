@@ -58,7 +58,7 @@ To track a custom plugin in `plugins/<name>`:
 
 - Add `!plugins/<name>` to `.gitignore`, mirroring the existing mu-plugin and theme exceptions.
 - Add `%currentWorkingDirectory%/plugins/<name>` to the root `.phpstan.neon` file's `parameters.paths` list. Do not use `scanDirectories`; that is for installed dependency code, not tracked first-party code.
-- Give the plugin a thin `plugins/<name>/.phpcs.xml` based on `themes/EXAMPLE_REPO_SLUG/.phpcs.xml`: extend the shared ruleset and declare the plugin's own text domain and prefix properties.
+- Give the plugin a thin `plugins/<name>/.phpcs.xml` based on `themes/EXAMPLE_REPO_SLUG/.phpcs.xml`: extend the shared ruleset and declare the plugin's own text domain and prefix properties. Then add `phpcs --standard=./plugins/<name>/.phpcs.xml --basepath=. ./plugins/<name> -v` to the `lint:php:phpcs` Composer script, and the matching `phpcbf` line to `format:php`; the Quality workflow runs only those scripts, so a ruleset nothing invokes checks nothing.
 - Add a named `"wp-content/plugins/<name>": "./plugins/<name>"` mapping to both `.wp-env.json` and `.wp-env.tests.json`. The configs deliberately omit a generic `wp-content/plugins` mapping because an empty mount would shadow environment-installed plugins.
 
 ### Off-the-shelf plugin
