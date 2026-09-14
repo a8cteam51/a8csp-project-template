@@ -1,14 +1,11 @@
-.single-book .type-book {
+// Enqueued only on a Book singular view, so core's post-content class needs no further scoping.
+.wp-block-post-content {
 	padding-block: var(--wp--preset--spacing--50, 2.5rem);
 	border-block-start: 0.25rem solid var(--wp--preset--color--accent, #315cfd);
-}
-
-.single-book .type-book > * + * {
-	margin-block-start: var(--wp--preset--spacing--30, 1rem);
-}
-
-.single-book .wp-block-post-content,
-.single-book .wp-block-post-excerpt {
 	font-size: var(--wp--preset--font-size--large, 1.25rem);
 	line-height: 1.6;
+}
+
+.wp-block-post-content > * + * {
+	margin-block-start: var(--wp--preset--spacing--30, 1rem);
 }

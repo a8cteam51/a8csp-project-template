@@ -8,4 +8,4 @@ parameters:
         - %currentWorkingDirectory%/themes/a8csp-project-template
         - %currentWorkingDirectory%/mu-plugins
     WPCompat:
-        requiresAtLeast: '7.0'
+        requiresAtLeast: '7.1'

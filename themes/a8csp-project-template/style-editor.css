@@ -69,8 +69,4 @@ a:focus-visible {
   font-size: var(--wp--preset--font-size--small, 0.875rem);
 }
 
-.editor-styles-wrapper {
-  padding-inline: var(--wp--preset--spacing--30, 1rem);
-}
-
 /*# sourceMappingURL=style-editor.css.map */
