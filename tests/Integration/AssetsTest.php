@@ -15,6 +15,27 @@
  */
 final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
+	 * Restores the shared asset registries and screen context between tests.
+	 *
+	 * This case extends PHPUnit's TestCase rather than WP_UnitTestCase, so nothing rolls WordPress's
+	 * global state back between tests: a handle left enqueued survives into the next one and breaks
+	 * its opening clean-registry assertion under a randomized execution order.
+	 *
+	 * @since   1.0.0
+	 * @version 1.0.0
+	 *
+	 * @return  void
+	 */
+	protected function tearDown(): void {
+		wp_dequeue_script( 'a8csp-project-template-features-book-cover-reminder' );
+		wp_dequeue_style( 'a8csp-project-template-features-book-archive' );
+
+		$GLOBALS['current_screen'] = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restores the front-end context the suite boots in.
+
+		parent::tearDown();
+	}
+
+	/**
 	 * Confirms a Book archive request enqueues the archive stylesheet and a non-archive request does not.
 	 *
 	 * @since   1.0.0
@@ -113,8 +134,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 		$this->set_editor_screen( 'a8csp_template_book' );
 		a8csp_template_features_enqueue_book_cover_reminder_script();
 		self::assertTrue( wp_script_is( 'a8csp-project-template-features-book-cover-reminder', 'enqueued' ) );
-
-		$GLOBALS['current_screen'] = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restores the front-end context the suite boots in.
 	}
 
 	/**
@@ -137,8 +156,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 		self::assertInstanceOf( \_WP_Dependency::class, $registered_script );
 		self::assertSame( $generated_asset_meta['version'], $registered_script->ver );
 		self::assertSame( $generated_asset_meta['dependencies'], $registered_script->deps );
-
-		$GLOBALS['current_screen'] = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- restores the front-end context the suite boots in.
 	}
 
 	/**
