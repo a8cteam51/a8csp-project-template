@@ -41,3 +41,13 @@ CLAUDE.md
 !mu-plugins
 !plugins
 !uploads
+
+# Secret material: once something is committed, this filter is the last thing between it and
+# production. `/*.pem` and `/*.key` are root-anchored so they cannot swallow a certificate a
+# tracked component ships on purpose.
+.env*
+/*.pem
+/*.key
+id_rsa*
+.npmrc
+auth.json

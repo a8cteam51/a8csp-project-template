@@ -4,9 +4,10 @@
 		 bootstrap="tests/bootstrap.php"
 		 colors="true"
 		 cacheDirectory="tests/.cache/phpunit"
-		 executionOrder="depends,defects"
+		 executionOrder="depends,defects,random"
 		 beStrictAboutCoverageMetadata="true"
 		 beStrictAboutOutputDuringTests="true"
+		 failOnNotice="true"
 		 failOnRisky="true"
 		 failOnWarning="true"
 		 defaultTestSuite="Integration">

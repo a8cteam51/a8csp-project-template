@@ -98,6 +98,9 @@
       "wp i18n make-php ./mu-plugins/a8csp-project-template-features/languages/"
     ],
 
+    "test": [
+      "@test:integration"
+    ],
     "test:integration": [
       "if [ -n \"$GITHUB_ACTIONS\" ]; then echo 'CI owns the wp-env lifecycle — skipping start.'; else ./node_modules/.bin/wp-env --config .wp-env.tests.json start; fi",
       "npm --prefix=. run test:integration"

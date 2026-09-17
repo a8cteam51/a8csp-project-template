@@ -60,3 +60,16 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 *.sublime-workspace
 *.sublime-project
+
+### Secret material ###
+# None of these is ever a tracked file; the patterns are the backstop against an accidental
+# `git add`. They match at any depth because the vendor and node_modules trees are already
+# ignored wholesale above. The match is deliberately broad, so a file documenting the required
+# variables is tracked with an explicit `git add -f` — copying a real `.env` to one cannot leak
+# by default.
+.env*
+*.pem
+*.key
+id_rsa*
+.npmrc
+auth.json
