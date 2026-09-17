@@ -32,8 +32,6 @@ if ( \file_exists( __DIR__ . '/.disabled' ) ) {
 
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH', plugin_dir_path( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_URL', plugin_dir_url( __FILE__ ) );
-\define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION', '7.1' );
-\define( 'A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION', '8.5' );
 
 require_once __DIR__ . '/functions.php';
 
@@ -42,14 +40,24 @@ require_once __DIR__ . '/functions.php';
 // while actual translation loading stays just-in-time.
 load_muplugin_textdomain( 'a8csp-project-template-features', 'a8csp-project-template-features/languages' );
 
+// WordPress loads a must-use plugin whatever its header says, so this gate is the only thing
+// enforcing the floors and the header is the only place they are written.
+$a8csp_template_features_floors = get_file_data(
+	__FILE__,
+	array(
+		'RequiresWP'  => 'Requires at least',
+		'RequiresPHP' => 'Requires PHP',
+	)
+);
+
 if (
-	! is_wp_version_compatible( A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION )
-	|| ! is_php_version_compatible( A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION )
+	! is_wp_version_compatible( $a8csp_template_features_floors['RequiresWP'] )
+	|| ! is_php_version_compatible( $a8csp_template_features_floors['RequiresPHP'] )
 ) {
 	// Misconfiguration speaks: the notice names the component, its floors, and the actual versions.
 	add_action(
 		'all_admin_notices',
-		static function (): void {
+		static function () use ( $a8csp_template_features_floors ): void {
 			if ( ! current_user_can( 'activate_plugins' ) ) {
 				return;
 			}
@@ -61,8 +69,8 @@ if (
 					'a8csp-project-template-features'
 				),
 				'A8CSP Project Template Features',
-				A8CSP_TEMPLATE_FEATURES_REQUIRED_WP_VERSION,
-				A8CSP_TEMPLATE_FEATURES_REQUIRED_PHP_VERSION,
+				$a8csp_template_features_floors['RequiresWP'],
+				$a8csp_template_features_floors['RequiresPHP'],
 				get_bloginfo( 'version' ),
 				PHP_VERSION
 			);

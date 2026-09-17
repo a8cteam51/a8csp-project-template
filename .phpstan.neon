@@ -8,4 +8,6 @@ parameters:
         - %currentWorkingDirectory%/themes/a8csp-project-template
         - %currentWorkingDirectory%/mu-plugins
     WPCompat:
-        requiresAtLeast: '7.1'
+        # wp-compat's fallback looks for "{cwd}/{basename(cwd)}.php", "{cwd}/plugin.php" or
+        # "{cwd}/style.css", none of which a site root has, so the file carrying the floor is named.
+        pluginFile: %currentWorkingDirectory%/mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php
