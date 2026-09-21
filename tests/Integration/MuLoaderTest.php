@@ -9,6 +9,8 @@
  * The mu-loader loads header-bearing entries and reports exactly the running ones.
  */
 final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms the admin plugins list reports the features plugin with its parsed header data.
 	 *
@@ -72,6 +74,10 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
 	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
 	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
@@ -83,4 +89,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }

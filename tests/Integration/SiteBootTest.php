@@ -9,6 +9,8 @@
  * WordPress boots with the project theme active and the theme's bootstrap contract holds.
  */
 final class SiteBootTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms both active theme identifiers name the project theme.
 	 *
@@ -50,4 +52,6 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 	public function test_theme_dynamic_content_binding_is_registered(): void {
 		self::assertTrue( \WP_Block_Bindings_Registry::get_instance()->is_registered( 'a8csp-project-template/current-year' ) );
 	}
+
+	// endregion.
 }

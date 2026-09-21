@@ -9,6 +9,8 @@
  * The project features loader registers enabled features and skips disabled fixtures.
  */
 final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms the Book post type is registered.
 	 *
@@ -62,6 +64,10 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 		self::assertFalse( \function_exists( 'a8csp_template_features_add_example_body_class' ) );
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
 	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
 	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
@@ -73,4 +79,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }

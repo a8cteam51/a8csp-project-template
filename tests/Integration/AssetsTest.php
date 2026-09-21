@@ -9,6 +9,8 @@
  * The project theme and features plugin expose their asset contracts.
  */
 final class AssetsTest extends \PHPUnit\Framework\TestCase {
+	// region LIFECYCLE.
+
 	/**
 	 * Restores the shared asset registries and screen context between tests.
 	 *
@@ -26,6 +28,10 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 		parent::tearDown();
 	}
+
+	// endregion.
+
+	// region TESTS.
 
 	/**
 	 * Confirms a Book archive request enqueues the archive stylesheet and a non-archive request does not.
@@ -132,6 +138,10 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 		self::assertSame( $generated_asset_meta['dependencies'], $registered_script->deps );
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
 	 * Puts the test in an admin editor screen context for the given screen id.
 	 *
@@ -157,4 +167,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }
