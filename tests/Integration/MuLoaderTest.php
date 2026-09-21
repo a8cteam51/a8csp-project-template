@@ -29,7 +29,8 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_the_loader_does_not_report_itself(): void {
-		$plugins = apply_filters( 'plugins_list', array( 'mustuse' => array() ) );
+		// Core's list holds every PHP file in mu-plugins/, the loader included.
+		$plugins = apply_filters( 'plugins_list', array( 'mustuse' => array( 'mu-loader.php' => array() ) ) );
 
 		self::assertArrayNotHasKey( 'mu-loader.php', $plugins['mustuse'] );
 	}
