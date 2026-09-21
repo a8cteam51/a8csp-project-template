@@ -66,7 +66,7 @@ untracked override files take local precedence (`.wp-env.override.json`; the tes
 
 Both wp-env configurations activate the project theme, set pretty permalinks, and flush rewrite rules in `afterStart`. That lifecycle is why `FeaturesLoaderTest` can resolve the Book archive link and the End-to-End Book singular route can resolve without either test performing a manual flush. Removing the Book worked example also removes its test traces, which the recipe at the top of `mu-plugins/a8csp-project-template-features/includes/book-post-type.php` lists. A production deployment that changes the CPT rewrite arguments—including adding or removing the CPT—needs one production `wp rewrite flush`, as documented in `mu-plugins/a8csp-project-template-features/includes/book-post-type.php`.
 
-Generated repositories additionally ship `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. The Book-specific assertions above and the End-to-End Book smoke describe self-skip with a named message while that file is present, and resume automatically once it's removed; this template's own tree ships without the file, so its CI proves the enabled path on every run.
+Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. While that file is present, the Book-specific assertions and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed.
 
 ## Unit tier
 

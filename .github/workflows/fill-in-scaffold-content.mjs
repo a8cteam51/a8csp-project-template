@@ -94,16 +94,6 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'tests/README.md',
 		from: block(
-			"Generated repositories additionally ship `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. The Book-specific assertions above and the End-to-End Book smoke describe self-skip with a named message while that file is present, and resume automatically once it's removed; this template's own tree ships without the file, so its CI proves the enabled path on every run."
-		),
-		to: block(
-			"This repository ships `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. While that file is present, the Book-specific assertions above and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed."
-		),
-	},
-	{
-		action: 'replace-exact',
-		path: 'tests/README.md',
-		from: block(
 			'No Unit suite ships at generation because no shipped site code is pure logic yet; the filesystem-bound asset metadata helpers are already integration-covered through real enqueues. When the first pure function appears, add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` for it.'
 		),
 		to: block(
