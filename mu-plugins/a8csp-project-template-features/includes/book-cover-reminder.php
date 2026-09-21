@@ -32,13 +32,7 @@ function a8csp_template_features_enqueue_book_cover_reminder_script(): void {
 		$script_meta = a8csp_template_features_get_asset_meta( 'assets/js/build/book-cover-reminder.js' );
 		if ( null !== $script_meta ) {
 			$slug = a8csp_template_features_get_slug();
-			wp_enqueue_script(
-				"{$slug}-book-cover-reminder",
-				\constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/js/build/book-cover-reminder.js',
-				$script_meta['dependencies'],
-				$script_meta['version'],
-				false
-			);
+			wp_enqueue_script( "{$slug}-book-cover-reminder", \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/js/build/book-cover-reminder.js', $script_meta['dependencies'], $script_meta['version'], false );
 			wp_set_script_translations( "{$slug}-book-cover-reminder", 'a8csp-project-template-features' );
 		}
 	}

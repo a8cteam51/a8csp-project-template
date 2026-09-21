@@ -37,10 +37,7 @@ function a8csp_template_theme_get_slug(): string {
  *
  * @return  array{version:string,dependencies:array<non-empty-string>}|null Asset metadata, or null if missing.
  */
-function a8csp_template_theme_get_asset_meta(
-	string $asset_path,
-	?array $extra_dependencies = null
-): ?array {
+function a8csp_template_theme_get_asset_meta( string $asset_path, ?array $extra_dependencies = null ): ?array {
 	$stylesheet_directory = trailingslashit( get_stylesheet_directory() );
 	$asset_path           = \str_starts_with( $asset_path, $stylesheet_directory )
 		? $asset_path

@@ -81,24 +81,14 @@ function a8csp_template_features_enqueue_book_post_type_assets(): void {
 	if ( is_post_type_archive( 'a8csp_template_book' ) ) {
 		$archive_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-archive.css' );
 		if ( null !== $archive_style_meta ) {
-			wp_enqueue_style(
-				"{$slug}-book-archive",
-				\constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-archive.css',
-				$archive_style_meta['dependencies'],
-				$archive_style_meta['version']
-			);
+			wp_enqueue_style( "{$slug}-book-archive", \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-archive.css', $archive_style_meta['dependencies'], $archive_style_meta['version'] );
 		}
 	}
 
 	if ( is_singular( 'a8csp_template_book' ) ) {
 		$singular_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-singular.css' );
 		if ( null !== $singular_style_meta ) {
-			wp_enqueue_style(
-				"{$slug}-book-singular",
-				\constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-singular.css',
-				$singular_style_meta['dependencies'],
-				$singular_style_meta['version']
-			);
+			wp_enqueue_style( "{$slug}-book-singular", \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-singular.css', $singular_style_meta['dependencies'], $singular_style_meta['version'] );
 		}
 	}
 }

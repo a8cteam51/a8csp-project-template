@@ -42,11 +42,6 @@ function a8csp_template_theme_enqueue_woocommerce_cart_style(): void {
 		return;
 	}
 
-	wp_enqueue_style(
-		"{$theme_slug}-woocommerce-cart",
-		get_theme_file_uri( 'assets/css/build/cart.css' ),
-		$style_meta['dependencies'],
-		$style_meta['version']
-	);
+	wp_enqueue_style( "{$theme_slug}-woocommerce-cart", get_theme_file_uri( 'assets/css/build/cart.css' ), $style_meta['dependencies'], $style_meta['version'] );
 }
 add_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_woocommerce_cart_style' );

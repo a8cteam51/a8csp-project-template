@@ -33,10 +33,7 @@ function a8csp_template_features_get_slug(): string {
  *
  * @return  array{version:string,dependencies:array<non-empty-string>}|null Asset metadata, or null if missing.
  */
-function a8csp_template_features_get_asset_meta(
-	string $asset_path,
-	?array $extra_dependencies = null
-): ?array {
+function a8csp_template_features_get_asset_meta( string $asset_path, ?array $extra_dependencies = null ): ?array {
 	$asset_path = \str_starts_with( $asset_path, \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH' ) )
 		? $asset_path
 		: \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH' ) . $asset_path;
