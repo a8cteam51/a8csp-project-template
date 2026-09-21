@@ -5,8 +5,7 @@
   "testsEnvironment": false,
   "mappings": {
     "wp-content/themes/a8csp-project-template": "./themes/a8csp-project-template",
-    "wp-content/mu-plugins": "./mu-plugins",
-    "wp-content/project": "."
+    "wp-content/mu-plugins": "./mu-plugins"
   },
   "lifecycleScripts": {
     "afterStart": "./node_modules/.bin/wp-env run cli wp theme activate a8csp-project-template && ./node_modules/.bin/wp-env run cli wp rewrite structure '/%postname%/' && ./node_modules/.bin/wp-env run cli wp rewrite flush"
