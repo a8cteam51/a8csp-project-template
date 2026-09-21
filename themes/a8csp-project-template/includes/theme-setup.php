@@ -2,8 +2,6 @@
 /**
  * Registers theme editor styles and front-end assets.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
@@ -11,9 +9,6 @@
 
 /**
  * Registers the block editor stylesheet.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -24,9 +19,6 @@ add_action( 'after_setup_theme', 'a8csp_template_theme_setup' );
 
 /**
  * Enqueues the theme's front-end assets.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -62,9 +54,6 @@ add_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_assets' );
 
 /**
  * Adds the theme slug to the body classes.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @param   array<string> $classes Body class names.
  *

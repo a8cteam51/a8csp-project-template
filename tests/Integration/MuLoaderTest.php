@@ -2,23 +2,15 @@
 /**
  * Integration coverage for the must-use plugin loader.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The mu-loader loads header-bearing entries and reports exactly the running ones.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the admin plugins list reports the features plugin with its parsed header data.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -34,9 +26,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the loader does not report itself as a must-use plugin.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_the_loader_does_not_report_itself(): void {
@@ -47,9 +36,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms headerless support files are never reported as must-use plugins.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -64,9 +50,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * Confirms a must-use plugin carrying a `.disabled` marker is left off the plugins screen. The
 	 * loader reads the marker when the list is filtered, so the test can place it for its own run;
 	 * it removes the marker only if it created it, leaving a generated site's marker in place.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -90,9 +73,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */

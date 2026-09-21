@@ -2,8 +2,6 @@
 /**
  * The A8CSP Project Template Features bootstrap file.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later

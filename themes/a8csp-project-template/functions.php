@@ -4,8 +4,6 @@
  *
  * @link     https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -17,9 +15,6 @@
 
 /**
  * Gets the theme slug.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  string Theme slug.
  */
@@ -35,9 +30,6 @@ function a8csp_template_theme_get_slug(): string {
  *
  * A null return marks a missing asset file, letting a component whose build output was removed
  * degrade to unstyled output instead of fataling.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @param   string                       $asset_path         Asset path relative to the stylesheet
  *                                                           directory, or an absolute path within it.

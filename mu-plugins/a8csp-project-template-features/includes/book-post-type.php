@@ -19,8 +19,6 @@
  * This file registers the Book CPT on the real `init` action with `show_in_rest => true`, and the
  * end-to-end test tier depends on both of those, so removing either is a test-visible break.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -30,9 +28,6 @@
 
 /**
  * Registers the Book post type.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -74,9 +69,6 @@ add_action( 'init', 'a8csp_template_features_register_book_post_type' );
 
 /**
  * Enqueues the Book post type's front-end assets.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */

@@ -2,8 +2,6 @@
 /**
  * Provides feature-plugin helper functions.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
@@ -13,9 +11,6 @@
 
 /**
  * Gets the features plugin slug.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  string Features plugin slug.
  */
@@ -31,9 +26,6 @@ function a8csp_template_features_get_slug(): string {
  *
  * A null return marks a missing asset file, letting a component whose build output was removed
  * degrade to unstyled output instead of fataling.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @param   string                       $asset_path         Asset path relative to the plugin
  *                                                           directory, or an absolute path within it.

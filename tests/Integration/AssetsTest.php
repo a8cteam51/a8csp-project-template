@@ -2,16 +2,11 @@
 /**
  * Integration coverage for the project components' asset contracts.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The project theme and features plugin expose their asset contracts.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
@@ -20,9 +15,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 * This case extends PHPUnit's TestCase rather than WP_UnitTestCase, so nothing rolls WordPress's
 	 * global state back between tests: a handle left enqueued survives into the next one and breaks
 	 * its opening clean-registry assertion under a randomized execution order.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -37,9 +29,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms a Book archive request enqueues the archive stylesheet and a non-archive request does not.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -64,9 +53,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the enqueued theme script carries the generated asset file's metadata.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_enqueued_theme_script_uses_the_generated_asset_metadata(): void {
@@ -83,9 +69,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the enqueued theme stylesheet uses its modification time as the asset version.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_theme_stylesheet_uses_file_modification_time_as_asset_version(): void {
@@ -100,9 +83,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the WooCommerce-conditional style never reaches the registry without WooCommerce active.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_woocommerce_conditional_style_is_not_registered_without_woocommerce(): void {
@@ -116,9 +96,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms the Book cover reminder enqueues on the Book editor screen and stays off other screens.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -139,9 +116,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the Book cover-reminder script's metadata comes from its generated asset file.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_book_cover_reminder_metadata_comes_from_generated_asset_file(): void {
@@ -161,9 +135,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Puts the test in an admin editor screen context for the given screen id.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @param   string $screen_id Admin screen id; a post type key yields that type's editor screen.
 	 *
 	 * @return  void
@@ -177,9 +148,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */

@@ -7,8 +7,6 @@
  * lists what it loaded on the admin plugins screen -- except plugins gated off by a sibling
  * `.disabled` file, which load and self-gate but are not running anything worth listing.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -18,9 +16,6 @@
 
 /**
  * Loads eligible MU plugins and registers their admin-list metadata.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */

@@ -14,8 +14,6 @@
  * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` from
  * `tests/Integration/AssetsTest.php`.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -25,9 +23,6 @@
 
 /**
  * Enqueues the Book cover-reminder script in the block editor.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */

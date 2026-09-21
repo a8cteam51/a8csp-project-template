@@ -13,8 +13,6 @@
  * `test_woocommerce_conditional_style_is_not_registered_without_woocommerce` from
  * `tests/Integration/AssetsTest.php`.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -28,9 +26,6 @@ if ( ! \class_exists( 'WooCommerce' ) ) {
 
 /**
  * Enqueues the cart-page stylesheet when WooCommerce's cart page is being viewed.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */

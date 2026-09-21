@@ -2,23 +2,15 @@
 /**
  * Integration coverage for the project features loader.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The project features loader registers enabled features and skips disabled fixtures.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the Book post type is registered.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -30,9 +22,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms the Book post type archive link uses the `/book/` pretty-permalink path.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -49,9 +38,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * features plugin without that flush is the exact production 404 the CPT file's teardown
 	 * recipe warns about.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_book_archive_rewrite_rule_is_in_the_rewrite_table(): void {
@@ -66,9 +52,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms underscore-prefixed fixtures are not loaded.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_underscore_prefixed_fixture_is_not_loaded(): void {
@@ -81,9 +64,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
