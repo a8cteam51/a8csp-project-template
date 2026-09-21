@@ -9,7 +9,8 @@
  * leave in a site that never installs the plugin.
  *
  * To remove this worked example, delete this file, delete `assets/css/src/cart.scss` and its built
- * counterparts `assets/css/build/cart.css` and `assets/css/build/cart.css.map`, and delete
+ * counterparts `assets/css/build/cart.css` and `assets/css/build/cart.css.map`, delete the
+ * `build:theme:css` and `start:theme:css` npm scripts that build only that stylesheet, and delete
  * `test_woocommerce_conditional_style_is_not_registered_without_woocommerce` from
  * `tests/Integration/AssetsTest.php`.
  *

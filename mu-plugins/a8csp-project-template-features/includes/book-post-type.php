@@ -6,7 +6,8 @@
  * and `assets/css/src/book-singular.scss` plus their built counterparts,
  * `assets/css/build/book-archive.css`, `assets/css/build/book-archive.css.map`,
  * `assets/css/build/book-singular.css`, and `assets/css/build/book-singular.css.map`; delete the
- * Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
+ * `build:features:css` and `start:features:css` npm scripts that build only those stylesheets;
+ * delete the Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
  * (`test_book_post_type_is_registered`, `test_book_post_type_archive_link_uses_book_path`, and
  * `test_book_archive_rewrite_rule_is_in_the_rewrite_table`), the Book archive enqueue test in
  * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`),
