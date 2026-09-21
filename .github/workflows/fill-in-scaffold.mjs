@@ -112,13 +112,13 @@ const buildTemplate = async ( filePath ) => {
 	);
 
 	// Port literals are bare numbers, so they replace only inside their known anchors: the
-	// wp-env `"port":` keys, playwright's `localhost:` base URL, and any backtick-wrapped mention
-	// (the READMEs' ports table and prose both wrap the number in backticks) -- a tree-wide bare
+	// wp-env `"port":` keys and any backtick-wrapped mention (the READMEs' ports table and prose
+	// both wrap the number in backticks) -- a tree-wide bare
 	// `8894` would also match inside package-lock.json integrity hashes. The pass runs outside the
 	// map above: its values are JSON-escaped when landing in .json files, which would corrupt a
 	// bare numeric match.
 	renderedTemplate = renderedTemplate.replace(
-		/(?<="port": |localhost:|`)889[45](?=[,'\s|`])/g,
+		/(?<="port": |`)889[45](?=[,\s|`])/g,
 		( match ) =>
 			String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
 	);
