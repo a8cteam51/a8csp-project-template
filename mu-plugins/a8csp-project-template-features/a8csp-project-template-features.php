@@ -33,8 +33,6 @@ if ( \file_exists( __DIR__ . '/.disabled' ) ) {
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH', plugin_dir_path( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_URL', plugin_dir_url( __FILE__ ) );
 
-require_once __DIR__ . '/functions.php';
-
 // Core registers the active theme's languages/ path for just-in-time loading but no mu-plugin path.
 // These committed translations would otherwise never load; this call only registers their path,
 // while actual translation loading stays just-in-time.
@@ -87,6 +85,8 @@ if (
 
 	return;
 }
+
+require_once __DIR__ . '/functions.php';
 
 // Include the rest of the plugin's files.
 $a8csp_template_features_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();
