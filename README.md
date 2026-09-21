@@ -35,9 +35,8 @@ generation contract also renders representative fixtures and checks the result.
 - `mu-plugins/a8csp-project-template-features/` is the worked features mu-plugin. It's procedural, not class-based: site repos gitignore `vendor/`, so there is no Composer autoloader at runtime in production. The entry file gates on the WordPress/PHP floor before loading `includes/`; `includes/book-post-type.php` registers the Book post type for real on `init` with `show_in_rest`, enqueues per-purpose archive/singular stylesheets built from `assets/css/src/`, and documents its own teardown at the top of the file. `includes/book-cover-reminder.php` is the plugin's first editor-side JavaScript worked example: it is Book-scoped, warns before publishing a Book without a cover image, and documents its own teardown the same way.
 - `plugins/` carries only `.gitkeep`. Every content path under it is gitignored; the generated README's "Tracked custom plugin" and "Off-the-shelf plugin" recipes cover what goes there.
 - `tests/` is one whole-site test suite, not one suite per component: integration tests against a real WordPress (`tests/Integration/`, plain PHPUnit `TestCase`, run inside the tests wp-env instance) plus one end-to-end smoke (`tests/EndToEnd/`, Playwright, against the dev wp-env instance). See `tests/README.md`.
-- `.github/workflows/` holds the CI workflows, plus `template-guard.yml` and the self-deleting
-  `fill-in-scaffold.yml`, which generation removes.
-- Deploys target the tree as-is; `.deployignore` is the only filter.
+- `.github/workflows/` holds the CI workflows plus the template-only `template-guard.yml` and
+  `fill-in-scaffold.yml`.
 
 ### Development
 

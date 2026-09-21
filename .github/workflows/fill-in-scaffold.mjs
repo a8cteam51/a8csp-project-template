@@ -11,7 +11,8 @@ const repository = JSON.parse( process.argv[ 2 ] );
 const skippedDirectories = [ '.github', '.git' ];
 
 // A two-port wp-env block (dev and tests) hashed from the repository name, in 10000-29999, clear of
-// the OS ephemeral ranges; distinct names can share a block, which wp-env override files resolve.
+// the OS ephemeral ranges; two ports per block leave room for 10000 blocks, and names that share
+// one resolve it with wp-env override files.
 const TEMPLATE_PORT_BASE = 8894;
 const nameHash = parseInt(
 	createHash( 'sha256' )
