@@ -10,9 +10,9 @@
  * and its built counterparts, `assets/js/build/book-cover-reminder.js` and
  * `assets/js/build/book-cover-reminder.asset.php`; delete the `build:features:scripts` and
  * `start:features:scripts` npm scripts; and delete
- * `test_book_cover_reminder_enqueues_on_the_book_editor_screen` and
- * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` from
- * `tests/Integration/AssetsTest.php`.
+ * `test_book_cover_reminder_enqueues_on_the_book_editor_screen`,
+ * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` and the cover-reminder
+ * dequeue in `tearDown()` from `tests/Integration/AssetsTest.php`.
  *
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
