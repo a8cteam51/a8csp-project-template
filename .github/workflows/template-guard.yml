@@ -120,7 +120,7 @@ jobs:
             exit 1
           fi
 
-      # The locks are excluded because the real run re-locks them, and .github because the real
+      # The locks are excluded because the real run resolves them afresh, and .github because the real
       # run deletes the spent machinery instead of substituting inside it.
       - name: Assert no template literal survives.
         run: |

@@ -113,8 +113,8 @@ jobs:
             exit 1
           fi
 
-      # No credential persists on disk: the npm and composer steps below execute third-party
-      # code (dependency resolution, builds), and the publish step passes the token explicitly.
+      # No credential persists on disk: the re-format and build steps execute dependency code, and
+      # the publish step passes the token explicitly.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -195,11 +195,19 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
         run: rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
 
-      # --ignore-scripts keeps dependency lifecycle code from executing inside a job that will
-      # push to the repository; the generated repository's own developers install normally.
-      - name: Regenerate package-lock.json after the name substitution.
+      # A new repository starts on current dependencies, not on the template's possibly old lock,
+      # holding npm to releases at least seven days old. --ignore-scripts skips install scripts; the
+      # re-format and build steps below still run dependency code.
+      - name: Resolve npm dependencies afresh.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: rm -f package-lock.json && npm install --ignore-scripts
+        run: |
+          rm -f package-lock.json
+          npm install --ignore-scripts --min-release-age=7 2>&1 | tee "$RUNNER_TEMP/npm-install.log"
+          # An npm without the option only warns and then resolves without the release-age window.
+          if grep -qF 'Unknown cli config "--min-release-age"' "$RUNNER_TEMP/npm-install.log"; then
+            echo "::error::this npm does not support --min-release-age, so the resolve ignored the release-age window"
+            exit 1
+          fi
 
       # Substitution changes identifier lengths inside Prettier-formatted JavaScript, so lines wrap
       # differently; re-formatting here keeps the generated repository's first lint run green.
@@ -213,7 +221,7 @@ jobs:
         if: steps.scaffold-check.outputs.already-filled != 'true'
         run: npm run build
 
-      - name: Setup PHP for re-locking composer.json.
+      - name: Setup PHP for the Composer resolve and the syntax sweep.
         if: steps.scaffold-check.outputs.already-filled != 'true'
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
@@ -221,9 +229,10 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Re-lock composer.json after the name substitution.
+      # A new repository starts on current Composer dependencies too; the lock is resolved, not installed.
+      - name: Resolve Composer dependencies afresh.
         if: steps.scaffold-check.outputs.already-filled != 'true'
-        run: composer update --lock --no-install
+        run: composer update --no-install --prefer-stable --ignore-platform-req=php+ --no-interaction
 
       # Substituted identifiers land inside PHP source, and pushes from this workflow trigger no
       # CI — a parse error here would ship a dead-on-arrival repository, so every PHP file is
