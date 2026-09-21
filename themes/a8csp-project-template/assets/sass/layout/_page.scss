@@ -12,7 +12,7 @@
 }
 
 .wp-site-blocks > * + * {
-	margin-block-start: var(--wp--preset--spacing--50, 2.5rem);
+	margin-block-start: var(--wp--preset--spacing--50);
 }
 
 .wp-site-blocks > main {
@@ -22,7 +22,7 @@
 
 .wp-block-post-template {
 	display: grid;
-	gap: var(--wp--preset--spacing--50, 2.5rem);
+	gap: var(--wp--preset--spacing--50);
 	padding: 0;
 }
 
@@ -32,14 +32,14 @@
 }
 
 .wp-block-post > * + * {
-	margin-block-start: var(--wp--preset--spacing--20, 0.5rem);
+	margin-block-start: var(--wp--preset--spacing--20);
 }
 
 .site-header {
 	position: sticky;
 	z-index: 10;
 	top: 0;
-	background-color: var(--wp--preset--color--surface, #fff);
+	background-color: var(--wp--preset--color--surface);
 }
 
 .site-header.is-scrolled {
