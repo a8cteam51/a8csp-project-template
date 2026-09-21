@@ -107,7 +107,6 @@ jobs:
           node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
 
           touch "mu-plugins/$REPO_NAME-features/.disabled"
-          rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
 
           # A rename that silently failed would let the literal sweep below pass vacuously.
           test -d "themes/$REPO_NAME"

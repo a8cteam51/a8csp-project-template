@@ -170,13 +170,6 @@ jobs:
           touch "mu-plugins/$REPO_NAME-features/.disabled"
           git add "mu-plugins/$REPO_NAME-features/.disabled"
 
-      # POT files describe the template's strings; generated repositories rebuild them with
-      # their own slug through `composer internationalize`.
-      - name: Clear the template POT files.
-        env:
-          REPO_NAME: ${{ github.event.repository.name }}
-        run: rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
-
       # A new repository starts on current dependencies, not on the template's possibly old lock,
       # holding npm to releases at least seven days old. --ignore-scripts skips install scripts; the
       # re-format and build steps below still run dependency code.
