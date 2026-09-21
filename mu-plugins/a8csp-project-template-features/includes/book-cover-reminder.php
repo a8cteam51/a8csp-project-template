@@ -9,7 +9,8 @@
  * To remove this worked example, delete this file; delete `assets/js/src/book-cover-reminder.js`
  * and its built counterparts, `assets/js/build/book-cover-reminder.js` and
  * `assets/js/build/book-cover-reminder.asset.php`; delete the `build:features:scripts` and
- * `start:features:scripts` npm scripts; and delete
+ * `start:features:scripts` npm scripts (with no `build:features:*` script left, also drop
+ * `build:features:**` from `build` and `start:features:**` from `start`); and delete
  * `test_book_cover_reminder_enqueues_on_the_book_editor_screen`,
  * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` and the cover-reminder
  * dequeue in `tearDown()` from `tests/Integration/AssetsTest.php`.
