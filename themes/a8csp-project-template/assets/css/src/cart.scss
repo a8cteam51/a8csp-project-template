@@ -4,10 +4,10 @@
 .woocommerce-cart {
 
 	.woocommerce-cart-form {
-		font-size: var(--wp--preset--font-size--small, 0.875rem);
+		font-size: var(--wp--preset--font-size--small);
 	}
 
 	.cart-collaterals {
-		margin-block-start: var(--wp--preset--spacing--50, 2.5rem);
+		margin-block-start: var(--wp--preset--spacing--50);
 	}
 }

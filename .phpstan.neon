@@ -2,12 +2,10 @@ includes:
     - vendor/a8csp/configs/php/quality-assurance/phpstan.dist.neon
 
 parameters:
-    # A site has a single WP floor for its whole tree: one run covers both tracked
-    # components, unlike a plugin/theme package which ships its own phpstan.neon per repo.
+    # One run covers both tracked components: a site has a single WordPress floor.
     paths:
         - %currentWorkingDirectory%/themes/a8csp-project-template
         - %currentWorkingDirectory%/mu-plugins
     WPCompat:
-        # wp-compat's fallback looks for "{cwd}/{basename(cwd)}.php", "{cwd}/plugin.php" or
-        # "{cwd}/style.css", none of which a site root has, so the file carrying the floor is named.
+        # wp-compat's fallback finds no entry file at a site root, so the one carrying the floor is named.
         pluginFile: %currentWorkingDirectory%/mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php

@@ -2,23 +2,17 @@
 /**
  * Integration coverage for the must-use plugin loader.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The mu-loader loads header-bearing entries and reports exactly the running ones.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms the admin plugins list reports the features plugin with its parsed header data.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -34,22 +28,17 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the loader does not report itself as a must-use plugin.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_the_loader_does_not_report_itself(): void {
-		$plugins = apply_filters( 'plugins_list', array( 'mustuse' => array() ) );
+		// Core's list holds every PHP file in mu-plugins/, the loader included.
+		$plugins = apply_filters( 'plugins_list', array( 'mustuse' => array( 'mu-loader.php' => array() ) ) );
 
 		self::assertArrayNotHasKey( 'mu-loader.php', $plugins['mustuse'] );
 	}
 
 	/**
 	 * Confirms headerless support files are never reported as must-use plugins.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -64,9 +53,6 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * Confirms a must-use plugin carrying a `.disabled` marker is left off the plugins screen. The
 	 * loader reads the marker when the list is filtered, so the test can place it for its own run;
 	 * it removes the marker only if it created it, leaving a generated site's marker in place.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -88,17 +74,21 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
-	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
+	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
+	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
 	 *
 	 * @return  void
 	 */
 	private function skip_when_features_plugin_disabled(): void {
-		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+		if ( \file_exists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/.disabled' ) ) {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }

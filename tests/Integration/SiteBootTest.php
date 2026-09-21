@@ -2,23 +2,17 @@
 /**
  * Integration coverage for the project theme's WordPress bootstrap contract.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * WordPress boots with the project theme active and the theme's bootstrap contract holds.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class SiteBootTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms both active theme identifiers name the project theme.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -30,9 +24,6 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the theme registers its block editor stylesheet.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_editor_style_registered(): void {
@@ -42,9 +33,6 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms the front-end hook enqueues the project theme stylesheet and script, with RTL support.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -59,14 +47,11 @@ final class SiteBootTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the theme's current-year block binding source is registered.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_theme_dynamic_content_binding_is_registered(): void {
-		self::assertTrue(
-			\WP_Block_Bindings_Registry::get_instance()->is_registered( 'a8csp-project-template/current-year' )
-		);
+		self::assertTrue( \WP_Block_Bindings_Registry::get_instance()->is_registered( 'a8csp-project-template/current-year' ) );
 	}
+
+	// endregion.
 }

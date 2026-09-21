@@ -2,23 +2,17 @@
 /**
  * Integration coverage for the project features loader.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The project features loader registers enabled features and skips disabled fixtures.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
+	// region TESTS.
+
 	/**
 	 * Confirms the Book post type is registered.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -30,9 +24,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms the Book post type archive link uses the `/book/` pretty-permalink path.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -49,9 +40,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * features plugin without that flush is the exact production 404 the CPT file's teardown
 	 * recipe warns about.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_book_archive_rewrite_rule_is_in_the_rewrite_table(): void {
@@ -66,9 +54,6 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms underscore-prefixed fixtures are not loaded.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_underscore_prefixed_fixture_is_not_loaded(): void {
@@ -79,17 +64,21 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 		self::assertFalse( \function_exists( 'a8csp_template_features_add_example_body_class' ) );
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
-	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
+	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
+	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
 	 *
 	 * @return  void
 	 */
 	private function skip_when_features_plugin_disabled(): void {
-		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+		if ( \file_exists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/.disabled' ) ) {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }

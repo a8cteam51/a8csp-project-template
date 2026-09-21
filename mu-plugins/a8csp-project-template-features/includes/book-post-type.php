@@ -6,21 +6,24 @@
  * and `assets/css/src/book-singular.scss` plus their built counterparts,
  * `assets/css/build/book-archive.css`, `assets/css/build/book-archive.css.map`,
  * `assets/css/build/book-singular.css`, and `assets/css/build/book-singular.css.map`; delete the
- * Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
+ * `build:features:css` and `start:features:css` npm scripts that build only those stylesheets
+ * (with no `build:features:*` script left, also drop `build:features:**` from `build` and
+ * `start:features:**` from `start`);
+ * delete the Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
  * (`test_book_post_type_is_registered`, `test_book_post_type_archive_link_uses_book_path`, and
  * `test_book_archive_rewrite_rule_is_in_the_rewrite_table`), the Book archive enqueue test in
- * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`),
- * and the Playwright book-specific assertions in `tests/EndToEnd/site-smoke.spec.js`. Because this changes the site's rewrite
+ * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`)
+ * with the archive-style dequeue in its `tearDown()`, and the `Book smoke` block of
+ * `tests/EndToEnd/site-smoke.spec.js` with the `.disabled` probe and the `fs`/`path` requires
+ * above it. Because this changes the site's rewrite
  * rules, run `wp rewrite flush` once against production after deploying any change to the CPT's
  * rewrite args. Adding or removing this feature both qualify. Book is a public post type, so
- * decide the fate of any persisted Book posts -- export or delete them deliberately -- before
+ * decide the fate of any persisted Book posts — export or delete them deliberately — before
  * removing the registration; unregistered content stays in the database but becomes unreachable.
  *
  * This file registers the Book CPT on the real `init` action with `show_in_rest => true`, and the
- * end-to-end test tier depends on both of those, so removing either is a test-visible break.
+ * end-to-end test tier depends on both of those, so removing either breaks those tests whenever they run.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -30,9 +33,6 @@
 
 /**
  * Registers the Book post type.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -57,21 +57,16 @@ function a8csp_template_features_register_book_post_type(): void {
 	register_post_type(
 		'a8csp_template_book',
 		array(
-			'labels'             => $labels,
-			'public'             => true,
-			'show_ui'            => true,
-			'show_in_rest'       => true,
-			'has_archive'        => true,
-			'rewrite'            => array(
+			'labels'       => $labels,
+			'public'       => true,
+			'show_in_rest' => true,
+			'has_archive'  => true,
+			'rewrite'      => array(
 				'slug'       => 'book',
 				'with_front' => false,
 			),
-			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-			'capability_type'    => 'post',
-			'publicly_queryable' => true,
-			'show_in_menu'       => true,
-			'show_in_nav_menus'  => true,
-			'menu_icon'          => 'dashicons-book',
+			'supports'     => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+			'menu_icon'    => 'dashicons-book',
 		)
 	);
 }
@@ -79,9 +74,6 @@ add_action( 'init', 'a8csp_template_features_register_book_post_type' );
 
 /**
  * Enqueues the Book post type's front-end assets.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -91,24 +83,14 @@ function a8csp_template_features_enqueue_book_post_type_assets(): void {
 	if ( is_post_type_archive( 'a8csp_template_book' ) ) {
 		$archive_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-archive.css' );
 		if ( null !== $archive_style_meta ) {
-			wp_enqueue_style(
-				"{$slug}-book-archive",
-				\constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-archive.css',
-				$archive_style_meta['dependencies'],
-				$archive_style_meta['version']
-			);
+			wp_enqueue_style( "{$slug}-book-archive", \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-archive.css', $archive_style_meta['dependencies'], $archive_style_meta['version'] );
 		}
 	}
 
 	if ( is_singular( 'a8csp_template_book' ) ) {
 		$singular_style_meta = a8csp_template_features_get_asset_meta( 'assets/css/build/book-singular.css' );
 		if ( null !== $singular_style_meta ) {
-			wp_enqueue_style(
-				"{$slug}-book-singular",
-				\constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-singular.css',
-				$singular_style_meta['dependencies'],
-				$singular_style_meta['version']
-			);
+			wp_enqueue_style( "{$slug}-book-singular", \constant( 'A8CSP_TEMPLATE_FEATURES_DIR_URL' ) . 'assets/css/build/book-singular.css', $singular_style_meta['dependencies'], $singular_style_meta['version'] );
 		}
 	}
 }

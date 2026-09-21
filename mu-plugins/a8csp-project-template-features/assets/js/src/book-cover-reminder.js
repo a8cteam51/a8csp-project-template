@@ -2,13 +2,7 @@
  * Registers a Book cover-image pre-publish panel that renders only when the current post is a Book
  * without a featured image.
  *
- * To remove this worked example, delete this file and its built counterparts,
- * `assets/js/build/book-cover-reminder.js` and `assets/js/build/book-cover-reminder.asset.php`;
- * delete the `build:features:scripts` and `start:features:scripts` npm scripts; delete
- * `includes/book-cover-reminder.php`; and delete
- * `test_book_cover_reminder_enqueues_on_the_book_editor_screen` and
- * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` from
- * `tests/Integration/AssetsTest.php`.
+ * To remove this worked example, follow the recipe in `includes/book-cover-reminder.php`.
  */
 
 import { registerPlugin } from '@wordpress/plugins';

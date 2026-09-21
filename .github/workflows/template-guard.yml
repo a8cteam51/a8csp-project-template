@@ -1,10 +1,9 @@
 name: Template Guard
 
-# Every removable template-only job lives in this one workflow because the fill-in push runs
-# on the Actions token, which GitHub bars from creating or updating files under
-# .github/workflows but allows to delete them — so fill-in-scaffold.yml removes this file
-# whole. Every job here is keyed to this repository's immutable ID, so a not-yet-filled
-# generated repository skips them all.
+# Every template-only job lives in this one workflow because the fill-in push's Actions token may
+# delete files under .github/workflows but never create or update them, so fill-in-scaffold.yml
+# removes this file whole. Each job is keyed to this repository's immutable ID, so a generated
+# repository skips them all.
 
 on:
   pull_request:
@@ -18,10 +17,8 @@ concurrency:
 permissions: {}
 
 jobs:
-  # The teaching-content strip manifest identifies each passage by an exact span that must occur
-  # exactly once. Editing the template's docblocks or comments can silently break a span (zero or
-  # duplicate matches), which would surface only at generation time as a failed fill-in push. This
-  # gate runs the manifest's --check on every template change so that drift fails here instead.
+  # A template edit that leaves a strip-manifest span matching zero or several times fails here
+  # instead of in a generation.
   content-manifest-drift:
     name: Enforce the teaching-content strip manifest
     if: github.repository_id == '1297742940'
@@ -34,8 +31,7 @@ jobs:
         with:
           persist-credentials: false
 
-      # The manifest check is a dependency-free string match, so it runs on the runner's built-in
-      # Node with no setup-node.
+      # The manifest check is a dependency-free string match, so the runner's built-in Node runs it.
       - name: Verify every strip-manifest span still matches exactly once
         run: node .github/workflows/fill-in-scaffold-content.mjs --check
 
@@ -57,6 +53,7 @@ jobs:
         include:
           - fixture: aligned
             strip: false
+            lint: true
             repo_json: '{"name":"my-client-site","description":"A client site.","homepage":"https://myclient.example","custom_properties":{"human-title":"My Client Site","php-globals-short-prefix":"myclient"}}'
           - fixture: diverging-empty
             strip: false
@@ -72,13 +69,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup PHP for the syntax sweep.
+      - name: Setup PHP for the syntax sweep
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: '8.5'
           coverage: none
 
-      - name: Replicate the fill-in sequence.
+      - name: Replicate the fill-in sequence
         env:
           REPO_JSON: ${{ matrix.repo_json }}
           STRIP: ${{ matrix.strip }}
@@ -106,7 +103,6 @@ jobs:
           node ./.github/workflows/fill-in-scaffold.mjs "$REPO_JSON"
 
           touch "mu-plugins/$REPO_NAME-features/.disabled"
-          rm -f "themes/$REPO_NAME"/languages/*.pot "mu-plugins/$REPO_NAME-features"/languages/*.pot
 
           # A rename that silently failed would let the literal sweep below pass vacuously.
           test -d "themes/$REPO_NAME"
@@ -119,9 +115,9 @@ jobs:
             exit 1
           fi
 
-      # The locks are excluded because the real run re-locks them, and .github because the real
+      # The locks are excluded because the real run resolves them afresh, and .github because the real
       # run deletes the spent machinery instead of substituting inside it.
-      - name: Assert no template literal survives.
+      - name: Assert no template literal survives
         run: |
           set -euo pipefail
 
@@ -135,12 +131,13 @@ jobs:
           done
           exit "$fail"
 
-      - name: Syntax-check every generated PHP file.
+      - name: Syntax-check every generated PHP file
         run: |
+          set -euo pipefail
           find . -name '*.php' -not -path './vendor/*' -not -path './node_modules/*' -print0 \
             | xargs -0 -n1 -P4 php -l > /dev/null
 
-      - name: Assert the derived wp-env port block.
+      - name: Assert the derived wp-env port block
         run: |
           set -euo pipefail
 
@@ -149,11 +146,11 @@ jobs:
           grep -Fq "\"port\": $expected," .wp-env.json
           grep -Fq "\"port\": $(( expected + 1 ))," .wp-env.tests.json
 
-      - name: Assert the empty-homepage placeholder renders.
+      - name: Assert the empty-homepage placeholder renders
         if: matrix.fixture == 'diverging-empty'
         run: grep -Fq 'production URL not yet provisioned' README.md
 
-      - name: Assert the strip phase removed the sample content.
+      - name: Assert the strip phase removed the sample content
         if: matrix.strip == true
         run: |
           set -euo pipefail
@@ -163,3 +160,18 @@ jobs:
             echo '::error::the stripped tree still references the deleted loader-opt-out fixture'
             exit 1
           fi
+
+      - name: Setup Node.js for the generated repository's JavaScript lint
+        if: matrix.lint == true
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: 'package.json'
+
+      # Substitution changes identifier lengths, so Prettier-formatted lines need re-wrapping before the
+      # generated repository's own lint can pass.
+      - name: Re-format and lint the rendered JavaScript
+        if: matrix.lint == true
+        run: |
+          npm ci
+          npm run lint:scripts -- --fix
+          npm run lint:scripts

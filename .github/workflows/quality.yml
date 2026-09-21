@@ -26,8 +26,6 @@ jobs:
   php-syntax:
     name: PHP Syntax
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-php-syntax-check.yml@trunk
-    with:
-      php-versions: '["8.5", "8.6"]'
 
   belowfloor-syntax:
     name: Below-floor syntax (PHP ${{ matrix.php }})
@@ -49,27 +47,21 @@ jobs:
           coverage: none
           tools: none
 
-      # Only the header-discovered features entry, the files it requires ahead of its floor gate, and the static, headerless MU loader must parse below the site's PHP floor.
-      # Header discovery survives generation renaming the features directory and entry file without rewriting .github/.
+      # Every header-discovered directory mu-plugin entry and the headerless MU loader must parse
+      # below the site's PHP floor; header discovery survives generation renaming the features
+      # directory and entry file without rewriting .github/.
       - name: Check the below-floor files for syntax errors
         run: |
           set -euo pipefail
 
           mapfile -t entry_files < <(grep -l 'Plugin Name:' "$GITHUB_WORKSPACE"/mu-plugins/*/*.php || true)
-          entry_count=${#entry_files[@]}
-          if [ "$entry_count" -ne 1 ]; then
-            echo "::error::expected exactly one mu-plugins/*/*.php file with a 'Plugin Name:' header, found $entry_count" >&2
+          if [ "${#entry_files[@]}" -eq 0 ]; then
+            echo "::error::expected at least one mu-plugins/*/*.php file with a 'Plugin Name:' header" >&2
             exit 1
           fi
-          php -l "${entry_files[0]}"
-          php -l "$(dirname "${entry_files[0]}")/functions.php"
-
-          # A project that splits its bootstrap out of functions.php loads that file ahead of the gate too.
-          bootstrap_file="$(dirname "${entry_files[0]}")/functions-bootstrap.php"
-          if [ -f "$bootstrap_file" ]; then
-            php -l "$bootstrap_file"
-          fi
-
+          for entry_file in "${entry_files[@]}"; do
+            php -l "$entry_file"
+          done
           php -l "$GITHUB_WORKSPACE/mu-plugins/mu-loader.php"
 
   build-integrity:

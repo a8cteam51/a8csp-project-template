@@ -9,8 +9,7 @@
 		 beStrictAboutOutputDuringTests="true"
 		 failOnNotice="true"
 		 failOnRisky="true"
-		 failOnWarning="true"
-		 defaultTestSuite="Integration">
+		 failOnWarning="true">
 	<testsuites>
 		<testsuite name="Integration">
 			<directory>tests/Integration</directory>

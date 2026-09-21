@@ -2,27 +2,21 @@
 /**
  * Integration coverage for the project components' asset contracts.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 
 /**
  * The project theme and features plugin expose their asset contracts.
- *
- * @since   1.0.0
- * @version 1.0.0
  */
 final class AssetsTest extends \PHPUnit\Framework\TestCase {
+	// region LIFECYCLE.
+
 	/**
 	 * Restores the shared asset registries and screen context between tests.
 	 *
 	 * This case extends PHPUnit's TestCase rather than WP_UnitTestCase, so nothing rolls WordPress's
 	 * global state back between tests: a handle left enqueued survives into the next one and breaks
 	 * its opening clean-registry assertion under a randomized execution order.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -35,11 +29,12 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 		parent::tearDown();
 	}
 
+	// endregion.
+
+	// region TESTS.
+
 	/**
 	 * Confirms a Book archive request enqueues the archive stylesheet and a non-archive request does not.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -64,9 +59,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the enqueued theme script carries the generated asset file's metadata.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_enqueued_theme_script_uses_the_generated_asset_metadata(): void {
@@ -83,9 +75,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the enqueued theme stylesheet uses its modification time as the asset version.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_theme_stylesheet_uses_file_modification_time_as_asset_version(): void {
@@ -100,9 +89,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the WooCommerce-conditional style never reaches the registry without WooCommerce active.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_woocommerce_conditional_style_is_not_registered_without_woocommerce(): void {
@@ -116,9 +102,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Confirms the Book cover reminder enqueues on the Book editor screen and stays off other screens.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @return  void
 	 */
@@ -139,9 +122,6 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the Book cover-reminder script's metadata comes from its generated asset file.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
 	 * @return  void
 	 */
 	public function test_book_cover_reminder_metadata_comes_from_generated_asset_file(): void {
@@ -158,11 +138,12 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 		self::assertSame( $generated_asset_meta['dependencies'], $registered_script->deps );
 	}
 
+	// endregion.
+
+	// region HELPERS.
+
 	/**
 	 * Puts the test in an admin editor screen context for the given screen id.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
 	 *
 	 * @param   string $screen_id Admin screen id; a post type key yields that type's editor screen.
 	 *
@@ -176,16 +157,16 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Skips the calling test when the features plugin is disabled.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
+	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
+	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
 	 *
 	 * @return  void
 	 */
 	private function skip_when_features_plugin_disabled(): void {
-		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+		if ( \file_exists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/.disabled' ) ) {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
+
+	// endregion.
 }

@@ -10,12 +10,9 @@ const escapeRegExp = ( string ) =>
 const repository = JSON.parse( process.argv[ 2 ] );
 const skippedDirectories = [ '.github', '.git' ];
 
-// Every generated repository gets its own wp-env port block, derived from the repository name:
-// deterministic across re-generations of the same repo, and collision-reducing (not unique --
-// distinct names can hash to the same block; wp-env override files cover that case), so
-// side-by-side `wp-env start`s rarely contend for the same host ports. Two ports per block
-// (dev + tests; this template has no below-floor tier) let the modulus double the sibling
-// plugin template's block count in the same 10000-29999 range, halving the collision rate.
+// A two-port wp-env block (dev and tests) hashed from the repository name, in 10000-29999, clear of
+// the OS ephemeral ranges; two ports per block leave room for 10000 blocks, and names that share
+// one resolve it with wp-env override files.
 const TEMPLATE_PORT_BASE = 8894;
 const nameHash = parseInt(
 	createHash( 'sha256' )
@@ -28,10 +25,8 @@ const portBase = 10000 + 2 * ( nameHash % 10000 );
 
 const traverseDirectory = async ( dirPath, callback ) => {
 	if ( skippedDirectories.includes( dirPath ) ) {
-		console.log( 'Skipping %s', dirPath );
 		return;
 	}
-	console.log( 'Traversing %s', dirPath );
 
 	const files = await readdir( dirPath );
 	for ( const file of files ) {
@@ -47,11 +42,8 @@ const traverseDirectory = async ( dirPath, callback ) => {
 
 const buildTemplate = async ( filePath ) => {
 	if ( [ 'composer.lock', 'package-lock.json' ].includes( filePath ) ) {
-		console.log( 'Skipping %s', filePath );
 		return;
 	}
-
-	console.log( 'Building %s', filePath );
 
 	const templateFile = await readFile( filePath, 'utf-8' );
 	let renderedTemplate = templateFile,
@@ -103,30 +95,28 @@ const buildTemplate = async ( filePath ) => {
 		replacementPattern,
 		( match ) => {
 			const value = replacements[ match ];
-			const renderedValue =
-				filePath.endsWith( '.json' ) || filePath.endsWith( '.map' )
-					? JSON.stringify( value ).slice( 1, -1 )
-					: value;
+			const renderedValue = filePath.endsWith( '.json' )
+				? JSON.stringify( value ).slice( 1, -1 )
+				: value;
 			return renderedValue;
 		}
 	);
 
-	// Port literals are bare numbers, so they replace only inside their known anchors: the
-	// wp-env `"port":` keys, playwright's `localhost:` base URL, and any backtick-wrapped mention
-	// (the READMEs' ports table and prose both wrap the number in backticks) -- a tree-wide bare
-	// `8894` would also match inside package-lock.json integrity hashes. The pass runs outside the
-	// map above: its values are JSON-escaped when landing in .json files, which would corrupt a
-	// bare numeric match.
+	// Port literals are bare numbers, so they replace only inside their known anchors: the wp-env
+	// `"port":` keys and any backtick-wrapped mention (the READMEs' ports table and prose). The pass
+	// runs outside the map above, whose values are JSON-escaped in .json files.
 	renderedTemplate = renderedTemplate.replace(
-		/(?<="port": |localhost:|`)889[45](?=[,'\s|`])/g,
+		/(?<="port": |`)889[45](?=[,\s|`])/g,
 		( match ) =>
 			String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
 	);
 
-	renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
+	if ( filePath.endsWith( '.php' ) ) {
+		// PHP files never need trailing whitespace, and PHPCS rejects it.
+		renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
+	}
 
 	if ( renderedTemplate !== templateFile ) {
-		console.log( 'Changes were made. Overwriting file.' );
 		await writeFile( filePath, renderedTemplate );
 	}
 };

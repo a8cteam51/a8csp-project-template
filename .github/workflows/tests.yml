@@ -21,13 +21,9 @@ jobs:
         include:
           - name: 'WP floor (7.1)'
             wp-version: '7.1'
-            wp-env-core: ''
-          # Unpinned on purpose: wp-env defaults to latest stable, so this leg never needs a bump.
+          # wp-env defaults to latest stable.
           - name: 'WP latest'
-            wp-version: ''
-            wp-env-core: ''
           - name: 'WP nightly'
-            wp-version: ''
             wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@trunk
     with:
@@ -39,6 +35,3 @@ jobs:
   e2e:
     name: End-to-End
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@trunk
-    with:
-      artifact-slug: 'e2e'
-      build-script: ''

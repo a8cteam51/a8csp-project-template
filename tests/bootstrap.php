@@ -4,8 +4,6 @@
  * theme under test load through WordPress itself (the mu-loader and the active theme), never
  * required directly here — requiring them would bypass the load path the suite exists to prove.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  */
 

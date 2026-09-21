@@ -2,15 +2,13 @@
 /**
  * The A8CSP Project Template Features bootstrap file.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
  *
  * @wordpress-plugin
  * Plugin Name:             A8CSP Project Template Features
- * Description:             Houses the custom functionality that makes this site more than a WordPress theme -- the features that outlive any redesign.
+ * Description:             Houses the custom functionality that makes this site more than a WordPress theme — the features that outlive any redesign.
  * Version:                 1.0.0
  * Requires at least:       7.1
  * Requires PHP:            8.5
@@ -32,8 +30,6 @@ if ( \file_exists( __DIR__ . '/.disabled' ) ) {
 
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_PATH', plugin_dir_path( __FILE__ ) );
 \define( 'A8CSP_TEMPLATE_FEATURES_DIR_URL', plugin_dir_url( __FILE__ ) );
-
-require_once __DIR__ . '/functions.php';
 
 // Core registers the active theme's languages/ path for just-in-time loading but no mu-plugin path.
 // These committed translations would otherwise never load; this call only registers their path,
@@ -87,6 +83,8 @@ if (
 
 	return;
 }
+
+require_once __DIR__ . '/functions.php';
 
 // Include the rest of the plugin's files.
 $a8csp_template_features_include_files = \glob( __DIR__ . '/includes/*.php' ) ?: array();

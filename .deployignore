@@ -1,16 +1,12 @@
-# Site deploy exclusions — filters what a deploy actually pushes to the host; the git tree
-# itself stays deploy-agnostic (repo shape doesn't encode deploy policy, this file does).
-# Asset sources and sourcemaps deploy deliberately: we work open, and shipped sources keep
-# the live site debuggable.
+# What a deploy leaves out of the tree it ships. Asset sources and sourcemaps deploy on purpose, so
+# the live site stays debuggable.
 
 .git*
 .editorconfig
-.gitignore
 .deployignore
 node_modules
 vendor
 tests
-.github
 
 .wp-env*.json
 playwright.config.js
@@ -35,19 +31,17 @@ AGENTS.md
 CLAUDE.md
 .agents
 
-# Core-folder protection: deploy tooling should never wipe or shadow these WordPress
-# content directories even if a filter pattern elsewhere matches too broadly.
+# WordPress content directories no broader pattern may exclude.
 !themes
 !mu-plugins
 !plugins
 !uploads
 
 # Secret material: once something is committed, this filter is the last thing between it and
-# production. `/*.pem` and `/*.key` are root-anchored so they cannot swallow a certificate a
-# tracked component ships on purpose.
+# production. Like .gitignore, it matches at any depth.
 .env*
-/*.pem
-/*.key
+*.pem
+*.key
 id_rsa*
 .npmrc
 auth.json

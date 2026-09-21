@@ -5,16 +5,15 @@
  * This is the theme's worked example of plugin-conditional code: the theme's own styling
  * (theme-setup.php) and small theme-owned dynamic content (theme-dynamic-content.php) never guard
  * on another plugin's presence, but this file exists only because WooCommerce might be. The guard
- * makes WooCommerce's absence silent -- no notice, no fallback markup -- so this file is safe to
+ * makes WooCommerce's absence silent — no notice, no fallback markup — so this file is safe to
  * leave in a site that never installs the plugin.
  *
  * To remove this worked example, delete this file, delete `assets/css/src/cart.scss` and its built
- * counterparts `assets/css/build/cart.css` and `assets/css/build/cart.css.map`, and delete
+ * counterparts `assets/css/build/cart.css` and `assets/css/build/cart.css.map`, delete the
+ * `build:theme:css` and `start:theme:css` npm scripts that build only that stylesheet, and delete
  * `test_woocommerce_conditional_style_is_not_registered_without_woocommerce` from
  * `tests/Integration/AssetsTest.php`.
  *
- * @since    1.0.0
- * @version  1.0.0
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
  * @license  GPL-2.0-or-later
@@ -28,9 +27,6 @@ if ( ! \class_exists( 'WooCommerce' ) ) {
 
 /**
  * Enqueues the cart-page stylesheet when WooCommerce's cart page is being viewed.
- *
- * @since   1.0.0
- * @version 1.0.0
  *
  * @return  void
  */
@@ -46,11 +42,6 @@ function a8csp_template_theme_enqueue_woocommerce_cart_style(): void {
 		return;
 	}
 
-	wp_enqueue_style(
-		"{$theme_slug}-woocommerce-cart",
-		get_theme_file_uri( 'assets/css/build/cart.css' ),
-		$style_meta['dependencies'],
-		$style_meta['version']
-	);
+	wp_enqueue_style( "{$theme_slug}-woocommerce-cart", get_theme_file_uri( 'assets/css/build/cart.css' ), $style_meta['dependencies'], $style_meta['version'] );
 }
 add_action( 'wp_enqueue_scripts', 'a8csp_template_theme_enqueue_woocommerce_cart_style' );
