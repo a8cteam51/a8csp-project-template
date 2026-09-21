@@ -57,6 +57,7 @@ jobs:
         include:
           - fixture: aligned
             strip: false
+            lint: true
             repo_json: '{"name":"my-client-site","description":"A client site.","homepage":"https://myclient.example","custom_properties":{"human-title":"My Client Site","php-globals-short-prefix":"myclient"}}'
           - fixture: diverging-empty
             strip: false
@@ -163,3 +164,18 @@ jobs:
             echo '::error::the stripped tree still references the deleted loader-opt-out fixture'
             exit 1
           fi
+
+      - name: Setup Node.js for the generated repository's JavaScript lint.
+        if: matrix.lint == true
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: 'package.json'
+
+      # Substitution re-flows Prettier-formatted lines, so this runs the fill-in's re-format step and
+      # then the generated repository's own JavaScript lint over the rendered tree.
+      - name: Re-format and lint the rendered JavaScript.
+        if: matrix.lint == true
+        run: |
+          npm ci
+          npm run lint:scripts -- --fix
+          npm run lint:scripts
