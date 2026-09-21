@@ -57,21 +57,16 @@ function a8csp_template_features_register_book_post_type(): void {
 	register_post_type(
 		'a8csp_template_book',
 		array(
-			'labels'             => $labels,
-			'public'             => true,
-			'show_ui'            => true,
-			'show_in_rest'       => true,
-			'has_archive'        => true,
-			'rewrite'            => array(
+			'labels'       => $labels,
+			'public'       => true,
+			'show_in_rest' => true,
+			'has_archive'  => true,
+			'rewrite'      => array(
 				'slug'       => 'book',
 				'with_front' => false,
 			),
-			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
-			'capability_type'    => 'post',
-			'publicly_queryable' => true,
-			'show_in_menu'       => true,
-			'show_in_nav_menus'  => true,
-			'menu_icon'          => 'dashicons-book',
+			'supports'     => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields' ),
+			'menu_icon'    => 'dashicons-book',
 		)
 	);
 }
