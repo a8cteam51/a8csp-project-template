@@ -48,7 +48,7 @@ Run End-to-End coverage with:
 npm run test:e2e
 ```
 
-Playwright manages the development wp-env instance for that run; its `webServer.command` starts it with `npm run wp-env:start` and stops the instance it started when the run ends. An instance that was already running is reused and left running afterward.
+Playwright's `webServer` config starts the development wp-env instance with `npm run wp-env:start` when none is running and reuses one that is. `wp-env start` returns once the containers are up, so they keep running after the run; stop them with `npm run wp-env:stop`.
 
 ## Ports
 
