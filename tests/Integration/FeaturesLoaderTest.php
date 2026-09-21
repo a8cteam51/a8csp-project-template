@@ -63,12 +63,13 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * Skips the calling test when the features plugin is disabled.
+	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
+	 * marker rather than a loaded function, so an enabled plugin that fails to load fails the test.
 	 *
 	 * @return  void
 	 */
 	private function skip_when_features_plugin_disabled(): void {
-		if ( ! \function_exists( 'a8csp_template_features_get_slug' ) ) {
+		if ( \file_exists( __DIR__ . '/../../mu-plugins/a8csp-project-template-features/.disabled' ) ) {
 			self::markTestSkipped( 'The features plugin is disabled (mu-plugins/a8csp-project-template-features/.disabled); delete that file to enable it.' );
 		}
 	}
