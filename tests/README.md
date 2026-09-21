@@ -9,7 +9,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 `tests/Integration/` contains PHPUnit tests that run inside the tests wp-env instance. They extend plain PHPUnit `TestCase`, while `tests/bootstrap.php` loads the real WordPress installation so the mu-plugin and active theme follow their production boot paths.
 
 - `SiteBootTest` protects the promise that the site starts with the project theme active and its front-end stylesheet available.
-- `FeaturesLoaderTest` protects the promise that enabled site features, including the public Book archive, load while disabled examples stay absent.
+- `FeaturesLoaderTest` protects the promise that the site's enabled features, including the public Book archive, load.
 - `AssetsTest` protects the promise that front-end assets are wired into the site and theme asset updates receive deploy-specific cache versions.
 - `MuLoaderTest` protects the promise that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
 
@@ -70,6 +70,6 @@ Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the wh
 
 ## Unit tier
 
-No Unit suite ships at generation because no shipped site code is pure logic yet; the filesystem-bound asset metadata helpers are already integration-covered through real enqueues. When the first pure function appears, add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` for it.
+No Unit suite ships yet because no shipped site code is pure logic: the asset metadata helpers read the filesystem, so their tests are integration tests. Add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` when the first pure function appears.
 
 There is likewise no mutation tier: mutation testing scores the strength of unit assertions against a pure-logic surface, so it begins only when that first `Unit` suite exists.

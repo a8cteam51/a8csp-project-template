@@ -1,6 +1,6 @@
 # EXAMPLE_REPO_NAME
 
-This repository is the `wp-content` for EXAMPLE_REPO_NAME: the theme owns how the site looks, the features mu-plugin owns what it does, and the tests prove both survive a deploy. Everything else is installed, not tracked.
+This repository is the `wp-content` for EXAMPLE_REPO_NAME: the theme owns how the site looks and the features mu-plugin owns what it does. Everything else is installed, not tracked.
 
 ## Structure
 

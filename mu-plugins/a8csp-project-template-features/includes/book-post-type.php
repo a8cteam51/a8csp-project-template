@@ -20,7 +20,7 @@
  * removing the registration; unregistered content stays in the database but becomes unreachable.
  *
  * This file registers the Book CPT on the real `init` action with `show_in_rest => true`, and the
- * end-to-end test tier depends on both of those, so removing either is a test-visible break.
+ * end-to-end test tier depends on both of those, so removing either breaks those tests whenever they run.
  *
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects

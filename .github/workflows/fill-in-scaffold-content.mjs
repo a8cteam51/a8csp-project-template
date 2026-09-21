@@ -90,16 +90,6 @@ const MANIFEST = [
 			'(`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).'
 		),
 	},
-	{
-		action: 'replace-exact',
-		path: 'tests/README.md',
-		from: block(
-			'No Unit suite ships at generation because no shipped site code is pure logic yet; the filesystem-bound asset metadata helpers are already integration-covered through real enqueues. When the first pure function appears, add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` for it.'
-		),
-		to: block(
-			'No Unit suite ships yet because no shipped site code is pure logic; the filesystem-bound asset metadata helpers are integration-covered through real enqueues. Add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` when the first pure function appears.'
-		),
-	},
 
 	// The features bootstrap entry file.
 	{
@@ -179,7 +169,7 @@ const MANIFEST = [
 			' * removing the registration; unregistered content stays in the database but becomes unreachable.',
 			' *',
 			' * This file registers the Book CPT on the real `init` action with `show_in_rest => true`, and the',
-			' * end-to-end test tier depends on both of those, so removing either is a test-visible break.',
+			' * end-to-end test tier depends on both of those, so removing either breaks those tests whenever they run.',
 			' *'
 		),
 		to: block(
