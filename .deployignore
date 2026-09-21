@@ -5,12 +5,10 @@
 
 .git*
 .editorconfig
-.gitignore
 .deployignore
 node_modules
 vendor
 tests
-.github
 
 .wp-env*.json
 playwright.config.js
