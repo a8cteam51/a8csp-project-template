@@ -28,10 +28,8 @@ const portBase = 10000 + 2 * ( nameHash % 10000 );
 
 const traverseDirectory = async ( dirPath, callback ) => {
 	if ( skippedDirectories.includes( dirPath ) ) {
-		console.log( 'Skipping %s', dirPath );
 		return;
 	}
-	console.log( 'Traversing %s', dirPath );
 
 	const files = await readdir( dirPath );
 	for ( const file of files ) {
@@ -47,11 +45,8 @@ const traverseDirectory = async ( dirPath, callback ) => {
 
 const buildTemplate = async ( filePath ) => {
 	if ( [ 'composer.lock', 'package-lock.json' ].includes( filePath ) ) {
-		console.log( 'Skipping %s', filePath );
 		return;
 	}
-
-	console.log( 'Building %s', filePath );
 
 	const templateFile = await readFile( filePath, 'utf-8' );
 	let renderedTemplate = templateFile,
@@ -126,7 +121,6 @@ const buildTemplate = async ( filePath ) => {
 	renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
 
 	if ( renderedTemplate !== templateFile ) {
-		console.log( 'Changes were made. Overwriting file.' );
 		await writeFile( filePath, renderedTemplate );
 	}
 };
