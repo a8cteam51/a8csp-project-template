@@ -22,10 +22,10 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'README.scaffold.md',
 		from: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete `.disabled` (at `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`) to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own."
 		),
 		to: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete `.disabled` (at `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`) to start building the site's features -- the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
 		),
 	},
 	{
@@ -38,42 +38,8 @@ const MANIFEST = [
 			"The theme's WooCommerce cart styling and dynamic-content binding are each independently removable; follow the teardown lines co-located in `themes/EXAMPLE_REPO_SLUG/includes/plugin-woocommerce.php` and `themes/EXAMPLE_REPO_SLUG/includes/theme-dynamic-content.php`."
 		),
 	},
-	{
-		action: 'replace-exact',
-		path: 'README.scaffold.md',
-		from: block(
-			"- **Book feature:** Follow the teardown recipe at the top of `mu-plugins/EXAMPLE_REPO_SLUG-features/includes/book-post-type.php`; its removal instructions live beside the self-contained worked example they remove; follow the editor-JS companion's teardown recipe at `mu-plugins/EXAMPLE_REPO_SLUG-features/includes/book-cover-reminder.php`."
-		),
-		to: block(
-			"- **Book feature:** Follow the teardown recipe at the top of `mu-plugins/EXAMPLE_REPO_SLUG-features/includes/book-post-type.php`, then the editor-JS companion's teardown recipe at `mu-plugins/EXAMPLE_REPO_SLUG-features/includes/book-cover-reminder.php`."
-		),
-	},
 
 	// tests/README.md ships as-is into generated repositories.
-	{
-		action: 'replace-exact',
-		path: 'tests/README.md',
-		from: block(
-			"A plugin or theme package may ship to arbitrary third-party sites and therefore needs proof below its supported version floor. This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier."
-		),
-		to: block(
-			"This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier."
-		),
-	},
-	{
-		action: 'replace-exact',
-		path: 'tests/README.md',
-		from: block(
-			'## Why plain `TestCase`, not `WP_UnitTestCase`',
-			'',
-			"The integration bootstrap loads WordPress itself, which is enough for this suite's boot, registration, and enqueue promises. Using `WP_UnitTestCase` would add `$this->factory` fixtures, `go_to()` routing simulation, and per-test transaction rollback, but the current tests neither build content-heavy scenarios nor persist database fixtures. Giving up those helpers costs little here and keeps the rig aligned with the narrower site contracts it exercises."
-		),
-		to: block(
-			'## Plain `TestCase`, not `WP_UnitTestCase`',
-			'',
-			"The integration bootstrap loads real WordPress, which satisfies this suite's boot, registration, and enqueue promises. The suite needs none of `WP_UnitTestCase`'s fixture factories, routing simulation, or per-test transaction rollback."
-		),
-	},
 	{
 		action: 'replace-exact',
 		path: 'tests/README.md',
@@ -214,10 +180,9 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'themes/a8csp-project-template/includes/theme-dynamic-content.php',
 		from: block(
-			" * This is the theme's dynamic-content worked example. A v1 scaffold would have reached for a",
-			' * shortcode here; a block theme reaches for a block binding instead, because it binds straight to a',
-			' * block attribute in the editor rather than adding a separate shortcode parse pass. The',
-			' * `patterns/footer-default.php` pattern binds a paragraph to this source.'
+			" * This is the theme's dynamic-content worked example: a block binding rather than a shortcode,",
+			' * because a binding attaches straight to a block attribute in the editor and needs no separate',
+			' * shortcode parse pass. The `patterns/footer-default.php` pattern binds a paragraph to this source.'
 		),
 		to: block(
 			' * The `patterns/footer-default.php` pattern binds a paragraph to this source.'

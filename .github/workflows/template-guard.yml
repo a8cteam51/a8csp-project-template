@@ -1,10 +1,9 @@
 name: Template Guard
 
-# Every removable template-only job lives in this one workflow because the fill-in push runs
-# on the Actions token, which GitHub bars from creating or updating files under
-# .github/workflows but allows to delete them — so fill-in-scaffold.yml removes this file
-# whole. Every job here is keyed to this repository's immutable ID, so a not-yet-filled
-# generated repository skips them all.
+# Every template-only job lives in this one workflow because the fill-in push's Actions token may
+# delete files under .github/workflows but never create or update them, so fill-in-scaffold.yml
+# removes this file whole. Each job is keyed to this repository's immutable ID, so a generated
+# repository skips them all.
 
 on:
   pull_request:
@@ -18,10 +17,8 @@ concurrency:
 permissions: {}
 
 jobs:
-  # The teaching-content strip manifest identifies each passage by an exact span that must occur
-  # exactly once. Editing the template's docblocks or comments can silently break a span (zero or
-  # duplicate matches), which would surface only at generation time as a failed fill-in push. This
-  # gate runs the manifest's --check on every template change so that drift fails here instead.
+  # A template edit that leaves a strip-manifest span matching zero or several times fails here
+  # instead of in a generation.
   content-manifest-drift:
     name: Enforce the teaching-content strip manifest
     if: github.repository_id == '1297742940'
@@ -34,8 +31,7 @@ jobs:
         with:
           persist-credentials: false
 
-      # The manifest check is a dependency-free string match, so it runs on the runner's built-in
-      # Node with no setup-node.
+      # The manifest check is a dependency-free string match, so the runner's built-in Node runs it.
       - name: Verify every strip-manifest span still matches exactly once
         run: node .github/workflows/fill-in-scaffold-content.mjs --check
 

@@ -116,11 +116,8 @@ jobs:
       - name: Set github actions[bot] as the committer.
         run: git config --local user.name 'github-actions[bot]' && git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-      # The optional second scaffold phase: rewrites the teaching narration into contract-level
-      # documentation via the exact-match manifest in fill-in-scaffold-content.mjs. It runs
-      # BEFORE the rename and substitution passes, so every manifest span matches the pristine
-      # template tree. Trigger: the workflow_dispatch checkbox, or a
-      # `strip-teaching-content: true` key in the repository_dispatch client_payload.
+      # The manifest's spans quote the pristine template, so the strip runs before the rename and
+      # substitution.
       - name: Strip the teaching content when the dispatch asks for it.
         env:
           STRIP_INPUT: ${{ inputs.strip-teaching-content }}

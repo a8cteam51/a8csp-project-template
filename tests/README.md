@@ -19,11 +19,13 @@ This repository uses integration tests against a real WordPress plus one end-to-
 
 ## No below-floor / Requirements tier at site tier
 
-A plugin or theme package may ship to arbitrary third-party sites and therefore needs proof below its supported version floor. This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier.
+This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier.
 
 ## Why plain `TestCase`, not `WP_UnitTestCase`
 
-The integration bootstrap loads WordPress itself, which is enough for this suite's boot, registration, and enqueue promises. Using `WP_UnitTestCase` would add `$this->factory` fixtures, `go_to()` routing simulation, and per-test transaction rollback, but the current tests neither build content-heavy scenarios nor persist database fixtures. Giving up those helpers costs little here and keeps the rig aligned with the narrower site contracts it exercises.
+WordPress core's PHPUnit scaffold supports PHPUnit through version 9. This rig runs current PHPUnit directly against plain `TestCase` inside wp-env, with `tests/bootstrap.php` loading the real WordPress installation, without depending on `WP_UnitTestCase` or core's PHPUnit compatibility range.
+
+That trade gives up `$this->factory` fixture helpers, `go_to()` routing simulation, and per-test transaction rollback. The site's boot, registration, and enqueue promises need none of them: the tests build no content-heavy fixtures and persist no database state.
 
 ## Running the suites
 
@@ -71,5 +73,3 @@ Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the wh
 ## Unit tier
 
 No Unit suite ships yet because no shipped site code is pure logic: the asset metadata helpers read the filesystem, so their tests are integration tests. Add `tests/Unit/` and a `Unit` testsuite entry in `phpunit.dist.xml` when the first pure function appears.
-
-There is likewise no mutation tier: mutation testing scores the strength of unit assertions against a pure-logic surface, so it begins only when that first `Unit` suite exists.

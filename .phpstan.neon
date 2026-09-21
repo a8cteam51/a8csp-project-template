@@ -2,8 +2,7 @@ includes:
     - vendor/a8csp/configs/php/quality-assurance/phpstan.dist.neon
 
 parameters:
-    # A site has a single WP floor for its whole tree: one run covers both tracked
-    # components, unlike a plugin/theme package which ships its own phpstan.neon per repo.
+    # One run covers both tracked components: a site has a single WordPress floor.
     paths:
         - %currentWorkingDirectory%/themes/a8csp-project-template
         - %currentWorkingDirectory%/mu-plugins
