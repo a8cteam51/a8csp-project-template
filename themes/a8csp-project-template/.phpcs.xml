@@ -16,7 +16,7 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="a8csp_template"/>
+				<element value="a8csp_template_"/>
 			</property>
 		</properties>
 	</rule>
