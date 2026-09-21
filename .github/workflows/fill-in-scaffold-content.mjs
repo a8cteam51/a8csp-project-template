@@ -22,10 +22,10 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'README.scaffold.md',
 		from: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through the site end to end before writing your own."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through the site end to end before writing your own."
 		),
 		to: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
 		),
 	},
 	{
@@ -45,13 +45,13 @@ const MANIFEST = [
 		path: 'tests/README.md',
 		from: block(
 			'Generated repositories get their own two-port block, derived from the repository name at',
-			'generation, so projects started side by side rarely contend for the same host ports -- the',
+			'generation, so projects started side by side rarely contend for the same host ports — the',
 			"hash is collision-reducing, not unique. If two environments collide on one machine, wp-env's",
 			'untracked override files take local precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).'
 		),
 		to: block(
 			"This repository's two-port block is derived from the repository name, so projects started side by",
-			'side rarely contend for the same host ports -- the hash is collision-reducing, not unique. If two',
+			'side rarely contend for the same host ports — the hash is collision-reducing, not unique. If two',
 			"environments collide on one machine, wp-env's untracked override files take local precedence",
 			'(`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).'
 		),
@@ -168,11 +168,11 @@ const MANIFEST = [
 			" * This is the theme's worked example of plugin-conditional code: the theme's own styling",
 			' * (theme-setup.php) and small theme-owned dynamic content (theme-dynamic-content.php) never guard',
 			" * on another plugin's presence, but this file exists only because WooCommerce might be. The guard",
-			" * makes WooCommerce's absence silent -- no notice, no fallback markup -- so this file is safe to",
+			" * makes WooCommerce's absence silent — no notice, no fallback markup — so this file is safe to",
 			' * leave in a site that never installs the plugin.'
 		),
 		to: block(
-			" * The class-exists guard makes WooCommerce's absence silent -- no notice, no fallback markup -- so",
+			" * The class-exists guard makes WooCommerce's absence silent — no notice, no fallback markup — so",
 			' * this file is safe to leave in a site that never installs the plugin.'
 		),
 	},

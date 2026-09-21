@@ -19,7 +19,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 
 ## No below-floor / Requirements tier at site tier
 
-This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and is not a separate test tier.
+This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection — the Quality workflow's below-floor syntax matrix covers parse-safety separately — and is not a separate test tier.
 
 ## Why plain `TestCase`, not `WP_UnitTestCase`
 
@@ -60,7 +60,7 @@ Playwright's `webServer` config starts the development wp-env instance with `npm
 | Tests | `.wp-env.tests.json` | `8895` |
 
 Generated repositories get their own two-port block, derived from the repository name at
-generation, so projects started side by side rarely contend for the same host ports -- the
+generation, so projects started side by side rarely contend for the same host ports — the
 hash is collision-reducing, not unique. If two environments collide on one machine, wp-env's
 untracked override files take local precedence (`.wp-env.override.json`; the tests config pairs with `.wp-env.tests.override.json`).
 
@@ -68,7 +68,7 @@ untracked override files take local precedence (`.wp-env.override.json`; the tes
 
 Both wp-env configurations activate the project theme, set pretty permalinks, and flush rewrite rules in `afterStart`. That lifecycle is why `FeaturesLoaderTest` can resolve the Book archive link and the End-to-End Book singular route can resolve without either test performing a manual flush. Removing the Book feature also removes its test traces, which the recipe at the top of `mu-plugins/a8csp-project-template-features/includes/book-post-type.php` lists. A production deployment that changes the CPT rewrite arguments—including adding or removing the CPT—needs one production `wp rewrite flush`, as documented in `mu-plugins/a8csp-project-template-features/includes/book-post-type.php`.
 
-Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin -- Book included -- until it's deleted. While that file is present, the Book-specific assertions and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed.
+Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin — Book included — until it's deleted. While that file is present, the Book-specific assertions and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed.
 
 ## Unit tier
 

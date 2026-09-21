@@ -31,7 +31,7 @@ generation contract also renders representative fixtures and checks the result.
 ### Layout
 
 - `themes/a8csp-project-template/` is the worked block theme. Its slug getter leads `functions.php`'s `META` region, followed by a shared asset-metadata helper and a `sort()`-ordered, underscore-opt-out loader for `includes/`; `includes/theme-setup.php` registers theme support and enqueues `style.css` (built from `assets/sass/`) plus the built JS entry in `assets/js/`. `includes/plugin-woocommerce.php` is the plugin-conditional worked example, with a WooCommerce cart stylesheet built from `assets/css/src/`; `includes/theme-dynamic-content.php` is the block-binding worked example consumed by `patterns/footer-default.php`. The theme has two independent CSS pipelines: `assets/sass/` for its main and editor stylesheets and `assets/css/` for per-purpose plugin-conditional stylesheets.
-- `mu-plugins/mu-loader.php` discovers must-use plugins by scanning `mu-plugins/*/*.php` and reading only the `Plugin Name` header through `get_file_data()` -- no admin bootstrap on the frontend. Every file with a non-empty header loads once per request; full `get_plugin_data()` metadata is parsed lazily, only inside the admin plugin-list callback.
+- `mu-plugins/mu-loader.php` discovers must-use plugins by scanning `mu-plugins/*/*.php` and reading only the `Plugin Name` header through `get_file_data()` — no admin bootstrap on the frontend. Every file with a non-empty header loads once per request; full `get_plugin_data()` metadata is parsed lazily, only inside the admin plugin-list callback.
 - `mu-plugins/a8csp-project-template-features/` is the worked features mu-plugin. It's procedural, not class-based: site repos gitignore `vendor/`, so there is no Composer autoloader at runtime in production. The entry file gates on the WordPress/PHP floor before loading `includes/`; `includes/book-post-type.php` registers the Book post type for real on `init` with `show_in_rest`, enqueues per-purpose archive/singular stylesheets built from `assets/css/src/`, and documents its own teardown at the top of the file. `includes/book-cover-reminder.php` is the plugin's first editor-side JavaScript worked example: it is Book-scoped, warns before publishing a Book without a cover image, and documents its own teardown the same way.
 - `plugins/` carries only `.gitkeep`. Every content path under it is gitignored; the generated README's "Tracked custom plugin" and "Off-the-shelf plugin" recipes cover what goes there.
 - `tests/` is one whole-site test suite, not one suite per component: integration tests against a real WordPress (`tests/Integration/`, plain PHPUnit `TestCase`, run inside the tests wp-env instance) plus one end-to-end smoke (`tests/EndToEnd/`, Playwright, against the dev wp-env instance). See `tests/README.md`.
@@ -59,7 +59,7 @@ Run watch builds:
 npm start
 ```
 
-`npm start` watches the theme and features Sass and scripts, but the styles are compiled by Sass only -- the PostCSS vendor-prefix pass and the RTL stylesheet come from `npm run build`, so the watched CSS differs from a production build.
+`npm start` watches the theme and features Sass and scripts, but the styles are compiled by Sass only — the PostCSS vendor-prefix pass and the RTL stylesheet come from `npm run build`, so the watched CSS differs from a production build.
 
 Run the local WordPress environment:
 
@@ -67,7 +67,7 @@ Run the local WordPress environment:
 npm run wp-env:start
 ```
 
-wp-env publishes the site on all network interfaces with fixed development credentials -- treat the dev site as visible to your local network, not just localhost.
+wp-env publishes the site on all network interfaces with fixed development credentials — treat the dev site as visible to your local network, not just localhost.
 
 ### Quality checks
 
@@ -78,7 +78,7 @@ npm run lint
 ```
 
 `npm run lint` runs the JavaScript, style, `package.json`, and README lint leaves in sequence.
-`lint:php` runs three PHPCS rulesets -- theme, features mu-plugin, `tests/` -- plus one PHPStan
+`lint:php` runs three PHPCS rulesets — theme, features mu-plugin, `tests/` — plus one PHPStan
 pass over both tracked components.
 
 ### Tests

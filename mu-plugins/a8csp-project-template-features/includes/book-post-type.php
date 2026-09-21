@@ -16,7 +16,7 @@
  * above it. Because this changes the site's rewrite
  * rules, run `wp rewrite flush` once against production after deploying any change to the CPT's
  * rewrite args. Adding or removing this feature both qualify. Book is a public post type, so
- * decide the fate of any persisted Book posts -- export or delete them deliberately -- before
+ * decide the fate of any persisted Book posts — export or delete them deliberately — before
  * removing the registration; unregistered content stays in the database but becomes unreachable.
  *
  * This file registers the Book CPT on the real `init` action with `show_in_rest => true`, and the

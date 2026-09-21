@@ -5,7 +5,7 @@
  * This is the theme's worked example of plugin-conditional code: the theme's own styling
  * (theme-setup.php) and small theme-owned dynamic content (theme-dynamic-content.php) never guard
  * on another plugin's presence, but this file exists only because WooCommerce might be. The guard
- * makes WooCommerce's absence silent -- no notice, no fallback markup -- so this file is safe to
+ * makes WooCommerce's absence silent — no notice, no fallback markup — so this file is safe to
  * leave in a site that never installs the plugin.
  *
  * To remove this worked example, delete this file, delete `assets/css/src/cart.scss` and its built
