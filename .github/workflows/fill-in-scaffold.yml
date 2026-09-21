@@ -75,8 +75,8 @@ jobs:
           invalid=0
 
           # The title lands in a PHP string literal (the features floor-gate notice) and, space-stripped,
-          # in the `@package` identifier; an apostrophe would ship a parse error in a repository whose
-          # pushes trigger no CI.
+          # in the `@package` identifier; an apostrophe in it is a parse error, and this workflow's pushes
+          # trigger no CI to catch one.
           title_grammar='^[A-Za-z0-9][A-Za-z0-9 ]*$'
           if [ -z "$human_title" ]; then
             report_error "repository custom property 'human-title'" "$human_title" 'it must be present and non-empty'
