@@ -22,7 +22,7 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'README.scaffold.md',
 		from: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through this template end to end before writing your own."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through the site end to end before writing your own."
 		),
 		to: block(
 			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features -- the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
@@ -156,7 +156,7 @@ const MANIFEST = [
 		),
 		to: block(
 			' *',
-			' * To remove this worked example, delete this file; delete `assets/js/src/book-cover-reminder.js`'
+			' * To remove this feature, delete this file; delete `assets/js/src/book-cover-reminder.js`'
 		),
 	},
 
@@ -220,6 +220,48 @@ const MANIFEST = [
 		),
 		to: block(
 			"Description: The site's block theme. Replace its contents freely; the directory name and text domain are permanent."
+		),
+	},
+
+	// A stripped docblock names a feature, not a worked example.
+	{
+		action: 'replace-exact',
+		path: 'mu-plugins/a8csp-project-template-features/includes/book-post-type.php',
+		from: block(
+			' * To remove this worked example, delete this file; delete `assets/css/src/book-archive.scss`'
+		),
+		to: block(
+			' * To remove this feature, delete this file; delete `assets/css/src/book-archive.scss`'
+		),
+	},
+	{
+		action: 'replace-exact',
+		path: 'mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js',
+		from: block(
+			' * To remove this worked example, follow the recipe in `includes/book-cover-reminder.php`.'
+		),
+		to: block(
+			' * To remove this feature, follow the recipe in `includes/book-cover-reminder.php`.'
+		),
+	},
+	{
+		action: 'replace-exact',
+		path: 'themes/a8csp-project-template/includes/plugin-woocommerce.php',
+		from: block(
+			' * To remove this worked example, delete this file, delete `assets/css/src/cart.scss` and its built'
+		),
+		to: block(
+			' * To remove this feature, delete this file, delete `assets/css/src/cart.scss` and its built'
+		),
+	},
+	{
+		action: 'replace-exact',
+		path: 'themes/a8csp-project-template/includes/theme-dynamic-content.php',
+		from: block(
+			' * To remove this worked example, delete this file, remove the bound paragraph from'
+		),
+		to: block(
+			' * To remove this feature, delete this file, remove the bound paragraph from'
 		),
 	},
 ];
