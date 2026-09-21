@@ -70,7 +70,6 @@ jobs:
 
           read_json_value human_title '.custom_properties["human-title"] // empty'
           read_json_value php_globals_short_prefix '.custom_properties["php-globals-short-prefix"] // empty'
-          read_json_value repository_description '.description // empty'
           read_json_value repository_name '.name'
 
           invalid=0
@@ -94,15 +93,6 @@ jobs:
             report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be present and non-empty'
           elif [[ ! "$php_globals_short_prefix" =~ $prefix_grammar ]] || [[ "$php_globals_short_prefix" == *__* ]]; then
             report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be 4-15 characters of lowercase snake_case, starting with a letter, ending with a letter or digit, with no __ runs'
-          fi
-
-          if [ -n "$repository_description" ]; then
-            if [[ "$repository_description" == *$'\n'* || "$repository_description" == *$'\r'* ]]; then
-              report_error 'repository description' "$repository_description" 'it must be a single line when set'
-            fi
-            if [[ "$repository_description" == *'*/'* ]]; then
-              report_error 'repository description' "$repository_description" "it must not contain '*/'"
-            fi
           fi
 
           if [[ ! "$repository_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then

@@ -98,10 +98,9 @@ const buildTemplate = async ( filePath ) => {
 		replacementPattern,
 		( match ) => {
 			const value = replacements[ match ];
-			const renderedValue =
-				filePath.endsWith( '.json' ) || filePath.endsWith( '.map' )
-					? JSON.stringify( value ).slice( 1, -1 )
-					: value;
+			const renderedValue = filePath.endsWith( '.json' )
+				? JSON.stringify( value ).slice( 1, -1 )
+				: value;
 			return renderedValue;
 		}
 	);
@@ -118,7 +117,10 @@ const buildTemplate = async ( filePath ) => {
 			String( portBase + ( Number( match ) - TEMPLATE_PORT_BASE ) )
 	);
 
-	renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
+	if ( filePath.endsWith( '.php' ) ) {
+		// PHP files never need trailing whitespace, and PHPCS rejects it.
+		renderedTemplate = renderedTemplate.replace( /[ \t]+$/gm, '' );
+	}
 
 	if ( renderedTemplate !== templateFile ) {
 		await writeFile( filePath, renderedTemplate );
