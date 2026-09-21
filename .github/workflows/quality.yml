@@ -47,20 +47,21 @@ jobs:
           coverage: none
           tools: none
 
-      # The header-discovered features entry and the headerless MU loader must parse below the site's
-      # PHP floor; header discovery survives generation renaming the features directory and entry file
-      # without rewriting .github/.
+      # Every header-discovered directory mu-plugin entry and the headerless MU loader must parse
+      # below the site's PHP floor; header discovery survives generation renaming the features
+      # directory and entry file without rewriting .github/.
       - name: Check the below-floor files for syntax errors
         run: |
           set -euo pipefail
 
           mapfile -t entry_files < <(grep -l 'Plugin Name:' "$GITHUB_WORKSPACE"/mu-plugins/*/*.php || true)
-          entry_count=${#entry_files[@]}
-          if [ "$entry_count" -ne 1 ]; then
-            echo "::error::expected exactly one mu-plugins/*/*.php file with a 'Plugin Name:' header, found $entry_count" >&2
+          if [ "${#entry_files[@]}" -eq 0 ]; then
+            echo "::error::expected at least one mu-plugins/*/*.php file with a 'Plugin Name:' header" >&2
             exit 1
           fi
-          php -l "${entry_files[0]}"
+          for entry_file in "${entry_files[@]}"; do
+            php -l "$entry_file"
+          done
           php -l "$GITHUB_WORKSPACE/mu-plugins/mu-loader.php"
 
   build-integrity:
