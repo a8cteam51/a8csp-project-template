@@ -64,7 +64,7 @@ final class FeaturesLoaderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * Skips the calling test when the features plugin is disabled. The check reads the `.disabled`
-	 * marker rather than a loaded function, so an enabled plugin that fails to load fails the test.
+	 * marker rather than a loaded function, so an enabled plugin that fails to load runs the tests.
 	 *
 	 * @return  void
 	 */
