@@ -74,9 +74,8 @@ jobs:
 
           invalid=0
 
-          # The title lands in PHP string literals (the features floor-gate notice), so its
-          # grammar mirrors the sibling plugin template's: an apostrophe or any punctuation
-          # would ship a parse error in a repository whose pushes trigger no CI.
+          # The title lands in PHP string literals (the features floor-gate notice): an apostrophe or
+          # any punctuation would ship a parse error in a repository whose pushes trigger no CI.
           title_grammar='^[A-Za-z0-9][A-Za-z0-9 ]*$'
           if [ -z "$human_title" ]; then
             report_error "repository custom property 'human-title'" "$human_title" 'it must be present and non-empty'
@@ -207,9 +206,6 @@ jobs:
       - name: Commit the filled-in placeholders.
         run: git commit -am "chore -- fill in scaffolding placeholders"
 
-      # Deleting workflow files is the one .github/workflows change the push token permits
-      # (it can never create or update them), which is why the template guard is a whole
-      # workflow of its own: it gets removed here along with the spent generation machinery.
       - name: Remove the spent fill-in-scaffold workflow.
         run: |
           rm .github/workflows/fill-in-scaffold.yml .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs .github/workflows/template-guard.yml

@@ -10,12 +10,8 @@ const escapeRegExp = ( string ) =>
 const repository = JSON.parse( process.argv[ 2 ] );
 const skippedDirectories = [ '.github', '.git' ];
 
-// Every generated repository gets its own wp-env port block, derived from the repository name:
-// deterministic across re-generations of the same repo, and collision-reducing (not unique --
-// distinct names can hash to the same block; wp-env override files cover that case), so
-// side-by-side `wp-env start`s rarely contend for the same host ports. Two ports per block
-// (dev + tests; this template has no below-floor tier) let the modulus double the sibling
-// plugin template's block count in the same 10000-29999 range, halving the collision rate.
+// A two-port wp-env block (dev and tests) hashed from the repository name, in 10000-29999, clear of
+// the OS ephemeral ranges; distinct names can share a block, which wp-env override files resolve.
 const TEMPLATE_PORT_BASE = 8894;
 const nameHash = parseInt(
 	createHash( 'sha256' )

@@ -2,42 +2,44 @@
 
 A template for A8C Special Projects full-site builds.
 
-This repository is a template site, not a finished site. Generate a site repository from it, and its `wp-content` follows one rule: the theme owns how the site looks, the features mu-plugin owns what it does, and the tests prove both survive a deploy. Everything else is installed, not tracked. This file documents that generation and the tooling used to maintain the template itself; the generated site's own README is a separate file, covered below.
+It holds the `wp-content` a new site repository starts from: a block theme for how the site looks, a
+features mu-plugin for what it does, the MU loader, whole-site tests, and CI. Everything else in
+`wp-content` is installed, not tracked.
 
-## Trunk-only
+## Generating a new site repository
 
-This repository never versions itself: no tags and no releases -- its history lives in git, and a repository ruleset blocks tag creation outright. There is no release or changelog machinery here: generated site repositories deploy their tree as-is rather than shipping built release artifacts.
+A repository created from this template runs `.github/workflows/fill-in-scaffold.yml` from its
+default branch, on a `fill_scaffold` repository dispatch or manually. It reads the repository name,
+description, and homepage and the `human-title` and `php-globals-short-prefix` custom properties,
+then renames the README, theme, features plugin, title, slugs, Composer package, `@package`
+identifier, and PHP prefixes, derives a per-repository wp-env port block, disables the features
+plugin with a `.disabled` marker, resolves both lockfiles afresh, and deletes itself. The
+`strip-teaching-content` input also rewrites the teaching prose into production documentation.
+`README.scaffold.md` becomes the site's README.
 
-## What is in this repository
+## Working on the template
+
+The template never versions itself: a repository ruleset blocks tags, and generated sites deploy
+their tree as-is, so there is no release or changelog machinery.
+
+`README.scaffold.md` documents a site's layout, deploy, and recipes, and
+[`tests/README.md`](tests/README.md) covers the test suites. The teaching-content strip matches each
+passage in `fill-in-scaffold-content.mjs` by its exact text, before the rename, and
+`template-guard.yml` fails any change that leaves a passage matching zero or several times; its
+generation contract also renders representative fixtures and checks the result.
+
+### Layout
 
 - `themes/a8csp-project-template/` is the worked block theme. Its slug getter leads `functions.php`'s `META` region, followed by a shared asset-metadata helper and a `sort()`-ordered, underscore-opt-out loader for `includes/`; `includes/theme-setup.php` registers theme support and enqueues `style.css` (built from `assets/sass/`) plus the built JS entry in `assets/js/`. `includes/plugin-woocommerce.php` is the plugin-conditional worked example, with a WooCommerce cart stylesheet built from `assets/css/src/`; `includes/theme-dynamic-content.php` is the block-binding worked example consumed by `patterns/footer-default.php`. The theme has two independent CSS pipelines: `assets/sass/` for its main and editor stylesheets and `assets/css/` for per-purpose plugin-conditional stylesheets.
 - `mu-plugins/mu-loader.php` discovers must-use plugins by scanning `mu-plugins/*/*.php` and reading only the `Plugin Name` header through `get_file_data()` -- no admin bootstrap on the frontend. Every file with a non-empty header loads once per request; full `get_plugin_data()` metadata is parsed lazily, only inside the admin plugin-list callback.
 - `mu-plugins/a8csp-project-template-features/` is the worked features mu-plugin. It's procedural, not class-based: site repos gitignore `vendor/`, so there is no Composer autoloader at runtime in production. The entry file gates on the WordPress/PHP floor before loading `includes/`; `includes/book-post-type.php` registers the Book post type for real on `init` with `show_in_rest`, enqueues per-purpose archive/singular stylesheets built from `assets/css/src/`, and documents its own teardown at the top of the file. `includes/book-cover-reminder.php` is the plugin's first editor-side JavaScript worked example: it is Book-scoped, warns before publishing a Book without a cover image, and documents its own teardown the same way.
 - `plugins/` carries only `.gitkeep`. Every content path under it is gitignored; the generated README's "Tracked custom plugin" and "Off-the-shelf plugin" recipes cover what goes there.
 - `tests/` is one whole-site test suite, not one suite per component: integration tests against a real WordPress (`tests/Integration/`, plain PHPUnit `TestCase`, run inside the tests wp-env instance) plus one end-to-end smoke (`tests/EndToEnd/`, Playwright, against the dev wp-env instance). See `tests/README.md`.
-- `.github/workflows/` runs PHP/JS/CSS quality, PHP syntax (including a below-floor matrix on the mu-loader and every header-discovered mu-plugin entry), a build-integrity check that the committed build output reproduces byte-for-byte, a blocks policy that sends new blocks to the blocks monorepo, PHPUnit + Playwright, supply-chain audit, CodeQL, `template-guard.yml` -- the template-only guards that generation removes, covering the strip-manifest drift check and the generation contract -- and `fill-in-scaffold.yml` -- the self-deleting generation workflow below.
-- The root also carries the whole dev toolchain: `composer.json` / `package.json`, the wp-env pair, `playwright.config.js`, `phpunit.dist.xml`, the lint configs, `.deployignore`, and `LICENSE` (GPL-2.0-or-later). Deploys target this tree as-is; `.deployignore` is the only filter.
+- `.github/workflows/` holds the CI workflows, plus `template-guard.yml` and the self-deleting
+  `fill-in-scaffold.yml`, which generation removes.
+- Deploys target the tree as-is; `.deployignore` is the only filter.
 
-## Generating a new site repository
-
-Repositories are generated from this template through GitHub's template mechanism, followed by a `fill-in-scaffold.yml` run (`repository_dispatch` with type `fill_scaffold`, or manually via `workflow_dispatch`). The workflow is guarded so it never runs on this template repository itself, and it requires its ref to be the new repository's default branch.
-
-Before touching the checkout, it validates two repository custom properties:
-
-- `human-title` -- the site's human-readable title; letters, digits, and spaces only, because it lands in PHP string literals.
-- `php-globals-short-prefix` -- the PHP global function/constant prefix; 4-15 characters of lowercase snake_case, starting with a letter, ending with a letter or digit, with no `__` runs.
-
-Both are required. A missing or malformed value fails the run with a per-property `::error` annotation before anything is checked out, so an invalid repository is left untouched. The repository name must be lowercase-kebab.
-
-Once validated, generation renames `README.scaffold.md` to `README.md` and the theme/features directories and entry file to the repository name, then runs `fill-in-scaffold.mjs` to replace every tracked template literal -- the Composer package name, the namespace-shaped `@package` identifier (no PHP `namespace` is declared anywhere in the site tree), both PHP global prefixes, the theme/features slugs, the README's `EXAMPLE_REPO_*` placeholders, and the wp-env ports `8894`/`8895` (matched only inside their `"port":` and backtick-wrapped anchors) -- with values derived from the repository's name, description, homepage, and the two custom properties above. The ports become a two-port block hashed from the repository name -- collision-reducing, not unique, since distinct names can hash to the same block -- so fleet projects started side by side rarely contend for the same host ports; a `.wp-env*.override.json` file takes local precedence when blocks do collide. The repository's `homepage` becomes the production URL documented in the generated README; when it's empty, the README renders a visible placeholder instead of a guessed or absent URL, since generation commonly precedes hosting provisioning. It then disables the features mu-plugin with a `.disabled` file, resolves npm dependencies afresh (only to releases at least seven days old), re-formats the substituted JavaScript, rebuilds the committed assets from the substituted sources, resolves Composer dependencies afresh, syntax-checks every generated PHP file, and finally deletes the spent generation machinery -- `fill-in-scaffold.yml`, both `.mjs` engines, and `template-guard.yml` -- before pushing everything as one push.
-
-An optional second phase strips the teaching narration: pass the `strip-teaching-content` checkbox on `workflow_dispatch` (or a `strip-teaching-content: true` key in the `repository_dispatch` client payload) and the exact-match manifest in `fill-in-scaffold-content.mjs` rewrites every teaching passage into the contract-level documentation a production site carries. The strip runs before the rename and substitution passes, so its manifest matches the pristine template tree; load-bearing constraint one-liners survive verbatim.
-
-## What a generated repository contains
-
-`README.scaffold.md` becomes the generated repository's actual `README.md`. It documents that site's structure, deploy story, and recipes -- replacing the theme, tracking a custom plugin, and tearing down RTL, i18n, or the Book worked example. Read it directly rather than here; duplicating it in this file would only let the two drift apart.
-
-## Working on the template
+### Development
 
 Install dependencies:
 
@@ -68,7 +70,7 @@ npm run wp-env:start
 
 wp-env publishes the site on all network interfaces with fixed development credentials -- treat the dev site as visible to your local network, not just localhost.
 
-Quality checks:
+### Quality checks
 
 ```sh
 composer validate --strict
@@ -77,18 +79,12 @@ npm run lint
 ```
 
 `npm run lint` runs the JavaScript, style, `package.json`, and README lint leaves in sequence.
+`lint:php` runs three PHPCS rulesets -- theme, features mu-plugin, `tests/` -- plus one PHPStan
+pass over both tracked components.
 
-`lint:php` runs three PHPCS rulesets -- theme, features mu-plugin, `tests/` -- plus a single root `phpstan analyse` pass. A site has one WordPress floor for its whole tree, so PHPStan runs once against both tracked components rather than once per component, unlike a plugin or theme package.
-
-Tests:
+### Tests
 
 ```sh
 composer test:integration
 npm run test:e2e
 ```
-
-`tests/README.md` covers both tiers in full, including the dedicated test wp-env instance and its port. There is no below-floor or Requirements tier: a plugin or theme package ships to sites it doesn't control and needs proof below its supported floor, while this site deploys only to hosts the team controls. The features mu-plugin's inexpensive floor gate is the only runtime below-floor protection -- the Quality workflow's below-floor syntax matrix covers parse-safety separately -- and it isn't a separate test tier.
-
-### Changing the generation machinery
-
-`fill-in-scaffold.mjs`, `fill-in-scaffold-content.mjs`, and their workflows are template-only; none ships in a generated repository. `template-guard.yml` proves every change to them in CI: its generation-contract job renders the scaffold against representative fixtures (aligned and diverging identities, an empty description and homepage, a hostile description, and a stripped variant) and asserts that no template literal survives, that every generated PHP file parses, and that the derived port block matches the engine's hash; its manifest-drift job runs the strip manifest's `--check` so a docblock edit that breaks an exact-match span fails the pull request instead of a generation. A local render plus full-tree sweep remains the fallback proof for changes the fixtures don't cover.
