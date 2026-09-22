@@ -95,8 +95,10 @@ jobs:
             report_error "repository custom property 'php-globals-short-prefix'" "$php_globals_short_prefix" 'it must be 4-15 characters of lowercase snake_case, starting with a letter, ending with a letter or digit, with no __ runs'
           fi
 
-          if [[ ! "$repository_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
-            report_error 'repository name' "$repository_name" 'it must match ^[a-z0-9]+(-[a-z0-9]+)*$'
+          # The name becomes the theme slug, which starts the End-to-End locators' CSS ids and the
+          # editor plugin name; neither may begin with a digit.
+          if [[ ! "$repository_name" =~ ^[a-z][a-z0-9]*(-[a-z0-9]+)*$ ]]; then
+            report_error 'repository name' "$repository_name" 'it must start with a letter and match ^[a-z][a-z0-9]*(-[a-z0-9]+)*$'
           fi
 
           if [ "$invalid" -ne 0 ]; then
