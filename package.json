@@ -19,7 +19,7 @@
     "npm": ">=11"
   },
   "devDependencies": {
-    "@a8csp/configs": "github:a8cteam51/a8csp-configs#trunk",
+    "@a8csp/configs": "github:a8cteam51/a8csp-configs#semver:^1",
     "@playwright/test": "^1.61.1",
     "@wordpress/browserslist-config": "^6.55.0",
     "@wordpress/components": "^40.1.0",
