@@ -50,7 +50,7 @@ Run End-to-End coverage with:
 npm run test:e2e
 ```
 
-Playwright's `webServer` config starts the development wp-env instance with `npm run wp-env:start` when none is running and reuses one that is. `wp-env start` returns once the containers are up, so they keep running after the run; stop them with `npm run wp-env:stop`.
+Playwright's `webServer` config starts the development wp-env instance with `npm run wp-env:start` when none is running and reuses one that is. `wp-env start` returns once the containers are up, so they keep running after the run; stop them with `npm run wp-env:stop`. The Book smoke's archive check needs its own Book alone on the archive, so it fails against a development instance that holds other published Books: several Books split the archive into grid tracks narrower than the theme's content width, where the check cannot tell whose rules win.
 
 ## Ports
 

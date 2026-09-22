@@ -7,8 +7,8 @@ test.describe( 'Theme smoke', () => {
 		const homeResponse = await page.goto( '/' );
 
 		expect( homeResponse.status() ).toBe( 200 );
-		await expect( page.locator( 'body' ) ).toHaveClass(
-			/\ba8csp-project-template\b/
+		await expect( page.locator( 'body' ) ).toContainClass(
+			'a8csp-project-template'
 		);
 		await expect(
 			page.locator( '#a8csp-project-template-style-css' )
@@ -68,17 +68,30 @@ test.describe( 'Book smoke', () => {
 			page.locator( '.type-a8csp_template_book' ).first()
 		).toHaveCSS( 'border-top-style', 'solid' );
 		// The theme caps posts at its content width; a Book card fills its grid track only while the
-		// archive rules outrank the theme's.
-		const [ cardWidth, trackWidth ] = await page
+		// archive rules outrank the theme's, which shows only on a track wider than that cap. Several
+		// Books split the archive into narrower tracks, so the check needs this test's Book alone.
+		const [ cardWidth, trackWidth, contentWidth ] = await page
 			.locator( '.wp-block-post-template' )
-			.evaluate( ( grid ) => [
-				grid
-					.querySelector( '.type-a8csp_template_book' )
-					.getBoundingClientRect().width,
-				parseFloat(
-					window.getComputedStyle( grid ).gridTemplateColumns
-				),
-			] );
+			.evaluate( ( grid ) => {
+				// The browser resolves the cap from the theme's own expression, whatever its unit.
+				const probe = document.createElement( 'div' );
+				probe.style.width =
+					'var(--wp--style--global--content-size, 42rem)';
+				document.body.append( probe );
+				const capWidth = probe.getBoundingClientRect().width;
+				probe.remove();
+
+				return [
+					grid
+						.querySelector( '.type-a8csp_template_book' )
+						.getBoundingClientRect().width,
+					parseFloat(
+						window.getComputedStyle( grid ).gridTemplateColumns
+					),
+					capWidth,
+				];
+			} );
+		expect( trackWidth ).toBeGreaterThan( contentWidth );
 		expect( cardWidth ).toBeCloseTo( trackWidth, 0 );
 
 		const singularResponse = await page.goto( bookLink );
