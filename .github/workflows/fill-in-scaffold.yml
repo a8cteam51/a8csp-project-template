@@ -10,18 +10,16 @@ on:
         type: boolean
         default: false
 
-# One fill at a time; a duplicate dispatch then fills from the pre-fill commit and its publish job,
-# finding the default branch moved, pushes nothing.
+# One fill at a time; a duplicate dispatch then fills from the pre-fill commit, and its publish job refuses to push.
 concurrency:
   group: fill-scaffold-${{ github.repository_id }}
   cancel-in-progress: false
 
-# The generate job runs dependency code (the re-format and build steps), so it holds only a read
-# token and hands its commits over as a git bundle; the publish job holds the write token and runs
-# no repository or dependency code.
+# The fill-in runs dependency code (the npm re-format and build), so it holds only a read token and
+# hands its commits over as a bundle; the job that holds the write token runs no repository code.
 jobs:
   generate:
-    name: Generate the filled-in commits
+    name: Fill in the placeholders
     # The template's immutable repository ID survives renames and transfers; every generated repository has its own.
     if: github.repository_id != '1297742940'
 
@@ -240,6 +238,7 @@ jobs:
   publish:
     name: Publish the filled-in commits
     needs: generate
+    # The template's immutable repository ID survives renames and transfers; every generated repository has its own.
     if: github.repository_id != '1297742940'
 
     runs-on: ubuntu-latest
@@ -253,12 +252,12 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
 
-      - name: Require the default branch to be where the fill-in started
+      - name: Require the default branch to still be at the fill-in's starting commit
         env:
           BASE: ${{ needs.generate.outputs.base }}
         run: |
           if [ "$(git rev-parse HEAD)" != "$BASE" ]; then
-            echo "::error::the default branch moved from $BASE to $(git rev-parse HEAD) during the fill-in; nothing was pushed"
+            echo "::error::the default branch moved away from $BASE during the fill-in, so nothing was pushed"
             exit 1
           fi
 
@@ -268,13 +267,13 @@ jobs:
           name: fill-in-bundle
           path: ${{ runner.temp }}/fill-in
 
-      - name: Verify and fetch the fill-in bundle
+      - name: Fetch the fill-in commits from the bundle
         run: |
           set -euo pipefail
           git bundle verify "$RUNNER_TEMP/fill-in/fill-in.bundle"
           git fetch "$RUNNER_TEMP/fill-in/fill-in.bundle" HEAD
           if ! git merge-base --is-ancestor HEAD FETCH_HEAD; then
-            echo "::error::the fill-in commits do not fast-forward the default branch; nothing was pushed"
+            echo "::error::the fill-in bundle does not fast-forward the default branch"
             exit 1
           fi
 
