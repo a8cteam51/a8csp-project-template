@@ -25,7 +25,7 @@ jobs:
           - name: 'WP latest'
           - name: 'WP nightly'
             wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@trunk
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@67392ce62cd343bc5ce8c65da264c778cdd86210 # v1.0.0
     with:
       wp-version: ${{ matrix.wp-version || '' }}
       wp-env-core: ${{ matrix.wp-env-core || '' }}
@@ -34,4 +34,4 @@ jobs:
 
   e2e:
     name: End-to-End
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@trunk
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@67392ce62cd343bc5ce8c65da264c778cdd86210 # v1.0.0
