@@ -46,8 +46,11 @@ $a8csp_template_features_floors = get_file_data(
 	)
 );
 
+// Below the floor, core may predate is_*_version_compatible() (5.2) and wp_admin_notice() (6.4).
 if (
-	! is_wp_version_compatible( $a8csp_template_features_floors['RequiresWP'] )
+	! \function_exists( 'is_wp_version_compatible' )
+	|| ! \function_exists( 'is_php_version_compatible' )
+	|| ! is_wp_version_compatible( $a8csp_template_features_floors['RequiresWP'] )
 	|| ! is_php_version_compatible( $a8csp_template_features_floors['RequiresPHP'] )
 ) {
 	// Misconfiguration speaks: the notice names the component, its floors, and the actual versions.
@@ -71,13 +74,17 @@ if (
 				PHP_VERSION
 			);
 
-			wp_admin_notice(
-				$message,
-				array(
-					'type'        => 'error',
-					'dismissible' => false,
-				)
-			);
+			if ( \function_exists( 'wp_admin_notice' ) ) {
+				wp_admin_notice(
+					$message,
+					array(
+						'type'        => 'error',
+						'dismissible' => false,
+					)
+				);
+			} else {
+				echo wp_kses_post( '<div class="notice notice-error"><p>' . $message . '</p></div>' );
+			}
 		}
 	);
 
