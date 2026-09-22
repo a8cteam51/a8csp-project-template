@@ -7,8 +7,8 @@ test.describe( 'Theme smoke', () => {
 		const homeResponse = await page.goto( '/' );
 
 		expect( homeResponse.status() ).toBe( 200 );
-		await expect( page.locator( 'body' ) ).toHaveClass(
-			/\ba8csp-project-template\b/
+		await expect( page.locator( 'body' ) ).toContainClass(
+			'a8csp-project-template'
 		);
 		await expect(
 			page.locator( '#a8csp-project-template-style-css' )
