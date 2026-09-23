@@ -64,7 +64,7 @@ To track a custom plugin in `plugins/<name>`:
 
 ### Off-the-shelf plugin
 
-Require it from WP Packages as a development dependency with `composer require --dev wp-plugin/<slug>` — installer-paths route it to `plugins/<slug>/`, gitignored like every other Composer or npm dependency. It never reaches the deployed tree (deploy is git-tree-as-is; production never runs `composer install`), so it's for local development and CI tooling only; to load it there, map it as `"wp-content/plugins/<slug>": "./plugins/<slug>"` and activate it in both `.wp-env.json` and `.wp-env.tests.json`, as for a tracked plugin. The live site's off-the-shelf plugins are installed and updated on the host itself (Pressable or WPCOM plugin management), not through this repo.
+Require it from WP Packages as a development dependency with `composer require --dev wp-plugin/<slug>` — installer-paths route it to `plugins/<slug>/`, gitignored like every other Composer or npm dependency. It never reaches the deployed tree (deploy is git-tree-as-is; production never runs `composer install`), so it's for local development and CI tooling only; to load it there, map it as `"wp-content/plugins/<slug>": "./plugins/<slug>"` and activate it in both `.wp-env.json` and `.wp-env.tests.json`, as for a tracked plugin. When tracked code uses its classes or functions, also add `%currentWorkingDirectory%/plugins/<slug>` to the root `.phpstan.neon` file's `parameters.scanDirectories` list, so PHPStan knows those symbols without analysing the plugin. The live site's off-the-shelf plugins are installed and updated on the host itself (Pressable or WPCOM plugin management), not through this repo.
 
 ### Blocks
 
