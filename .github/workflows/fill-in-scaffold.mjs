@@ -53,7 +53,7 @@ const buildTemplate = async ( filePath ) => {
 	// A real URL is autolinked so the rendered README stays bare-URL-lint-clean; the placeholder is prose.
 	const homepageUrl = repository.homepage
 		? `<${ repository.homepage }>`
-		: 'production URL not yet provisioned — set the repository homepage';
+		: 'production URL not yet provisioned — replace this line once it is';
 	if ( 'README.md' === filePath ) {
 		replacements = {
 			EXAMPLE_REPO_NAME: title,
