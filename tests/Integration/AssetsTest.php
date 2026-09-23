@@ -92,7 +92,9 @@ final class AssetsTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_woocommerce_conditional_style_is_not_registered_without_woocommerce(): void {
-		self::assertFalse( \class_exists( 'WooCommerce' ) );
+		if ( \class_exists( 'WooCommerce' ) ) {
+			self::markTestSkipped( 'WooCommerce is active, so the WooCommerce-less case cannot run here.' );
+		}
 
 		do_action( 'wp_enqueue_scripts' );
 
