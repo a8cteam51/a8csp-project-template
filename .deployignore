@@ -46,3 +46,5 @@ CLAUDE.md
 id_rsa*
 .npmrc
 auth.json
+*.sql
+*.sql.gz

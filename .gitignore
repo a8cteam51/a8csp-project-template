@@ -411,3 +411,5 @@ tests/.cache/
 id_rsa*
 .npmrc
 auth.json
+*.sql
+*.sql.gz
