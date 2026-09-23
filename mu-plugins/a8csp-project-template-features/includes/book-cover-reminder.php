@@ -12,8 +12,12 @@
  * `start:features:scripts` npm scripts (with no `build:features:*` script left, also drop
  * `build:features:**` from `build` and `start:features:**` from `start`); and delete
  * `test_book_cover_reminder_enqueues_on_the_book_editor_screen`,
- * `test_book_cover_reminder_metadata_comes_from_generated_asset_file` and the cover-reminder
- * dequeue in `tearDown()` from `tests/Integration/AssetsTest.php`.
+ * `test_book_cover_reminder_metadata_comes_from_generated_asset_file`, the cover-reminder
+ * dequeue and the `current_screen` reset in `tearDown()`, and `set_editor_screen()` from
+ * `tests/Integration/AssetsTest.php`. In that file, also delete
+ * `skip_when_features_plugin_disabled()` once no test calls it, `tearDown()` once only its parent
+ * call remains, and any region left empty. Then rewrite the prose the removal leaves false, which
+ * `git grep -n -i -E 'cover.reminder|block-editor panel'` finds.
  *
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects

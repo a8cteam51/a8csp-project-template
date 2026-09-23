@@ -16,7 +16,10 @@
  * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`)
  * with the archive-style dequeue in its `tearDown()`, and the `Book smoke` block of
  * `tests/EndToEnd/site-smoke.spec.js` with the `.disabled` probe and the `fs`/`path` requires
- * above it. Because this changes the site's rewrite
+ * above it. In `AssetsTest.php`, also delete `skip_when_features_plugin_disabled()` once no test
+ * calls it, `tearDown()` once only its parent call remains, and any region left empty. Then
+ * rewrite the prose the removal leaves false, which `git grep -n -i -w book` finds. Because this
+ * changes the site's rewrite
  * rules, run `wp rewrite flush` once against production after deploying any change to the CPT's
  * rewrite args. Adding or removing this feature both qualify. Book is a public post type, so
  * decide the fate of any persisted Book posts — export or delete them deliberately — before
