@@ -11,7 +11,8 @@
  * `start:features:**` from `start`);
  * delete the Book-specific assertions in `tests/Integration/FeaturesLoaderTest.php`
  * (`test_book_post_type_is_registered`, `test_book_post_type_archive_link_uses_book_path`, and
- * `test_book_archive_rewrite_rule_is_in_the_rewrite_table`), the Book archive enqueue test in
+ * `test_book_archive_rewrite_rule_is_in_the_rewrite_table`), and delete that file if no test
+ * remains in it; delete the Book archive enqueue test in
  * `tests/Integration/AssetsTest.php` (`test_book_archive_request_enqueues_the_archive_style`)
  * with the archive-style dequeue in its `tearDown()`, and the `Book smoke` block of
  * `tests/EndToEnd/site-smoke.spec.js` with the `.disabled` probe and the `fs`/`path` requires
