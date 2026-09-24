@@ -8,7 +8,9 @@ const escapeRegExp = ( string ) =>
 	string.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' );
 
 const repository = JSON.parse( process.argv[ 2 ] );
-const skippedDirectories = [ '.github', '.git' ];
+// The fill-in push may delete workflow files but never update them. The rest of .github is
+// substituted, because .github/blocks-allowlist names paths inside the renamed features plugin.
+const skippedDirectories = [ '.github/workflows', '.git' ];
 
 // A two-port wp-env block (dev and tests) hashed from the repository name, in 10000-29999, clear of
 // the OS ephemeral ranges; two ports per block leave room for 10000 blocks, and names that share

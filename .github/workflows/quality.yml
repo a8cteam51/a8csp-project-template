@@ -49,7 +49,7 @@ jobs:
 
       # Every header-discovered directory mu-plugin entry and the headerless MU loader must parse
       # below the site's PHP floor; header discovery survives generation renaming the features
-      # directory and entry file without rewriting .github/.
+      # directory and entry file without rewriting .github/workflows/.
       - name: Check the below-floor files for syntax errors
         run: |
           set -euo pipefail
