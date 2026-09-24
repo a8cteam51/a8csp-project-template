@@ -1,5 +1,8 @@
 # What a deploy leaves out of the tree it ships. Asset sources and sourcemaps deploy on purpose, so
 # the live site stays debuggable.
+#
+# DeployHQ and WordPress.com match a directory rule to the directory entry alone, so a withheld
+# directory also names its contents: `dir/**` at the root and `**/dir/**` below it.
 
 .git*
 .github/**
