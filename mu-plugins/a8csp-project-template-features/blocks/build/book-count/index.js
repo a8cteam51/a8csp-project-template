@@ -1,0 +1,1 @@
+(()=>{"use strict";const o=window.wp.blocks,e=window.wp.blockEditor,t=window.wp.i18n,c=JSON.parse('{"UU":"a8csp-project-template/book-count"}'),i=window.ReactJSXRuntime;(0,o.registerBlockType)(c.UU,{edit:()=>(0,i.jsx)("p",{...(0,e.useBlockProps)(),children:(0,t.__)("Book Count: the number of published Books, linked to the Book archive.","a8csp-project-template-features")})})})();
