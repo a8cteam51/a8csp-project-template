@@ -5,7 +5,9 @@
 # directory also names its contents: `dir/**` at the root and `**/dir/**` below it.
 
 .git*
+**/.git*
 .github/**
+**/.github/**
 .editorconfig
 .deployignore
 node_modules
@@ -41,6 +43,7 @@ AGENTS.md
 CLAUDE.md
 .agents
 .agents/**
+**/.agents/**
 
 # WordPress content directories no broader pattern may exclude.
 !themes
