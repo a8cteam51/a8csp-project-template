@@ -29,8 +29,8 @@ final class BookCountBlockTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Confirms the block renders the published Book count, drafts excluded, as a link to the Book archive.
 	 *
-	 * The suite runs against a fresh site, where a count stuck at zero would read right too, so the
-	 * test adds a published and a draft Book of its own and deletes both again.
+	 * A count that never changes matches any single reading, so the test renders the block before and
+	 * after adding a published and a draft Book of its own, then deletes both.
 	 *
 	 * @return  void
 	 */
@@ -38,6 +38,7 @@ final class BookCountBlockTest extends \PHPUnit\Framework\TestCase {
 		$this->skip_when_features_plugin_disabled();
 
 		$published_count = (int) wp_count_posts( 'a8csp_template_book' )->publish;
+		$output_before   = do_blocks( '<!-- wp:a8csp-project-template/book-count /-->' );
 
 		$book_ids = array();
 		try {
@@ -54,15 +55,18 @@ final class BookCountBlockTest extends \PHPUnit\Framework\TestCase {
 				$book_ids[] = $book_id;
 			}
 
-			$output = do_blocks( '<!-- wp:a8csp-project-template/book-count /-->' );
+			$output_after = do_blocks( '<!-- wp:a8csp-project-template/book-count /-->' );
 		} finally {
 			foreach ( $book_ids as $book_id ) {
 				wp_delete_post( $book_id, true );
 			}
 		}
 
-		self::assertStringContainsString( 'wp-block-a8csp-project-template-book-count', $output );
-		self::assertMatchesRegularExpression( '#<a href="' . \preg_quote( esc_url( (string) get_post_type_archive_link( 'a8csp_template_book' ) ), '#' ) . '">' . \preg_quote( number_format_i18n( $published_count + 1 ), '#' ) . ' books?</a>#', $output );
+		$count_link_pattern = static fn ( int $count ): string => '#<a href="' . \preg_quote( esc_url( (string) get_post_type_archive_link( 'a8csp_template_book' ) ), '#' ) . '">' . \preg_quote( number_format_i18n( $count ), '#' ) . ' books?</a>#';
+
+		self::assertStringContainsString( 'wp-block-a8csp-project-template-book-count', $output_after );
+		self::assertMatchesRegularExpression( $count_link_pattern( $published_count ), $output_before );
+		self::assertMatchesRegularExpression( $count_link_pattern( $published_count + 1 ), $output_after );
 	}
 
 	/**
