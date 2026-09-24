@@ -12,6 +12,7 @@
 .deployignore
 node_modules
 node_modules/**
+**/node_modules/**
 # Only the site's own Composer tree: a tracked plugin's committed vendor/ is its runtime and deploys.
 /vendor
 vendor/**
