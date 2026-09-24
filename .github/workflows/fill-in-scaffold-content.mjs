@@ -38,6 +38,16 @@ const MANIFEST = [
 			"The theme's WooCommerce cart styling and dynamic-content binding are each independently removable; follow the teardown lines co-located in `themes/EXAMPLE_REPO_SLUG/includes/plugin-woocommerce.php` and `themes/EXAMPLE_REPO_SLUG/includes/theme-dynamic-content.php`."
 		),
 	},
+	{
+		action: 'replace-exact',
+		path: 'README.scaffold.md',
+		from: block(
+			"The Book Count block (`blocks/src/book-count/`) shows that exception end to end: it's an example to learn from, not an invitation to keep blocks here. It goes with the rest of Book (see the teardown one-liners below)."
+		),
+		to: block(
+			'The Book Count block (`blocks/src/book-count/`) is listed there and goes with the rest of the Book feature (see the teardown one-liners below).'
+		),
+	},
 
 	// tests/README.md ships as-is into generated repositories.
 	{

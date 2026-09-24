@@ -68,7 +68,11 @@ Require it from WP Packages as a development dependency with `composer require -
 
 ### Blocks
 
-Blocks belong in the A8C Special Projects [blocks monorepo](https://github.com/a8cteam51/special-projects-blocks-monorepo), where every site can reuse them. The Quality workflow fails on any tracked `block.json` whose path is not listed in `.github/blocks-allowlist` (one path per line, `#` for comments); list only a block that belongs to this one site.
+Does this block really belong to this one site only? If another site could use it, build it in the A8C Special Projects [blocks monorepo](https://github.com/a8cteam51/special-projects-blocks-monorepo) instead, where every site can reuse it. The Quality workflow fails on any tracked `block.json` whose path is not listed in `.github/blocks-allowlist` (one path per line, `#` for comments), and its error points to the monorepo.
+
+When the answer is yes, the features mu-plugin already has the build wiring. Put the block in `mu-plugins/EXAMPLE_REPO_SLUG-features/blocks/src/<name>/`: `npm run build` compiles it into `blocks/build/<name>/` and regenerates `blocks/build/blocks-manifest.php`, and `includes/blocks.php` registers everything in that manifest. Then list both copies of its `block.json`, the source and the built one, in `.github/blocks-allowlist`.
+
+The Book Count block (`blocks/src/book-count/`) shows that exception end to end: it's an example to learn from, not an invitation to keep blocks here. It goes with the rest of Book (see the teardown one-liners below).
 
 ### Teardown one-liners
 
