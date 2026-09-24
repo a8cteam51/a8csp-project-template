@@ -1,18 +1,30 @@
 # What a deploy leaves out of the tree it ships. Asset sources and sourcemaps deploy on purpose, so
 # the live site stays debuggable.
+#
+# DeployHQ and WordPress.com match a directory rule to the directory entry alone, so a withheld
+# directory also names its contents: `dir/**` at the root and `**/dir/**` below it.
 
 .git*
+**/.git*
+.github/**
+**/.github/**
 .editorconfig
 .deployignore
 node_modules
+node_modules/**
+**/node_modules/**
 # Only the site's own Composer tree: a tracked plugin's committed vendor/ is its runtime and deploys.
 /vendor
+vendor/**
 tests
+tests/**
+**/tests/**
 
 .wp-env*.json
 playwright.config.js
 phpunit.dist.xml
 .phpcs.xml
+**/.phpcs.xml
 .phpcs.tests.xml
 .phpstan.neon
 eslint.config.mjs
@@ -31,6 +43,8 @@ README.md
 AGENTS.md
 CLAUDE.md
 .agents
+.agents/**
+**/.agents/**
 
 # WordPress content directories no broader pattern may exclude.
 !themes
@@ -39,12 +53,17 @@ CLAUDE.md
 !uploads
 
 # Secret material: once something is committed, this filter is the last thing between it and
-# production. Like .gitignore, it matches at any depth.
+# production. DeployHQ matches a bare name only at the root, so a name that starts with a literal
+# also appears as `**/name`; a leading `*` already reaches every depth.
 .env*
+**/.env*
 *.pem
 *.key
 id_rsa*
+**/id_rsa*
 .npmrc
+**/.npmrc
 auth.json
+**/auth.json
 *.sql
 *.sql.gz
