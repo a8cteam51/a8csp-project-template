@@ -11,6 +11,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 - `SiteBootTest` protects the promise that the site starts with the project theme active and its front-end stylesheet available.
 - `FeaturesLoaderTest` protects the promise that the site's enabled features, including the public Book archive, load.
 - `AssetsTest` protects the promise that front-end assets are wired into the site and theme asset updates receive deploy-specific cache versions.
+- `BookCountBlockTest` protects the promise that the features plugin's blocks register from the build manifest and render on the server only while the plugin is enabled.
 - `MuLoaderTest` protects the promise that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
 
 ### End-to-End
@@ -68,7 +69,7 @@ untracked override files take local precedence (`.wp-env.override.json`; the tes
 
 Both wp-env configurations activate the project theme, set pretty permalinks, and flush rewrite rules in `afterStart`. That lifecycle is why `FeaturesLoaderTest` can resolve the Book archive link and the End-to-End Book singular route can resolve without either test performing a manual flush. Removing the Book feature also removes its test traces, which the recipe at the top of `mu-plugins/a8csp-project-template-features/includes/book-post-type.php` lists. A production deployment that changes the CPT rewrite arguments—including adding or removing the CPT—needs one production `wp rewrite flush`, as documented in `mu-plugins/a8csp-project-template-features/includes/book-post-type.php`.
 
-Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin — Book included — until it's deleted. While that file is present, the Book-specific assertions and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed.
+Generation creates `mu-plugins/<slug>-features/.disabled`, which disables the whole features plugin — Book included — until it's deleted. While that file is present, the Book-specific assertions and the End-to-End Book smoke self-skip with a named message, and they resume automatically once it's removed. `BookCountBlockTest`'s disabled-state check runs the other way round: only while the file is present.
 
 ## Unit tier
 

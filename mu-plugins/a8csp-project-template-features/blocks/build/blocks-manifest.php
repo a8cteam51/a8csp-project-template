@@ -1,0 +1,19 @@
+<?php
+// This file is generated. Do not modify it manually.
+return array(
+	'book-count' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'a8csp-project-template/book-count',
+		'title' => 'Book Count',
+		'category' => 'widgets',
+		'icon' => 'book',
+		'description' => 'Shows the number of published Books, linked to the Book archive.',
+		'supports' => array(
+			'html' => false
+		),
+		'textdomain' => 'a8csp-project-template-features',
+		'editorScript' => 'file:./index.js',
+		'render' => 'file:./render.php'
+	)
+);

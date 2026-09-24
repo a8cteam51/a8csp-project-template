@@ -21,6 +21,8 @@
   "devDependencies": {
     "@a8csp/configs": "github:a8cteam51/a8csp-configs#semver:^1",
     "@playwright/test": "^1.61.1",
+    "@wordpress/block-editor": "^17.1.0",
+    "@wordpress/blocks": "^16.0.0",
     "@wordpress/browserslist-config": "^6.55.0",
     "@wordpress/components": "^40.1.0",
     "@wordpress/data": "^10.55.0",
@@ -52,6 +54,7 @@
     "build:theme:css": "sass themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build && postcss themes/a8csp-project-template/assets/css/build/*.css --replace",
     "build:features:css": "sass mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build && postcss mu-plugins/a8csp-project-template-features/assets/css/build/*.css --replace",
     "build:features:scripts": "wp-scripts build mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
+    "build:features:blocks": "wp-scripts build --webpack-src-dir=mu-plugins/a8csp-project-template-features/blocks/src --output-path=mu-plugins/a8csp-project-template-features/blocks/build --blocks-manifest",
 
     "start": "npm-run-all --parallel start:theme:** start:features:**",
     "start:theme:style": "sass --watch themes/a8csp-project-template/assets/sass/style.scss:themes/a8csp-project-template/style.css",
@@ -60,13 +63,14 @@
     "start:theme:css": "sass --watch themes/a8csp-project-template/assets/css/src:themes/a8csp-project-template/assets/css/build",
     "start:features:css": "sass --watch mu-plugins/a8csp-project-template-features/assets/css/src:mu-plugins/a8csp-project-template-features/assets/css/build",
     "start:features:scripts": "wp-scripts start mu-plugins/a8csp-project-template-features/assets/js/src/book-cover-reminder.js --output-path=mu-plugins/a8csp-project-template-features/assets/js/build",
+    "start:features:blocks": "wp-scripts start --webpack-src-dir=mu-plugins/a8csp-project-template-features/blocks/src --output-path=mu-plugins/a8csp-project-template-features/blocks/build --blocks-manifest",
 
     "format": "npm-run-all --sequential format:**",
-    "format:scripts": "wp-scripts format themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src --no-error-on-unmatched-pattern",
+    "format:scripts": "wp-scripts format themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src mu-plugins/a8csp-project-template-features/blocks/src --no-error-on-unmatched-pattern",
     "format:styles": "npm run lint:styles -- --fix",
 
     "lint": "npm-run-all --sequential lint:**",
-    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src eslint.config.mjs postcss.config.js stylelint.config.js .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
+    "lint:scripts": "wp-scripts lint-js themes/a8csp-project-template/assets/js/src mu-plugins/a8csp-project-template-features/assets/js/src mu-plugins/a8csp-project-template-features/blocks/src eslint.config.mjs postcss.config.js stylelint.config.js .github/workflows/fill-in-scaffold.mjs .github/workflows/fill-in-scaffold-content.mjs playwright.config.js tests/EndToEnd --no-error-on-unmatched-pattern",
     "lint:styles": "wp-scripts lint-style 'themes/a8csp-project-template/assets/sass/**/*.{css,scss}' 'themes/a8csp-project-template/assets/css/src/**/*.{css,scss}' 'mu-plugins/a8csp-project-template-features/assets/css/src/**/*.{css,scss}' --allow-empty-input",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "lint:readme-md": "wp-scripts lint-md-docs README.md",

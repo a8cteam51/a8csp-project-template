@@ -22,10 +22,10 @@ const MANIFEST = [
 		action: 'replace-exact',
 		path: 'README.scaffold.md',
 		from: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the worked Book example (CPT, front-end styles, and block-editor panel) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present) start running and passing. That's the fastest way to see a real feature move through the site end to end before writing your own."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the worked Book example (CPT, front-end styles, block-editor panel, and Book Count block) lights up on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, `tests/Integration/BookCountBlockTest.php`, and `tests/EndToEnd/site-smoke.spec.js` (self-skipped while `.disabled` is present, apart from the block's disabled-state check) start running and passing. That's the fastest way to see a real feature move through the site end to end before writing your own."
 		),
 		to: block(
-			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the Book feature (CPT, front-end styles, and block-editor panel) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed."
+			"Generation disables the features mu-plugin by creating `mu-plugins/EXAMPLE_REPO_SLUG-features/.disabled`, so an unattended site never registers the example content. Delete that file to start building the site's features — the Book feature (CPT, front-end styles, block-editor panel, and Book Count block) registers on the next request, its pretty-permalink routes (`/book/...`) resolve after one rewrite flush (restarting wp-env re-runs the `afterStart` flush; production needs `wp rewrite flush` once, as documented in the CPT file), and the Book-specific tests in `tests/Integration/FeaturesLoaderTest.php`, `tests/Integration/AssetsTest.php`, `tests/Integration/BookCountBlockTest.php`, and `tests/EndToEnd/site-smoke.spec.js` self-skip while `.disabled` is present and run once it is removed, apart from the block's disabled-state check, which runs only while the file is present."
 		),
 	},
 	{
@@ -36,6 +36,16 @@ const MANIFEST = [
 		),
 		to: block(
 			"The theme's WooCommerce cart styling and dynamic-content binding are each independently removable; follow the teardown lines co-located in `themes/EXAMPLE_REPO_SLUG/includes/plugin-woocommerce.php` and `themes/EXAMPLE_REPO_SLUG/includes/theme-dynamic-content.php`."
+		),
+	},
+	{
+		action: 'replace-exact',
+		path: 'README.scaffold.md',
+		from: block(
+			"The Book Count block (`blocks/src/book-count/`) shows that exception end to end: it's an example to learn from, not an invitation to keep blocks here. It goes with the rest of Book (see the teardown one-liners below)."
+		),
+		to: block(
+			'The Book Count block (`blocks/src/book-count/`) is listed there and goes with the rest of the Book feature (see the teardown one-liners below).'
 		),
 	},
 

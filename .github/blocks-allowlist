@@ -1,0 +1,4 @@
+# Each tracked block.json that stays in this site repository instead of the A8C Special Projects
+# blocks monorepo, one path per line: a block's source and built copies are listed alike.
+mu-plugins/a8csp-project-template-features/blocks/src/book-count/block.json
+mu-plugins/a8csp-project-template-features/blocks/build/book-count/block.json
