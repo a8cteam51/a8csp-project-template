@@ -115,16 +115,16 @@ jobs:
             exit 1
           fi
 
-      # The locks are excluded because the real run resolves them afresh, and .github/workflows because
-      # the real run never substitutes there; a path filter drops it, since --exclude-dir would match
-      # every directory named workflows.
+      # The root locks are dropped because the real run resolves them afresh, and .github/workflows
+      # because the real run never substitutes there. Both are path filters, since --exclude and
+      # --exclude-dir would match those names at any depth.
       - name: Assert no template literal survives
         run: |
           set -euo pipefail
 
           fail=0
           for literal in 'a8csp-project-template' 'a8csp_template' 'A8CSP_TEMPLATE' 'A8CSP Project Template' 'EXAMPLE_REPO_' 'A8C\SpecialProjects\ProjectTemplate'; do
-            if survivors=$(grep -rIlF --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.git --exclude=composer.lock --exclude=package-lock.json -- "$literal" . | grep -v '^\./\.github/workflows/'); then
+            if survivors=$(grep -rIlF --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.git -- "$literal" . | grep -vE '^\./(\.github/workflows/|composer\.lock$|package-lock\.json$)'); then
               printf '%s\n' "$survivors"
               echo "::error::template literal '$literal' survived substitution"
               fail=1
