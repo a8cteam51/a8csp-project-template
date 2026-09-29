@@ -38,6 +38,10 @@
 	add_filter(
 		'plugins_list',
 		static function ( array $plugins ) use ( $plugin_files ): array {
+			if ( is_multisite() && ! is_network_admin() ) {
+				return $plugins;
+			}
+
 			if ( ! isset( $plugins['mustuse'] ) || ! \is_array( $plugins['mustuse'] ) ) {
 				$plugins['mustuse'] = array();
 			}
