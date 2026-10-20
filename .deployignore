@@ -46,11 +46,7 @@ CLAUDE.md
 .agents/**
 **/.agents/**
 
-# WordPress content directories no broader pattern may exclude.
-!themes
-!mu-plugins
-!plugins
-!uploads
+# Keep `!` lines inside the Pressable allowlist block: anywhere else, Pressable lets a negation beat every other rule.
 
 # Secret material: once something is committed, this filter is the last thing between it and
 # production. DeployHQ matches a bare name only at the root, so a name that starts with a literal
