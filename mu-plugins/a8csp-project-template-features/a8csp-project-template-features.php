@@ -11,7 +11,7 @@
  * Description:             Houses the custom functionality that makes this site more than a WordPress theme — the features that outlive any redesign.
  * Version:                 1.0.0
  * Requires at least:       7.1
- * Requires PHP:            8.5
+ * Requires PHP:            8.4
  * Author:                  A8C Special Projects
  * Author URI:              https://specialprojects.automattic.com/
  * License:                 GPL-2.0-or-later

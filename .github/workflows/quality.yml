@@ -26,13 +26,16 @@ jobs:
   php-syntax:
     name: PHP Syntax
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-php-syntax-check.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    with:
+      # The shared default starts at 8.5; the site's floor is 8.4.
+      php-versions: '["8.4","8.5","8.6"]'
 
   belowfloor-syntax:
     name: Below-floor syntax (PHP ${{ matrix.php }})
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
