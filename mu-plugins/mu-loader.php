@@ -3,9 +3,11 @@
  * Loads directory-shaped must-use plugins.
  *
  * WordPress runs the PHP files sitting directly in `mu-plugins/` and ignores its subdirectories.
- * This file loads every `mu-plugins/<dir>/<file>.php` that declares a `Plugin Name` header, and
- * lists what it loaded on the admin plugins screen — except plugins gated off by a sibling
- * `.disabled` file, which load and self-gate but are not running anything worth listing.
+ * This file loads every `mu-plugins/a8csp-project-template-<name>/<file>.php` that declares a
+ * `Plugin Name` header, and lists what it loaded on the admin plugins screen — except plugins gated
+ * off by a sibling `.disabled` file, which load and self-gate but are not running anything worth
+ * listing. Other directories belong to the host or a local tool, which loads them itself; loading
+ * them again fatals.
  *
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
@@ -20,7 +22,7 @@
  * @return  void
  */
 ( static function (): void {
-	$candidate_files = \glob( WPMU_PLUGIN_DIR . '/*/*.php' ) ?: array();
+	$candidate_files = \glob( WPMU_PLUGIN_DIR . '/a8csp-project-template-*/*.php' ) ?: array();
 	\sort( $candidate_files );
 
 	$plugin_files = array();

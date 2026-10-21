@@ -6,7 +6,7 @@
  */
 
 /**
- * The mu-loader loads header-bearing entries and reports exactly the running ones.
+ * The mu-loader loads the site's own header-bearing entries and reports exactly the running ones.
  */
 final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	// region TESTS.
@@ -71,6 +71,31 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 			if ( $created ) {
 				wp_delete_file( $marker );
 			}
+		}
+	}
+
+	/**
+	 * Confirms a directory without the site's prefix is not loaded, even with a `Plugin Name`
+	 * header. The loader already ran at boot, so the test runs it again over the fixture.
+	 *
+	 * @return  void
+	 */
+	public function test_directory_without_the_site_prefix_is_not_loaded(): void {
+		// No hyphen, so no `<repository-name>-*` scan can match it.
+		$fixture_dir  = WPMU_PLUGIN_DIR . '/mu_loader_test_unprefixed';
+		$fixture_file = $fixture_dir . '/mu_loader_test_unprefixed.php';
+		wp_mkdir_p( $fixture_dir );
+		\file_put_contents( $fixture_file, "<?php\n/**\n * Plugin Name: MU Loader Test Unprefixed\n */\n\\define( 'A8CSP_TEMPLATE_MU_LOADER_TEST_UNPREFIXED_LOADED', true );\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- a fixture on the local mount; WP_Filesystem's credential handling has no role in a test run.
+
+		$plugins_list_hook = clone $GLOBALS['wp_filter']['plugins_list'];
+		try {
+			require WPMU_PLUGIN_DIR . '/mu-loader.php';
+
+			self::assertFalse( \defined( 'A8CSP_TEMPLATE_MU_LOADER_TEST_UNPREFIXED_LOADED' ) );
+		} finally {
+			$GLOBALS['wp_filter']['plugins_list'] = $plugins_list_hook; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- drops the filter the second run registered.
+			wp_delete_file( $fixture_file );
+			\rmdir( $fixture_dir ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- removes the fixture directory created above.
 		}
 	}
 
