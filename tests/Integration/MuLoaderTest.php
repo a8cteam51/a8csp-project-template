@@ -83,8 +83,9 @@ final class MuLoaderTest extends \PHPUnit\Framework\TestCase {
 	 * @return  void
 	 */
 	public function test_directory_without_the_site_prefix_is_not_loaded(): void {
-		$fixture_dir  = WPMU_PLUGIN_DIR . '/mu-loader-test-unprefixed';
-		$fixture_file = $fixture_dir . '/mu-loader-test-unprefixed.php';
+		// No hyphen, so no `<repository-name>-*` scan can match it, whatever the site is called.
+		$fixture_dir  = WPMU_PLUGIN_DIR . '/mu_loader_test_unprefixed';
+		$fixture_file = $fixture_dir . '/mu_loader_test_unprefixed.php';
 		wp_mkdir_p( $fixture_dir );
 		\file_put_contents( $fixture_file, "<?php\n/**\n * Plugin Name: MU Loader Test Unprefixed\n */\n\\define( 'A8CSP_TEMPLATE_MU_LOADER_TEST_UNPREFIXED_LOADED', true );\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- a fixture on the local mount; WP_Filesystem's credential handling has no role in a test run.
 
