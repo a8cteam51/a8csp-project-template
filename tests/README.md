@@ -12,7 +12,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 - `FeaturesLoaderTest` protects the promise that the site's enabled features, including the public Book archive, load.
 - `AssetsTest` protects the promise that front-end assets are wired into the site and theme asset updates receive deploy-specific cache versions.
 - `BookCountBlockTest` protects the promise that the features plugin's blocks register from the build manifest and render on the server only while the plugin is enabled.
-- `MuLoaderTest` protects the promise that the loader loads only the site's prefixed mu-plugin directories, and that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
+- `MuLoaderTest` protects the promise that the loader loads only the site's own prefixed directories and that the admin plugins screen reports exactly the loaded, non-gated must-use plugins.
 
 ### End-to-End
 

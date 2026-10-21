@@ -10,7 +10,7 @@ This repository is the `wp-content` for EXAMPLE_REPO_NAME: the theme owns how th
 | `mu-plugins/EXAMPLE_REPO_SLUG-features` | What the site does (the features mu-plugin). |
 | `plugins/` | Tracked exceptions only; everything else there is installed, not tracked. |
 
-`mu-plugins/mu-loader.php` loads only the `mu-plugins/EXAMPLE_REPO_SLUG-*` directories. Name any further mu-plugin directory that way. Directories without the prefix belong to the host or a local tool, which loads them itself.
+`mu-plugins/mu-loader.php` loads only `mu-plugins/EXAMPLE_REPO_SLUG-*` directories, so name new mu-plugins that way; anything else there belongs to the host or a local tool.
 
 ## Deploy
 

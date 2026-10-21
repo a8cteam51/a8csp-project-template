@@ -6,11 +6,8 @@
  * This file loads every `mu-plugins/a8csp-project-template-<name>/<file>.php` that declares a
  * `Plugin Name` header, and lists what it loaded on the admin plugins screen — except plugins gated
  * off by a sibling `.disabled` file, which load and self-gate but are not running anything worth
- * listing.
- *
- * Only the site's own prefix loads because hosts and local tools place directory mu-plugins here
- * that they load themselves (Studio's SQLite driver, the Studio preview companion), and requiring
- * those a second time fatals on redeclared functions.
+ * listing. Other directories belong to the host or a local tool, which loads them itself; loading
+ * them again fatals.
  *
  * @package  A8C\SpecialProjects\ProjectTemplate
  * @author   A8C Special Projects
