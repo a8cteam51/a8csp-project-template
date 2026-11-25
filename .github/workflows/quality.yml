@@ -28,35 +28,22 @@ jobs:
     uses: a8cteam51/a8csp-configs/.github/workflows/reusable-php-syntax-check.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
 
   # One job, not a matrix: GitHub bills every job by the minute, rounded up, and each version's
-  # check takes seconds.
+  # check takes seconds. Each setup-php step switches the job's PHP to the next version.
   belowfloor-syntax:
     name: Below-floor syntax
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      PHP_VERSIONS: '7.4 8.0 8.1 8.2 8.3 8.4'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      # The PPA setup-php installs from; one apt transaction installs every version side by side.
-      - name: Install the below-floor PHP versions
-        run: |
-          set -euo pipefail
-
-          sudo add-apt-repository --yes ppa:ondrej/php
-          packages=()
-          for php in $PHP_VERSIONS; do
-            packages+=("php${php}-cli")
-          done
-          sudo apt-get install --yes --no-install-recommends "${packages[@]}"
-
       # Every header-discovered directory mu-plugin entry and the headerless MU loader must parse
       # below the site's PHP floor; header discovery survives generation renaming the features
       # directory and entry file without rewriting .github/workflows/.
-      - name: Check the below-floor files for syntax errors
+      - name: Write the below-floor check
         run: |
+          cat > "$RUNNER_TEMP/below-floor-check.sh" <<'SH'
           set -euo pipefail
 
           mapfile -t entry_files < <(grep -l 'Plugin Name:' "$GITHUB_WORKSPACE"/mu-plugins/*/*.php || true)
@@ -64,14 +51,71 @@ jobs:
             echo "::error::expected at least one mu-plugins/*/*.php file with a 'Plugin Name:' header" >&2
             exit 1
           fi
-          for php in $PHP_VERSIONS; do
-            echo "::group::PHP $("php$php" -r 'echo PHP_VERSION;')"
-            for entry_file in "${entry_files[@]}"; do
-              "php$php" -l "$entry_file"
-            done
-            "php$php" -l "$GITHUB_WORKSPACE/mu-plugins/mu-loader.php"
-            echo '::endgroup::'
+          for entry_file in "${entry_files[@]}"; do
+            php -l "$entry_file"
           done
+          php -l "$GITHUB_WORKSPACE/mu-plugins/mu-loader.php"
+          SH
+
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '7.4'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 7.4
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
+
+      - name: Setup PHP 8.0
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.0'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 8.0
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
+
+      - name: Setup PHP 8.1
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 8.1
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 8.2
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 8.3
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: none
+
+      - name: Check the below-floor files on PHP 8.4
+        run: bash "$RUNNER_TEMP/below-floor-check.sh"
 
   build-integrity:
     name: Build integrity
