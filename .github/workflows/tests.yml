@@ -24,7 +24,7 @@ jobs:
   integration:
     name: Integration (WP latest)
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0
     with:
       wp-env-config-file: '.wp-env.tests.json'
       composer-script: 'test:integration'
@@ -34,7 +34,7 @@ jobs:
   integration-nightly:
     name: Integration (WP nightly)
     if: github.event_name == 'workflow_dispatch'
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0
     with:
       wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
       wp-env-config-file: '.wp-env.tests.json'
@@ -43,4 +43,4 @@ jobs:
   e2e:
     name: End-to-End
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0
