@@ -2,36 +2,45 @@ name: Tests
 
 on:
   pull_request:
+    # ready_for_review starts the suite when a draft is marked ready.
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [trunk, develop]
+  # Adds the WordPress nightly leg, such as before a WordPress release reaches the live site.
+  workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # Keyed by event too, so a manual run and a push run on the same branch don't cancel each other.
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
+  # The hosts keep WordPress on its latest release, so wp-env's default of latest stable is the
+  # version this site runs. A draft pull request runs Quality only; this suite starts once it is
+  # ready for review.
   integration:
-    name: Integration (${{ matrix.name }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'WP floor (7.1)'
-            wp-version: '7.1'
-          # wp-env defaults to latest stable.
-          - name: 'WP latest'
-          - name: 'WP nightly'
-            wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    name: Integration (WP latest)
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0
     with:
-      wp-version: ${{ matrix.wp-version || '' }}
-      wp-env-core: ${{ matrix.wp-env-core || '' }}
+      wp-env-config-file: '.wp-env.tests.json'
+      composer-script: 'test:integration'
+
+  # Nightly tracks unreleased WordPress, so its failures mostly reflect upstream churn rather than
+  # the change under test. It runs on request; the template's weekly canary covers the shared code.
+  integration-nightly:
+    name: Integration (WP nightly)
+    if: github.event_name == 'workflow_dispatch'
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-phpunit.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0
+    with:
+      wp-env-core: 'https://wordpress.org/nightly-builds/wordpress-latest.zip'
       wp-env-config-file: '.wp-env.tests.json'
       composer-script: 'test:integration'
 
   e2e:
     name: End-to-End
-    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@295fdb54961eb5a95ec9ed52f183cb44a16e004b # v1.1.0
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    uses: a8cteam51/a8csp-configs/.github/workflows/reusable-playwright-e2e.yml@231be2507946169eeb18080c04a597be4e3fac7c # v1.2.0

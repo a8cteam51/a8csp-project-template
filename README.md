@@ -28,6 +28,11 @@ passage in `fill-in-scaffold-content.mjs` by its exact text, before the rename, 
 `template-guard.yml` fails any change that leaves a passage matching zero or several times; its
 generation contract also renders representative fixtures and checks the result.
 
+Generated sites run CI only when they change, so `template-guard.yml` also runs a weekly WordPress
+canary here: the integration suite against WordPress latest and nightly, and the end-to-end smoke
+against nightly. A failure means the next WordPress release breaks code every generated site
+starts from.
+
 ### Layout
 
 - `themes/a8csp-project-template/` is the worked block theme. Its slug getter leads `functions.php`'s `META` region, followed by a shared asset-metadata helper and a `sort()`-ordered, underscore-opt-out loader for `includes/`; `includes/theme-setup.php` registers theme support and enqueues `style.css` (built from `assets/sass/`) plus the built JS entry in `assets/js/`. `includes/plugin-woocommerce.php` is the plugin-conditional worked example, with a WooCommerce cart stylesheet built from `assets/css/src/`; `includes/theme-dynamic-content.php` is the block-binding worked example consumed by `patterns/footer-default.php`. The theme has two independent CSS pipelines: `assets/sass/` for its main and editor stylesheets and `assets/css/` for per-purpose plugin-conditional stylesheets.
