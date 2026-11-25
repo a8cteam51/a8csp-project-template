@@ -20,7 +20,7 @@ This repository uses integration tests against a real WordPress plus one end-to-
 
 ## No below-floor / Requirements tier at site tier
 
-This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection — the Quality workflow's below-floor syntax matrix covers parse-safety separately — and is not a separate test tier.
+This site repository deploys only to hosts the team controls, so it has no dedicated below-floor wp-env configuration or Requirements suite. The features plugin's inexpensive floor gate in `mu-plugins/a8csp-project-template-features/a8csp-project-template-features.php` is the only runtime below-floor protection — the Quality workflow's below-floor syntax job covers parse-safety separately — and is not a separate test tier.
 
 ## Why plain `TestCase`, not `WP_UnitTestCase`
 
